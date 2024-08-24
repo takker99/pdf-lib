@@ -75,14 +75,14 @@ import { JavaScriptEmbedder } from "../core/embedders/JavaScriptEmbedder.ts";
  */
 export class PDFDocument {
   /**
-   * Load an existing [[PDFDocument]]. The input data can be provided in
+   * Load an existing {@linkcode PDFDocument}. The input data can be provided in
    * multiple formats:
    *
    * | Type          | Contents                                               |
    * | ------------- | ------------------------------------------------------ |
-   * | `string`      | A base64 encoded string (or data URI) containing a PDF |
-   * | `Uint8Array`  | The raw bytes of a PDF                                 |
-   * | `ArrayBuffer` | The raw bytes of a PDF                                 |
+   * | {@linkcode string}      | A base64 encoded string (or data URI) containing a PDF |
+   * | {@linkcode Uint8Array}  | The raw bytes of a PDF                                 |
+   * | {@linkcode ArrayBuffer} | The raw bytes of a PDF                                 |
    *
    * For example:
    * ```js
@@ -154,7 +154,7 @@ export class PDFDocument {
   }
 
   /**
-   * Create a new [[PDFDocument]].
+   * Create a new {@linkcode PDFDocument}.
    * @returns Resolves with the newly created document.
    */
   static create(options: CreateOptions = {}) {
