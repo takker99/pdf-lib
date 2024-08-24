@@ -1,11 +1,11 @@
-import PDFArray from "src/core/objects/PDFArray";
-import PDFDict from "src/core/objects/PDFDict";
-import PDFName from "src/core/objects/PDFName";
-import PDFObject from "src/core/objects/PDFObject";
-import PDFRef from "src/core/objects/PDFRef";
-import PDFStream from "src/core/objects/PDFStream";
-import PDFContext from "src/core/PDFContext";
-import PDFPageLeaf from "src/core/structures/PDFPageLeaf";
+import { PDFArray } from "./objects/PDFArray.ts";
+import { PDFDict } from "./objects/PDFDict.ts";
+import { PDFName } from "./objects/PDFName.ts";
+import { PDFObject } from "./objects/PDFObject.ts";
+import { PDFRef } from "./objects/PDFRef.ts";
+import { PDFStream } from "./objects/PDFStream.ts";
+import { PDFContext } from "./PDFContext.ts";
+import { PDFPageLeaf } from "./structures/PDFPageLeaf.ts";
 
 /**
  * PDFObjectCopier copies PDFObjects from a src context to a dest context.
@@ -28,7 +28,7 @@ import PDFPageLeaf from "src/core/structures/PDFPageLeaf";
  * objects. Copying a PDFObject that is not a dictionary, array, or stream is
  * supported, but is equivalent to cloning it.
  */
-class PDFObjectCopier {
+export class PDFObjectCopier {
   static for = (src: PDFContext, dest: PDFContext) =>
     new PDFObjectCopier(src, dest);
 
@@ -145,5 +145,3 @@ class PDFObjectCopier {
     return this.traversedObjects.get(ref) as PDFRef;
   };
 }
-
-export default PDFObjectCopier;

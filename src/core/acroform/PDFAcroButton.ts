@@ -1,13 +1,13 @@
-import PDFObject from "../objects/PDFObject.ts";
-import PDFString from "../objects/PDFString.ts";
-import PDFHexString from "../objects/PDFHexString.ts";
-import PDFArray from "../objects/PDFArray.ts";
-import PDFName from "../objects/PDFName.ts";
-import PDFRef from "../objects/PDFRef.ts";
-import PDFAcroTerminal from "./PDFAcroTerminal.ts";
+import { PDFObject } from "../objects/PDFObject.ts";
+import { PDFString } from "../objects/PDFString.ts";
+import { PDFHexString } from "../objects/PDFHexString.ts";
+import { PDFArray } from "../objects/PDFArray.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
+import { PDFAcroTerminal } from "./PDFAcroTerminal.ts";
 import { IndexOutOfBoundsError } from "../errors.ts";
 
-class PDFAcroButton extends PDFAcroTerminal {
+export class PDFAcroButton extends PDFAcroTerminal {
   Opt(): PDFString | PDFHexString | PDFArray | undefined {
     return this.dict.lookupMaybe(
       PDFName.of("Opt"),
@@ -109,5 +109,3 @@ class PDFAcroButton extends PDFAcroTerminal {
     return apStateValue;
   }
 }
-
-export default PDFAcroButton;

@@ -1,12 +1,12 @@
 import { MethodNotImplementedError } from "../errors.ts";
-import PDFDict from "./PDFDict.ts";
-import PDFName from "./PDFName.ts";
-import PDFNumber from "./PDFNumber.ts";
-import PDFObject from "./PDFObject.ts";
-import PDFContext from "../PDFContext.ts";
-import CharCodes from "../syntax/CharCodes.ts";
+import { PDFDict } from "./PDFDict.ts";
+import { PDFName } from "./PDFName.ts";
+import { PDFNumber } from "./PDFNumber.ts";
+import { PDFObject } from "./PDFObject.ts";
+import { PDFContext } from "../PDFContext.ts";
+import { CharCodes } from "../syntax/CharCodes.ts";
 
-class PDFStream extends PDFObject {
+export class PDFStream extends PDFObject {
   readonly dict: PDFDict;
 
   constructor(dict: PDFDict) {
@@ -89,5 +89,3 @@ class PDFStream extends PDFObject {
     return offset - initialOffset;
   }
 }
-
-export default PDFStream;

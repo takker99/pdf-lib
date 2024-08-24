@@ -1,11 +1,11 @@
-import PDFContext from "../PDFContext.ts";
-import PDFRef from "../objects/PDFRef.ts";
-import PDFDict from "../objects/PDFDict.ts";
-import PDFName from "../objects/PDFName.ts";
-import PDFAcroButton from "./PDFAcroButton.ts";
+import { PDFContext } from "../PDFContext.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
+import { PDFDict } from "../objects/PDFDict.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFAcroButton } from "./PDFAcroButton.ts";
 import { InvalidAcroFieldValueError } from "../errors.ts";
 
-class PDFAcroCheckBox extends PDFAcroButton {
+export class PDFAcroCheckBox extends PDFAcroButton {
   static fromDict = (dict: PDFDict, ref: PDFRef) =>
     new PDFAcroCheckBox(dict, ref);
 
@@ -45,5 +45,3 @@ class PDFAcroCheckBox extends PDFAcroButton {
     return widget?.getOnValue();
   }
 }
-
-export default PDFAcroCheckBox;

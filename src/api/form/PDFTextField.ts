@@ -1,10 +1,11 @@
-import PDFDocument from "../PDFDocument.ts";
-import PDFPage from "../PDFPage.ts";
-import PDFFont from "../PDFFont.ts";
-import PDFImage from "../PDFImage.ts";
-import PDFField, {
+import { PDFDocument } from "../PDFDocument.ts";
+import { PDFPage } from "../PDFPage.ts";
+import { PDFFont } from "../PDFFont.ts";
+import { PDFImage } from "../PDFImage.ts";
+import {
   assertFieldAppearanceOptions,
   FieldAppearanceOptions,
+  PDFField,
 } from "./PDFField.ts";
 import {
   AppearanceProviderFor,
@@ -28,14 +29,14 @@ import {
   PDFRef,
   PDFStream,
   PDFWidgetAnnotation,
-} from "../../core/index.ts";
+} from "../../core/mod.ts";
 import {
   assertIs,
   assertIsOneOf,
   assertOrUndefined,
   assertPositive,
   assertRangeOrUndefined,
-} from "../../utils/index.ts";
+} from "../../utils/mod.ts";
 
 /**
  * Represents a text field of a [[PDFForm]].
@@ -46,7 +47,7 @@ import {
  * input text via their keyboard. Some text fields allow multiple lines of text
  * to be entered (see [[PDFTextField.isMultiline]]).
  */
-export default class PDFTextField extends PDFField {
+export class PDFTextField extends PDFField {
   /**
    * > **NOTE:** You probably don't want to call this method directly. Instead,
    * > consider using the [[PDFForm.getTextField]] method, which will create an

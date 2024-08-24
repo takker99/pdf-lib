@@ -1,22 +1,22 @@
-import PDFObject from "../objects/PDFObject.ts";
-import PDFNumber from "../objects/PDFNumber.ts";
-import PDFDict from "../objects/PDFDict.ts";
-import PDFName from "../objects/PDFName.ts";
-import PDFArray from "../objects/PDFArray.ts";
-import PDFRef from "../objects/PDFRef.ts";
+import { PDFObject } from "../objects/PDFObject.ts";
+import { PDFNumber } from "../objects/PDFNumber.ts";
+import { PDFDict } from "../objects/PDFDict.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFArray } from "../objects/PDFArray.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
 
-import PDFAcroField from "./PDFAcroField.ts";
-import PDFAcroTerminal from "./PDFAcroTerminal.ts";
-import PDFAcroNonTerminal from "./PDFAcroNonTerminal.ts";
-import PDFAcroButton from "./PDFAcroButton.ts";
-import PDFAcroSignature from "./PDFAcroSignature.ts";
-import PDFAcroChoice from "./PDFAcroChoice.ts";
-import PDFAcroText from "./PDFAcroText.ts";
-import PDFAcroPushButton from "./PDFAcroPushButton.ts";
-import PDFAcroRadioButton from "./PDFAcroRadioButton.ts";
-import PDFAcroCheckBox from "./PDFAcroCheckBox.ts";
-import PDFAcroComboBox from "./PDFAcroComboBox.ts";
-import PDFAcroListBox from "./PDFAcroListBox.ts";
+import { PDFAcroField } from "./PDFAcroField.ts";
+import { PDFAcroTerminal } from "./PDFAcroTerminal.ts";
+import { PDFAcroNonTerminal } from "./PDFAcroNonTerminal.ts";
+import { PDFAcroButton } from "./PDFAcroButton.ts";
+import { PDFAcroSignature } from "./PDFAcroSignature.ts";
+import { PDFAcroChoice } from "./PDFAcroChoice.ts";
+import { PDFAcroText } from "./PDFAcroText.ts";
+import { PDFAcroPushButton } from "./PDFAcroPushButton.ts";
+import { PDFAcroRadioButton } from "./PDFAcroRadioButton.ts";
+import { PDFAcroCheckBox } from "./PDFAcroCheckBox.ts";
+import { PDFAcroComboBox } from "./PDFAcroComboBox.ts";
+import { PDFAcroListBox } from "./PDFAcroListBox.ts";
 import { AcroButtonFlags, AcroChoiceFlags } from "./flags.ts";
 
 export const createPDFAcroFields = (

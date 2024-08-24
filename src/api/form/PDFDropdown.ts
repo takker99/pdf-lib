@@ -1,9 +1,10 @@
-import PDFDocument from "../PDFDocument.ts";
-import PDFPage from "../PDFPage.ts";
-import PDFFont from "../PDFFont.ts";
-import PDFField, {
+import { PDFDocument } from "../PDFDocument.ts";
+import { PDFPage } from "../PDFPage.ts";
+import { PDFFont } from "../PDFFont.ts";
+import {
   assertFieldAppearanceOptions,
   FieldAppearanceOptions,
+  PDFField,
 } from "./PDFField.ts";
 import {
   AppearanceProviderFor,
@@ -21,12 +22,12 @@ import {
   PDFStream,
   PDFString,
   PDFWidgetAnnotation,
-} from "../../core/index.ts";
+} from "../../core/mod.ts";
 import {
   assertIs,
   assertOrUndefined,
   assertPositive,
-} from "../../utils/index.ts";
+} from "../../utils/mod.ts";
 
 /**
  * Represents a dropdown field of a [[PDFForm]].
@@ -40,7 +41,7 @@ import {
  * directly into the box from their keyboard, rather than only being allowed to
  * choose an option from the list (see [[PDFDropdown.isEditable]]).
  */
-export default class PDFDropdown extends PDFField {
+export class PDFDropdown extends PDFField {
   /**
    * > **NOTE:** You probably don't want to call this method directly. Instead,
    * > consider using the [[PDFForm.getDropdown]] method, which will create an

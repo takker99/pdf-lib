@@ -1,15 +1,15 @@
-import PDFArray from "../objects/PDFArray.ts";
-import PDFDict, { DictMap } from "../objects/PDFDict.ts";
-import PDFName from "../objects/PDFName.ts";
-import PDFNumber from "../objects/PDFNumber.ts";
-import PDFRef from "../objects/PDFRef.ts";
-import PDFContext from "../PDFContext.ts";
-import PDFPageLeaf from "./PDFPageLeaf.ts";
+import { PDFArray } from "../objects/PDFArray.ts";
+import { DictMap, PDFDict } from "../objects/PDFDict.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFNumber } from "../objects/PDFNumber.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
+import { PDFContext } from "../PDFContext.ts";
+import { PDFPageLeaf } from "./PDFPageLeaf.ts";
 import { CorruptPageTreeError, InvalidTargetIndexError } from "../errors.ts";
 
 export type TreeNode = PDFPageTree | PDFPageLeaf;
 
-class PDFPageTree extends PDFDict {
+export class PDFPageTree extends PDFDict {
   static withContext = (context: PDFContext, parent?: PDFRef) => {
     const dict = new Map();
     dict.set(PDFName.of("Type"), PDFName.of("Pages"));
@@ -191,5 +191,3 @@ class PDFPageTree extends PDFDict {
     Kids.remove(kidIdx);
   }
 }
-
-export default PDFPageTree;

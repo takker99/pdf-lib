@@ -1,9 +1,9 @@
-import PDFDict from "./PDFDict.ts";
-import PDFStream from "./PDFStream.ts";
-import PDFContext from "../PDFContext.ts";
-import { arrayAsString } from "../../utils/index.ts";
+import { PDFDict } from "./PDFDict.ts";
+import { PDFStream } from "./PDFStream.ts";
+import { PDFContext } from "../PDFContext.ts";
+import { arrayAsString } from "../../utils/mod.ts";
 
-class PDFRawStream extends PDFStream {
+export class PDFRawStream extends PDFStream {
   static of = (dict: PDFDict, contents: Uint8Array) =>
     new PDFRawStream(dict, contents);
 
@@ -34,5 +34,3 @@ class PDFRawStream extends PDFStream {
     return this.contents.length;
   }
 }
-
-export default PDFRawStream;

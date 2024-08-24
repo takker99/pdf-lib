@@ -1,13 +1,13 @@
-import PDFArray from "../objects/PDFArray.ts";
-import PDFHexString from "../objects/PDFHexString.ts";
-import PDFName from "../objects/PDFName.ts";
-import PDFNumber from "../objects/PDFNumber.ts";
-import PDFObject from "../objects/PDFObject.ts";
-import PDFString from "../objects/PDFString.ts";
-import PDFOperatorNames from "./PDFOperatorNames.ts";
-import PDFContext from "../PDFContext.ts";
-import CharCodes from "../syntax/CharCodes.ts";
-import { copyStringIntoBuffer } from "../../utils/index.ts";
+import { PDFArray } from "../objects/PDFArray.ts";
+import { PDFHexString } from "../objects/PDFHexString.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFNumber } from "../objects/PDFNumber.ts";
+import { PDFObject } from "../objects/PDFObject.ts";
+import { PDFString } from "../objects/PDFString.ts";
+import { PDFOperatorNames } from "./PDFOperatorNames.ts";
+import { PDFContext } from "../PDFContext.ts";
+import { CharCodes } from "../syntax/CharCodes.ts";
+import { copyStringIntoBuffer } from "../../utils/mod.ts";
 
 export type PDFOperatorArg =
   | string
@@ -17,7 +17,7 @@ export type PDFOperatorArg =
   | PDFString
   | PDFHexString;
 
-class PDFOperator {
+export class PDFOperator {
   static of = (name: PDFOperatorNames, args?: PDFOperatorArg[]) =>
     new PDFOperator(name, args);
 
@@ -75,5 +75,3 @@ class PDFOperator {
     return offset - initialOffset;
   }
 }
-
-export default PDFOperator;

@@ -6,7 +6,7 @@ import {
   PDFNumber,
   PDFOperator,
   PDFOperatorNames as Ops,
-} from "../core/index.ts";
+} from "../core/mod.ts";
 
 /* ==================== Clipping Path Operators ==================== */
 

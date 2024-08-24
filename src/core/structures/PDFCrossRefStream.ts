@@ -1,15 +1,10 @@
-import PDFDict from "../objects/PDFDict.ts";
-import PDFName from "../objects/PDFName.ts";
-import PDFRef from "../objects/PDFRef.ts";
-import PDFContext from "../PDFContext.ts";
-import PDFFlateStream from "./PDFFlateStream.ts";
-import {
-  bytesFor,
-  Cache,
-  reverseArray,
-  sizeInBytes,
-  sum,
-} from "../../utils/index.ts";
+import { PDFDict } from "../objects/PDFDict.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
+import { PDFContext } from "../PDFContext.ts";
+import { PDFFlateStream } from "./PDFFlateStream.ts";
+import { bytesFor, reverseArray, sizeInBytes, sum } from "../../utils/mod.ts";
+import { Cache } from "../../utils/Cache.ts";
 
 export enum EntryType {
   Deleted = 0,
@@ -45,7 +40,7 @@ export type EntryTuple = [number, number, number];
  * [[addUncompressedEntry]], and [[addCompressedEntry]] methods
  * **in order of ascending object number**.
  */
-class PDFCrossRefStream extends PDFFlateStream {
+export class PDFCrossRefStream extends PDFFlateStream {
   static create = (dict: PDFDict, encode = true) => {
     const stream = new PDFCrossRefStream(dict, [], encode);
     stream.addDeletedEntry(PDFRef.of(0, 65535), 0);
@@ -248,5 +243,3 @@ class PDFCrossRefStream extends PDFFlateStream {
     return widths;
   };
 }
-
-export default PDFCrossRefStream;

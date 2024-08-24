@@ -1,19 +1,19 @@
-import PDFBool from "./PDFBool.ts";
-import PDFDict from "./PDFDict.ts";
-import PDFHexString from "./PDFHexString.ts";
-import PDFName from "./PDFName.ts";
-import PDFNull from "./PDFNull.ts";
-import PDFNumber from "./PDFNumber.ts";
-import PDFObject from "./PDFObject.ts";
-import PDFRef from "./PDFRef.ts";
-import PDFStream from "./PDFStream.ts";
-import PDFString from "./PDFString.ts";
-import PDFContext from "../PDFContext.ts";
-import CharCodes from "../syntax/CharCodes.ts";
+import { PDFBool } from "./PDFBool.ts";
+import { PDFDict } from "./PDFDict.ts";
+import { PDFHexString } from "./PDFHexString.ts";
+import { PDFName } from "./PDFName.ts";
+import { PDFNull } from "./PDFNull.ts";
+import { PDFNumber } from "./PDFNumber.ts";
+import { PDFObject } from "./PDFObject.ts";
+import { PDFRef } from "./PDFRef.ts";
+import { PDFStream } from "./PDFStream.ts";
+import { PDFString } from "./PDFString.ts";
+import { PDFContext } from "../PDFContext.ts";
+import { CharCodes } from "../syntax/CharCodes.ts";
 import { PDFArrayIsNotRectangleError } from "../errors.ts";
-import PDFRawStream from "./PDFRawStream.ts";
+import { PDFRawStream } from "./PDFRawStream.ts";
 
-class PDFArray extends PDFObject {
+export class PDFArray extends PDFObject {
   static withContext = (context: PDFContext) => new PDFArray(context);
 
   private readonly array: PDFObject[];
@@ -181,5 +181,3 @@ class PDFArray extends PDFObject {
     }
   }
 }
-
-export default PDFArray;

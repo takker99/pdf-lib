@@ -1,10 +1,10 @@
-import PDFDict from "../objects/PDFDict.ts";
-import PDFOperator from "../operators/PDFOperator.ts";
-import PDFContext from "../PDFContext.ts";
-import PDFFlateStream from "./PDFFlateStream.ts";
-import CharCodes from "../syntax/CharCodes.ts";
+import { PDFDict } from "../objects/PDFDict.ts";
+import { PDFOperator } from "../operators/PDFOperator.ts";
+import { PDFContext } from "../PDFContext.ts";
+import { PDFFlateStream } from "./PDFFlateStream.ts";
+import { CharCodes } from "../syntax/CharCodes.ts";
 
-class PDFContentStream extends PDFFlateStream {
+export class PDFContentStream extends PDFFlateStream {
   static of = (dict: PDFDict, operators: PDFOperator[], encode = true) =>
     new PDFContentStream(dict, operators, encode);
 
@@ -54,5 +54,3 @@ class PDFContentStream extends PDFFlateStream {
     return size;
   }
 }
-
-export default PDFContentStream;

@@ -1,8 +1,8 @@
-import { copyStringIntoBuffer, numberToString } from "../../utils/index.ts";
+import { copyStringIntoBuffer, numberToString } from "../../utils/mod.ts";
 
-import PDFObject from "./PDFObject.ts";
+import { PDFObject } from "./PDFObject.ts";
 
-class PDFNumber extends PDFObject {
+export class PDFNumber extends PDFObject {
   static of = (value: number) => new PDFNumber(value);
 
   private readonly numberValue: number;
@@ -40,5 +40,3 @@ class PDFNumber extends PDFObject {
     return this.stringValue.length;
   }
 }
-
-export default PDFNumber;

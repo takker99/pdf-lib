@@ -6,20 +6,17 @@ import {
   TypeFeatures,
 } from "../../types/fontkit.ts";
 
-import CustomFontEmbedder from "./CustomFontEmbedder.ts";
-import PDFHexString from "../objects/PDFHexString.ts";
-import {
-  Cache,
-  mergeUint8Arrays,
-  toHexStringOfMinLength,
-} from "../../utils/index.ts";
+import { CustomFontEmbedder } from "./CustomFontEmbedder.ts";
+import { PDFHexString } from "../objects/PDFHexString.ts";
+import { mergeUint8Arrays, toHexStringOfMinLength } from "../../utils/mod.ts";
+import { Cache } from "../../utils/Cache.ts";
 
 /**
  * A note of thanks to the developers of https://github.com/foliojs/pdfkit, as
  * this class borrows from:
  *   https://github.com/devongovett/pdfkit/blob/e71edab0dd4657b5a767804ba86c94c58d01fbca/lib/image/jpeg.coffee
  */
-class CustomFontSubsetEmbedder extends CustomFontEmbedder {
+export class CustomFontSubsetEmbedder extends CustomFontEmbedder {
   static async for(
     fontkit: Fontkit,
     fontData: Uint8Array,
@@ -90,5 +87,3 @@ class CustomFontSubsetEmbedder extends CustomFontEmbedder {
     });
   }
 }
-
-export default CustomFontSubsetEmbedder;

@@ -1,10 +1,10 @@
 import { NextByteAssertionError } from "../errors.ts";
-import PDFRawStream from "../objects/PDFRawStream.ts";
+import { PDFRawStream } from "../objects/PDFRawStream.ts";
 import { decodePDFRawStream } from "../streams/decode.ts";
-import CharCodes from "../syntax/CharCodes.ts";
+import { CharCodes } from "../syntax/CharCodes.ts";
 
 // TODO: See how line/col tracking affects performance
-class ByteStream {
+export class ByteStream {
   static of = (bytes: Uint8Array) => new ByteStream(bytes);
 
   static fromPDFRawStream = (rawStream: PDFRawStream) =>
@@ -72,5 +72,3 @@ class ByteStream {
     return { line: this.line, column: this.column, offset: this.idx };
   }
 }
-
-export default ByteStream;

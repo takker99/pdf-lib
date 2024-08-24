@@ -1,4 +1,4 @@
-import { assertIs, error } from "../utils/index.ts";
+import { assertIs, error } from "../utils/mod.ts";
 
 export enum RotationTypes {
   Degrees = "degrees",

@@ -15,10 +15,10 @@ import {
   scale,
   translate,
 } from "./operators.ts";
-import PDFDocument from "./PDFDocument.ts";
-import PDFEmbeddedPage from "./PDFEmbeddedPage.ts";
-import PDFFont from "./PDFFont.ts";
-import PDFImage from "./PDFImage.ts";
+import { PDFDocument } from "./PDFDocument.ts";
+import { PDFEmbeddedPage } from "./PDFEmbeddedPage.ts";
+import { PDFFont } from "./PDFFont.ts";
+import { PDFImage } from "./PDFImage.ts";
 import {
   BlendMode,
   PDFPageDrawCircleOptions,
@@ -42,7 +42,7 @@ import {
   PDFOperator,
   PDFPageLeaf,
   PDFRef,
-} from "../core/index.ts";
+} from "../core/mod.ts";
 import {
   assertEachIs,
   assertIs,
@@ -54,12 +54,12 @@ import {
   cleanText,
   lineSplit,
   rectanglesAreEqual,
-} from "../utils/index.ts";
+} from "../utils/mod.ts";
 
 /**
  * Represents a single page of a [[PDFDocument]].
  */
-export default class PDFPage {
+export class PDFPage {
   /**
    * > **NOTE:** You probably don't want to call this method directly. Instead,
    * > consider using the [[PDFDocument.addPage]] and [[PDFDocument.insertPage]]

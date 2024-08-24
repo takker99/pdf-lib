@@ -1,12 +1,12 @@
-import Embeddable from "./Embeddable.ts";
-import PDFDocument from "./PDFDocument.ts";
-import { PDFPageEmbedder, PDFRef } from "../core/index.ts";
-import { assertIs } from "../utils/index.ts";
+import { Embeddable } from "./Embeddable.ts";
+import { PDFDocument } from "./PDFDocument.ts";
+import { PDFPageEmbedder, PDFRef } from "../core/mod.ts";
+import { assertIs } from "../utils/mod.ts";
 
 /**
  * Represents a PDF page that has been embedded in a [[PDFDocument]].
  */
-export default class PDFEmbeddedPage implements Embeddable {
+export class PDFEmbeddedPage implements Embeddable {
   /**
    * > **NOTE:** You probably don't want to call this method directly. Instead,
    * > consider using the [[PDFDocument.embedPdf]] and

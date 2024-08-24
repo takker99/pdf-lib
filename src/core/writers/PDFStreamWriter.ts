@@ -1,18 +1,18 @@
-import PDFHeader from "../document/PDFHeader.ts";
-import PDFTrailer from "../document/PDFTrailer.ts";
-import PDFInvalidObject from "../objects/PDFInvalidObject.ts";
-import PDFName from "../objects/PDFName.ts";
-import PDFNumber from "../objects/PDFNumber.ts";
-import PDFObject from "../objects/PDFObject.ts";
-import PDFRef from "../objects/PDFRef.ts";
-import PDFStream from "../objects/PDFStream.ts";
-import PDFContext from "../PDFContext.ts";
-import PDFCrossRefStream from "../structures/PDFCrossRefStream.ts";
-import PDFObjectStream from "../structures/PDFObjectStream.ts";
-import PDFWriter from "./PDFWriter.ts";
-import { last, waitForTick } from "../../utils/index.ts";
+import { PDFHeader } from "../document/PDFHeader.ts";
+import { PDFTrailer } from "../document/PDFTrailer.ts";
+import { PDFInvalidObject } from "../objects/PDFInvalidObject.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFNumber } from "../objects/PDFNumber.ts";
+import { PDFObject } from "../objects/PDFObject.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
+import { PDFStream } from "../objects/PDFStream.ts";
+import { PDFContext } from "../PDFContext.ts";
+import { PDFCrossRefStream } from "../structures/PDFCrossRefStream.ts";
+import { PDFObjectStream } from "../structures/PDFObjectStream.ts";
+import { PDFWriter } from "./PDFWriter.ts";
+import { last, waitForTick } from "../../utils/mod.ts";
 
-class PDFStreamWriter extends PDFWriter {
+export class PDFStreamWriter extends PDFWriter {
   static forContext = (
     context: PDFContext,
     objectsPerTick: number,
@@ -118,5 +118,3 @@ class PDFStreamWriter extends PDFWriter {
     return { size, header, indirectObjects: uncompressedObjects, trailer };
   }
 }
-
-export default PDFStreamWriter;

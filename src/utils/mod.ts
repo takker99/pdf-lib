@@ -8,4 +8,3 @@ export * from "./base64.ts";
 export * from "./objects.ts";
 export * from "./validators.ts";
 export * from "./pdfDocEncoding.ts";
-export { default as Cache } from "./Cache.ts";

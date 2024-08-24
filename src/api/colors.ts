@@ -6,7 +6,7 @@ import {
   setStrokingGrayscaleColor,
   setStrokingRgbColor,
 } from "./operators.ts";
-import { assertRange, error } from "../utils/index.ts";
+import { assertRange, error } from "../utils/mod.ts";
 
 export enum ColorTypes {
   Grayscale = "Grayscale",

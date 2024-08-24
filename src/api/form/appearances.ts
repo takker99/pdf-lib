@@ -1,13 +1,13 @@
-import { PDFOperator, PDFWidgetAnnotation } from "../../core/index.ts";
-import PDFFont from "../PDFFont.ts";
-import PDFButton from "./PDFButton.ts";
-import PDFCheckBox from "./PDFCheckBox.ts";
-import PDFDropdown from "./PDFDropdown.ts";
-import PDFField from "./PDFField.ts";
-import PDFOptionList from "./PDFOptionList.ts";
-import PDFRadioGroup from "./PDFRadioGroup.ts";
-import PDFSignature from "./PDFSignature.ts";
-import PDFTextField from "./PDFTextField.ts";
+import { PDFOperator, PDFWidgetAnnotation } from "../../core/mod.ts";
+import { PDFFont } from "../PDFFont.ts";
+import { PDFButton } from "./PDFButton.ts";
+import { PDFCheckBox } from "./PDFCheckBox.ts";
+import { PDFDropdown } from "./PDFDropdown.ts";
+import { PDFField } from "./PDFField.ts";
+import { PDFOptionList } from "./PDFOptionList.ts";
+import { PDFRadioGroup } from "./PDFRadioGroup.ts";
+import { PDFSignature } from "./PDFSignature.ts";
+import { PDFTextField } from "./PDFTextField.ts";
 import {
   drawButton,
   drawCheckBox,
@@ -33,7 +33,7 @@ import {
 } from "../text/layout.ts";
 import { TextAlignment } from "../text/alignment.ts";
 import { setFontAndSize } from "../operators.ts";
-import { findLastMatch } from "../../utils/index.ts";
+import { findLastMatch } from "../../utils/strings.ts";
 
 /*********************** Appearance Provider Types ****************************/
 

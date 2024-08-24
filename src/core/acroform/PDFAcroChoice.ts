@@ -1,15 +1,15 @@
-import PDFAcroTerminal from "./PDFAcroTerminal.ts";
-import PDFHexString from "../objects/PDFHexString.ts";
-import PDFString from "../objects/PDFString.ts";
-import PDFArray from "../objects/PDFArray.ts";
-import PDFName from "../objects/PDFName.ts";
+import { PDFAcroTerminal } from "./PDFAcroTerminal.ts";
+import { PDFHexString } from "../objects/PDFHexString.ts";
+import { PDFString } from "../objects/PDFString.ts";
+import { PDFArray } from "../objects/PDFArray.ts";
+import { PDFName } from "../objects/PDFName.ts";
 import { AcroChoiceFlags } from "./flags.ts";
 import {
   InvalidAcroFieldValueError,
   MultiSelectValueError,
 } from "../errors.ts";
 
-class PDFAcroChoice extends PDFAcroTerminal {
+export class PDFAcroChoice extends PDFAcroTerminal {
   setValues(values: (PDFString | PDFHexString)[]) {
     if (
       this.hasFlag(AcroChoiceFlags.Combo) &&
@@ -149,5 +149,3 @@ class PDFAcroChoice extends PDFAcroTerminal {
     return [];
   }
 }
-
-export default PDFAcroChoice;

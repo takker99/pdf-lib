@@ -1,12 +1,12 @@
 import pako from "pako";
 
 import { MethodNotImplementedError } from "../errors.ts";
-import PDFDict from "../objects/PDFDict.ts";
-import PDFName from "../objects/PDFName.ts";
-import PDFStream from "../objects/PDFStream.ts";
-import { Cache } from "../../utils/index.ts";
+import { PDFDict } from "../objects/PDFDict.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFStream } from "../objects/PDFStream.ts";
+import { Cache } from "../../utils/Cache.ts";
 
-class PDFFlateStream extends PDFStream {
+export class PDFFlateStream extends PDFStream {
   protected readonly contentsCache: Cache<Uint8Array>;
   protected readonly encode: boolean;
 
@@ -39,5 +39,3 @@ class PDFFlateStream extends PDFStream {
     );
   }
 }
-
-export default PDFFlateStream;

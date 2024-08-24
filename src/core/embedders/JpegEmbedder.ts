@@ -1,5 +1,5 @@
-import PDFRef from "../objects/PDFRef.ts";
-import PDFContext from "../PDFContext.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
+import { PDFContext } from "../PDFContext.ts";
 
 // prettier-ignore
 const MARKERS = [
@@ -37,7 +37,7 @@ const ChannelToColorSpace: { [idx: number]: ColorSpace | undefined } = {
  * this class borrows from:
  *   https://github.com/foliojs/pdfkit/blob/a6af76467ce06bd6a2af4aa7271ccac9ff152a7d/lib/image/jpeg.js
  */
-class JpegEmbedder {
+export class JpegEmbedder {
   static for(imageData: Uint8Array) {
     const dataView = new DataView(imageData.buffer);
 
@@ -132,5 +132,3 @@ class JpegEmbedder {
     }
   }
 }
-
-export default JpegEmbedder;

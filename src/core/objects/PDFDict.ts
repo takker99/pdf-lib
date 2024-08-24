@@ -1,19 +1,19 @@
-import PDFArray from "./PDFArray.ts";
-import PDFBool from "./PDFBool.ts";
-import PDFHexString from "./PDFHexString.ts";
-import PDFName from "./PDFName.ts";
-import PDFNull from "./PDFNull.ts";
-import PDFNumber from "./PDFNumber.ts";
-import PDFObject from "./PDFObject.ts";
-import PDFRef from "./PDFRef.ts";
-import PDFStream from "./PDFStream.ts";
-import PDFString from "./PDFString.ts";
-import PDFContext from "../PDFContext.ts";
-import CharCodes from "../syntax/CharCodes.ts";
+import { PDFArray } from "./PDFArray.ts";
+import { PDFBool } from "./PDFBool.ts";
+import { PDFHexString } from "./PDFHexString.ts";
+import { PDFName } from "./PDFName.ts";
+import { PDFNull } from "./PDFNull.ts";
+import { PDFNumber } from "./PDFNumber.ts";
+import { PDFObject } from "./PDFObject.ts";
+import { PDFRef } from "./PDFRef.ts";
+import { PDFStream } from "./PDFStream.ts";
+import { PDFString } from "./PDFString.ts";
+import { PDFContext } from "../PDFContext.ts";
+import { CharCodes } from "../syntax/CharCodes.ts";
 
 export type DictMap = Map<PDFName, PDFObject>;
 
-class PDFDict extends PDFObject {
+export class PDFDict extends PDFObject {
   static withContext = (context: PDFContext) => new PDFDict(new Map(), context);
 
   static fromMapWithContext = (map: DictMap, context: PDFContext) =>
@@ -222,5 +222,3 @@ class PDFDict extends PDFObject {
     return offset - initialOffset;
   }
 }
-
-export default PDFDict;

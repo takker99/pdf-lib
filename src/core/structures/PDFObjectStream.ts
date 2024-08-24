@@ -1,15 +1,15 @@
-import PDFName from "../objects/PDFName.ts";
-import PDFNumber from "../objects/PDFNumber.ts";
-import PDFObject from "../objects/PDFObject.ts";
-import PDFRef from "../objects/PDFRef.ts";
-import PDFContext from "../PDFContext.ts";
-import PDFFlateStream from "./PDFFlateStream.ts";
-import CharCodes from "../syntax/CharCodes.ts";
-import { copyStringIntoBuffer, last } from "../../utils/index.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFNumber } from "../objects/PDFNumber.ts";
+import { PDFObject } from "../objects/PDFObject.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
+import { PDFContext } from "../PDFContext.ts";
+import { PDFFlateStream } from "./PDFFlateStream.ts";
+import { CharCodes } from "../syntax/CharCodes.ts";
+import { copyStringIntoBuffer, last } from "../../utils/mod.ts";
 
 export type IndirectObject = [PDFRef, PDFObject];
 
-class PDFObjectStream extends PDFFlateStream {
+export class PDFObjectStream extends PDFFlateStream {
   static withContextAndObjects = (
     context: PDFContext,
     objects: IndirectObject[],
@@ -97,5 +97,3 @@ class PDFObjectStream extends PDFFlateStream {
     return offsets;
   }
 }
-
-export default PDFObjectStream;

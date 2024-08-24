@@ -1,5 +1,5 @@
-import PDFDocument from "../PDFDocument.ts";
-import PDFFont from "../PDFFont.ts";
+import { PDFDocument } from "../PDFDocument.ts";
+import { PDFFont } from "../PDFFont.ts";
 import { AppearanceMapping } from "./appearances.ts";
 import { Color, colorToComponents, setFillingColor } from "../colors.ts";
 import {
@@ -21,14 +21,14 @@ import {
   PDFOperator,
   PDFRef,
   PDFWidgetAnnotation,
-} from "../../core/index.ts";
+} from "../../core/mod.ts";
 import {
   assertIs,
   assertMultiple,
   assertOrUndefined,
-} from "../../utils/index.ts";
-import { ImageAlignment } from "../image/index.ts";
-import PDFImage from "../PDFImage.ts";
+} from "../../utils/mod.ts";
+import { ImageAlignment } from "../image/alignment.ts";
+import { PDFImage } from "../PDFImage.ts";
 import { drawImage, rotateInPlace } from "../operations.ts";
 
 export interface FieldAppearanceOptions {
@@ -85,7 +85,7 @@ export const assertFieldAppearanceOptions = (
  * specification and dictates how PDF files store fields and where they are
  * to be rendered.
  */
-export default class PDFField {
+export class PDFField {
   /** The low-level PDFAcroTerminal wrapped by this field. */
   readonly acroField: PDFAcroTerminal;
 

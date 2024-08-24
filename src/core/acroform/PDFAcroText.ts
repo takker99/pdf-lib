@@ -1,13 +1,13 @@
-import PDFContext from "../PDFContext.ts";
-import PDFDict from "../objects/PDFDict.ts";
-import PDFNumber from "../objects/PDFNumber.ts";
-import PDFString from "../objects/PDFString.ts";
-import PDFHexString from "../objects/PDFHexString.ts";
-import PDFName from "../objects/PDFName.ts";
-import PDFRef from "../objects/PDFRef.ts";
-import PDFAcroTerminal from "./PDFAcroTerminal.ts";
+import { PDFContext } from "../PDFContext.ts";
+import { PDFDict } from "../objects/PDFDict.ts";
+import { PDFNumber } from "../objects/PDFNumber.ts";
+import { PDFString } from "../objects/PDFString.ts";
+import { PDFHexString } from "../objects/PDFHexString.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
+import { PDFAcroTerminal } from "./PDFAcroTerminal.ts";
 
-class PDFAcroText extends PDFAcroTerminal {
+export class PDFAcroText extends PDFAcroTerminal {
   static fromDict = (dict: PDFDict, ref: PDFRef) => new PDFAcroText(dict, ref);
 
   static create = (context: PDFContext) => {
@@ -72,5 +72,3 @@ class PDFAcroText extends PDFAcroTerminal {
     return undefined;
   }
 }
-
-export default PDFAcroText;

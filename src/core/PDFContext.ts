@@ -1,24 +1,24 @@
 import pako from "pako";
 
-import PDFHeader from "src/core/document/PDFHeader";
-import { UnexpectedObjectTypeError } from "src/core/errors";
-import PDFArray from "src/core/objects/PDFArray";
-import PDFBool from "src/core/objects/PDFBool";
-import PDFDict from "src/core/objects/PDFDict";
-import PDFHexString from "src/core/objects/PDFHexString";
-import PDFName from "src/core/objects/PDFName";
-import PDFNull from "src/core/objects/PDFNull";
-import PDFNumber from "src/core/objects/PDFNumber";
-import PDFObject from "src/core/objects/PDFObject";
-import PDFRawStream from "src/core/objects/PDFRawStream";
-import PDFRef from "src/core/objects/PDFRef";
-import PDFStream from "src/core/objects/PDFStream";
-import PDFString from "src/core/objects/PDFString";
-import PDFOperator from "src/core/operators/PDFOperator";
-import Ops from "src/core/operators/PDFOperatorNames";
-import PDFContentStream from "src/core/structures/PDFContentStream";
-import { typedArrayFor } from "src/utils";
-import { SimpleRNG } from "src/utils/rng";
+import { PDFHeader } from "./document/PDFHeader.ts";
+import { UnexpectedObjectTypeError } from "./errors.ts";
+import { PDFArray } from "./objects/PDFArray.ts";
+import { PDFBool } from "./objects/PDFBool.ts";
+import { PDFDict } from "./objects/PDFDict.ts";
+import { PDFHexString } from "./objects/PDFHexString.ts";
+import { PDFName } from "./objects/PDFName.ts";
+import { PDFNull } from "./objects/PDFNull.ts";
+import { PDFNumber } from "./objects/PDFNumber.ts";
+import { PDFObject } from "./objects/PDFObject.ts";
+import { PDFRawStream } from "./objects/PDFRawStream.ts";
+import { PDFRef } from "./objects/PDFRef.ts";
+import { PDFStream } from "./objects/PDFStream.ts";
+import { PDFString } from "./objects/PDFString.ts";
+import { PDFOperator } from "./operators/PDFOperator.ts";
+import { PDFOperatorNames as Ops } from "./operators/PDFOperatorNames.ts";
+import { PDFContentStream } from "./structures/PDFContentStream.ts";
+import { typedArrayFor } from "../utils/mod.ts";
+import { SimpleRNG } from "../utils/rng.ts";
 
 type LookupKey = PDFRef | PDFObject | undefined;
 
@@ -44,7 +44,7 @@ const byAscendingObjectNumber = (
   [b]: [PDFRef, PDFObject],
 ) => a.objectNumber - b.objectNumber;
 
-class PDFContext {
+export class PDFContext {
   static create = () => new PDFContext();
 
   largestObjectNumber: number;
@@ -295,5 +295,3 @@ class PDFContext {
     return `${prefix}-${Math.floor(this.rng.nextInt() * 10 ** suffixLength)}`;
   }
 }
-
-export default PDFContext;

@@ -1,4 +1,4 @@
-import CharCodes from "./CharCodes.ts";
+import { CharCodes } from "./CharCodes.ts";
 import { IsDelimiter } from "./Delimiters.ts";
 import { IsWhitespace } from "./Whitespace.ts";
 

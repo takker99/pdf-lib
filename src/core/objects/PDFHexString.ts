@@ -1,5 +1,5 @@
-import PDFObject from "./PDFObject.ts";
-import CharCodes from "../syntax/CharCodes.ts";
+import { PDFObject } from "./PDFObject.ts";
+import { CharCodes } from "../syntax/CharCodes.ts";
 import {
   copyStringIntoBuffer,
   hasUtf16BOM,
@@ -8,10 +8,10 @@ import {
   toHexStringOfMinLength,
   utf16Decode,
   utf16Encode,
-} from "../../utils/index.ts";
+} from "../../utils/mod.ts";
 import { InvalidPDFDateStringError } from "../errors.ts";
 
-class PDFHexString extends PDFObject {
+export class PDFHexString extends PDFObject {
   static of = (value: string) => new PDFHexString(value);
 
   static fromText = (value: string) => {
@@ -90,5 +90,3 @@ class PDFHexString extends PDFObject {
     return this.value.length + 2;
   }
 }
-
-export default PDFHexString;

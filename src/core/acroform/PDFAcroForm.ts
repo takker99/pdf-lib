@@ -1,13 +1,13 @@
-import PDFContext from "../PDFContext.ts";
-import PDFDict from "../objects/PDFDict.ts";
-import PDFArray from "../objects/PDFArray.ts";
-import PDFName from "../objects/PDFName.ts";
-import PDFRef from "../objects/PDFRef.ts";
-import PDFAcroField from "./PDFAcroField.ts";
-import PDFAcroNonTerminal from "./PDFAcroNonTerminal.ts";
+import { PDFContext } from "../PDFContext.ts";
+import { PDFDict } from "../objects/PDFDict.ts";
+import { PDFArray } from "../objects/PDFArray.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
+import { PDFAcroField } from "./PDFAcroField.ts";
+import { PDFAcroNonTerminal } from "./PDFAcroNonTerminal.ts";
 import { createPDFAcroField, createPDFAcroFields } from "./utils.ts";
 
-class PDFAcroForm {
+export class PDFAcroForm {
   readonly dict: PDFDict;
 
   static fromDict = (dict: PDFDict) => new PDFAcroForm(dict);
@@ -94,5 +94,3 @@ class PDFAcroForm {
     return { Fields: Fields2 };
   }
 }
-
-export default PDFAcroForm;

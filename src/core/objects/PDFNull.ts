@@ -1,7 +1,7 @@
-import PDFObject from "./PDFObject.ts";
-import CharCodes from "../syntax/CharCodes.ts";
+import { PDFObject } from "./PDFObject.ts";
+import { CharCodes } from "../syntax/CharCodes.ts";
 
-class PDFNull extends PDFObject {
+export class PDFNull extends PDFObject {
   asNull(): null {
     return null;
   }
@@ -26,5 +26,3 @@ class PDFNull extends PDFObject {
     return 4;
   }
 }
-
-export default new PDFNull();

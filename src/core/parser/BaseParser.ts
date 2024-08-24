@@ -1,14 +1,14 @@
 import { NumberParsingError } from "../errors.ts";
-import ByteStream from "./ByteStream.ts";
-import CharCodes from "../syntax/CharCodes.ts";
+import { ByteStream } from "./ByteStream.ts";
+import { CharCodes } from "../syntax/CharCodes.ts";
 import { IsDigit, IsNumeric } from "../syntax/Numeric.ts";
 import { IsWhitespace } from "../syntax/Whitespace.ts";
-import { charFromCode } from "../../utils/index.ts";
+import { charFromCode } from "../../utils/mod.ts";
 
 const { Newline, CarriageReturn } = CharCodes;
 
 // TODO: Throw error if eof is reached before finishing object parse...
-class BaseParser {
+export class BaseParser {
   protected readonly bytes: ByteStream;
   protected readonly capNumbers: boolean;
 
@@ -117,5 +117,3 @@ class BaseParser {
     return true;
   }
 }
-
-export default BaseParser;

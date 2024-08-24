@@ -1,14 +1,14 @@
-import PDFArray from "../objects/PDFArray.ts";
-import PDFDict, { DictMap } from "../objects/PDFDict.ts";
-import PDFName from "../objects/PDFName.ts";
-import PDFNumber from "../objects/PDFNumber.ts";
-import PDFObject from "../objects/PDFObject.ts";
-import PDFRef from "../objects/PDFRef.ts";
-import PDFStream from "../objects/PDFStream.ts";
-import PDFContext from "../PDFContext.ts";
-import PDFPageTree from "./PDFPageTree.ts";
+import { PDFArray } from "../objects/PDFArray.ts";
+import { DictMap, PDFDict } from "../objects/PDFDict.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFNumber } from "../objects/PDFNumber.ts";
+import { PDFObject } from "../objects/PDFObject.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
+import { PDFStream } from "../objects/PDFStream.ts";
+import { PDFContext } from "../PDFContext.ts";
+import { PDFPageTree } from "./PDFPageTree.ts";
 
-class PDFPageLeaf extends PDFDict {
+export class PDFPageLeaf extends PDFDict {
   static readonly InheritableEntries = [
     "Resources",
     "MediaBox",
@@ -259,5 +259,3 @@ class PDFPageLeaf extends PDFDict {
     };
   }
 }
-
-export default PDFPageLeaf;

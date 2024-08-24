@@ -1,12 +1,12 @@
-import PDFDict, { DictMap } from "../objects/PDFDict.ts";
-import PDFName from "../objects/PDFName.ts";
-import PDFRef from "../objects/PDFRef.ts";
-import PDFContext from "../PDFContext.ts";
-import PDFPageTree from "./PDFPageTree.ts";
-import { PDFAcroForm } from "../acroform/index.ts";
-import ViewerPreferences from "../interactive/ViewerPreferences.ts";
+import { DictMap, PDFDict } from "../objects/PDFDict.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
+import { PDFContext } from "../PDFContext.ts";
+import { PDFPageTree } from "./PDFPageTree.ts";
+import { PDFAcroForm } from "../acroform/mod.ts";
+import { ViewerPreferences } from "../interactive/ViewerPreferences.ts";
 
-class PDFCatalog extends PDFDict {
+export class PDFCatalog extends PDFDict {
   static withContextAndPages = (
     context: PDFContext,
     pages: PDFPageTree | PDFRef,
@@ -81,5 +81,3 @@ class PDFCatalog extends PDFDict {
     this.Pages().removeLeafNode(index);
   }
 }
-
-export default PDFCatalog;

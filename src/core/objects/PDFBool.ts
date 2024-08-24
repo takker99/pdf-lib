@@ -1,10 +1,10 @@
 import { PrivateConstructorError } from "../errors.ts";
-import PDFObject from "./PDFObject.ts";
-import CharCodes from "../syntax/CharCodes.ts";
+import { PDFObject } from "./PDFObject.ts";
+import { CharCodes } from "../syntax/CharCodes.ts";
 
 const ENFORCER = {};
 
-class PDFBool extends PDFObject {
+export class PDFBool extends PDFObject {
   static readonly True = new PDFBool(ENFORCER, true);
   static readonly False = new PDFBool(ENFORCER, false);
 
@@ -49,5 +49,3 @@ class PDFBool extends PDFObject {
     }
   }
 }
-
-export default PDFBool;

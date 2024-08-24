@@ -1,13 +1,13 @@
 import { PrivateConstructorError } from "../errors.ts";
-import PDFObject from "./PDFObject.ts";
-import CharCodes from "../syntax/CharCodes.ts";
+import { PDFObject } from "./PDFObject.ts";
+import { CharCodes } from "../syntax/CharCodes.ts";
 import { IsIrregular } from "../syntax/Irregular.ts";
 import {
   charFromHexCode,
   copyStringIntoBuffer,
   toCharCode,
   toHexString,
-} from "../../utils/index.ts";
+} from "../../utils/mod.ts";
 
 const decodeName = (name: string) =>
   name.replace(/#([\dABCDEF]{2})/g, (_, hex) => charFromHexCode(hex));
@@ -20,7 +20,7 @@ const isRegularChar = (charCode: number) =>
 const ENFORCER = {};
 const pool = new Map<string, PDFName>();
 
-class PDFName extends PDFObject {
+export class PDFName extends PDFObject {
   static of = (name: string): PDFName => {
     const decodedValue = decodeName(name);
 
@@ -155,5 +155,3 @@ class PDFName extends PDFObject {
     return this.encodedName.length;
   }
 }
-
-export default PDFName;

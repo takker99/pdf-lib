@@ -1,7 +1,7 @@
-import CharCodes from "../syntax/CharCodes.ts";
-import { copyStringIntoBuffer } from "../../utils/index.ts";
+import { CharCodes } from "../syntax/CharCodes.ts";
+import { copyStringIntoBuffer } from "../../utils/mod.ts";
 
-class PDFTrailer {
+export class PDFTrailer {
   static forLastCrossRefSectionOffset = (offset: number) =>
     new PDFTrailer(offset);
 
@@ -45,5 +45,3 @@ class PDFTrailer {
     return offset - initialOffset;
   }
 }
-
-export default PDFTrailer;

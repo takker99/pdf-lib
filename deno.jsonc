@@ -1,7 +1,4 @@
 {
-  "unstable": [
-    "sloppy-imports"
-  ],
   "tasks": {
     "release:latest": "yarn publish --tag latest && yarn pack && yarn release:tag",
     "release:next": "yarn publish --tag next",
@@ -35,7 +32,8 @@
     "apps:rn:ios": "cd apps/rn && yarn add ./../.. --force && react-native run-ios",
     "apps:rn:android": "yarn apps:rn:emulator & cd apps/rn && yarn add ./../.. --force && react-native run-android",
     "apps:rn:emulator": "emulator -avd \"$(emulator -list-avds | head -n 1)\" & bash -c 'sleep 5 && adb reverse tcp:8080 tcp:8080 && adb reverse tcp:8081 tcp:8081'",
-    "fix": "deno fmt && deno lint --fix"
+    "fix": "deno fmt && deno lint --fix",
+    "check:type": "deno check mod.ts src/**/*.ts"
   },
   "imports": {
     "@pdf-lib/standard-fonts": "npm:@pdf-lib/standard-fonts@^1.0.0",

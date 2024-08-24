@@ -1,8 +1,9 @@
-import PDFDocument from "../PDFDocument.ts";
-import PDFPage from "../PDFPage.ts";
-import PDFField, {
+import { PDFDocument } from "../PDFDocument.ts";
+import { PDFPage } from "../PDFPage.ts";
+import {
   assertFieldAppearanceOptions,
   FieldAppearanceOptions,
+  PDFField,
 } from "./PDFField.ts";
 import {
   AppearanceProviderFor,
@@ -20,12 +21,8 @@ import {
   PDFName,
   PDFRef,
   PDFWidgetAnnotation,
-} from "../../core/index.ts";
-import {
-  assertIs,
-  assertIsOneOf,
-  assertOrUndefined,
-} from "../../utils/index.ts";
+} from "../../core/mod.ts";
+import { assertIs, assertIsOneOf, assertOrUndefined } from "../../utils/mod.ts";
 
 /**
  * Represents a radio group field of a [[PDFForm]].
@@ -44,7 +41,7 @@ import {
  * state at the same type **if** they represent the same underlying value (see
  * [[PDFRadioGroup.isMutuallyExclusive]]).
  */
-export default class PDFRadioGroup extends PDFField {
+export class PDFRadioGroup extends PDFField {
   /**
    * > **NOTE:** You probably don't want to call this method directly. Instead,
    * > consider using the [[PDFForm.getOptionList]] method, which will create an

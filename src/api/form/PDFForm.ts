@@ -1,20 +1,20 @@
-import PDFDocument from "../PDFDocument.ts";
-import PDFPage from "../PDFPage.ts";
-import PDFField from "./PDFField.ts";
-import PDFButton from "./PDFButton.ts";
-import PDFCheckBox from "./PDFCheckBox.ts";
-import PDFDropdown from "./PDFDropdown.ts";
-import PDFOptionList from "./PDFOptionList.ts";
-import PDFRadioGroup from "./PDFRadioGroup.ts";
-import PDFSignature from "./PDFSignature.ts";
-import PDFTextField from "./PDFTextField.ts";
+import { PDFDocument } from "../PDFDocument.ts";
+import { PDFPage } from "../PDFPage.ts";
+import { PDFField } from "./PDFField.ts";
+import { PDFButton } from "./PDFButton.ts";
+import { PDFCheckBox } from "./PDFCheckBox.ts";
+import { PDFDropdown } from "./PDFDropdown.ts";
+import { PDFOptionList } from "./PDFOptionList.ts";
+import { PDFRadioGroup } from "./PDFRadioGroup.ts";
+import { PDFSignature } from "./PDFSignature.ts";
+import { PDFTextField } from "./PDFTextField.ts";
 import {
   FieldAlreadyExistsError,
   InvalidFieldNamePartError,
   NoSuchFieldError,
   UnexpectedFieldTypeError,
 } from "../errors.ts";
-import PDFFont from "../PDFFont.ts";
+import { PDFFont } from "../PDFFont.ts";
 import { StandardFonts } from "../StandardFonts.ts";
 import { rotateInPlace } from "../operations.ts";
 import {
@@ -40,8 +40,9 @@ import {
   PDFOperator,
   PDFRef,
   PDFWidgetAnnotation,
-} from "../../core/index.ts";
-import { assertIs, assertOrUndefined, Cache } from "../../utils/index.ts";
+} from "../../core/mod.ts";
+import { assertIs, assertOrUndefined } from "../../utils/mod.ts";
+import { Cache } from "../../utils/Cache.ts";
 
 export interface FlattenOptions {
   updateFieldAppearances: boolean;
@@ -58,7 +59,7 @@ export interface FlattenOptions {
  *
  * The fields of an interactive form are represented by [[PDFField]] instances.
  */
-export default class PDFForm {
+export class PDFForm {
   /**
    * > **NOTE:** You probably don't want to call this method directly. Instead,
    * > consider using the [[PDFDocument.getForm]] method, which will create an

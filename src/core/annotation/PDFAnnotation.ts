@@ -1,11 +1,11 @@
-import PDFDict from "../objects/PDFDict.ts";
-import PDFName from "../objects/PDFName.ts";
-import PDFStream from "../objects/PDFStream.ts";
-import PDFArray from "../objects/PDFArray.ts";
-import PDFRef from "../objects/PDFRef.ts";
-import PDFNumber from "../objects/PDFNumber.ts";
+import { PDFDict } from "../objects/PDFDict.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFStream } from "../objects/PDFStream.ts";
+import { PDFArray } from "../objects/PDFArray.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
+import { PDFNumber } from "../objects/PDFNumber.ts";
 
-class PDFAnnotation {
+export class PDFAnnotation {
   readonly dict: PDFDict;
 
   static fromDict = (dict: PDFDict): PDFAnnotation => new PDFAnnotation(dict);
@@ -143,5 +143,3 @@ class PDFAnnotation {
     else this.clearFlag(flag);
   }
 }
-
-export default PDFAnnotation;

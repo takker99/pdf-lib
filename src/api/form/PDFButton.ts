@@ -1,16 +1,17 @@
-import PDFDocument from "../PDFDocument.ts";
-import PDFPage from "../PDFPage.ts";
-import PDFFont from "../PDFFont.ts";
-import PDFImage from "../PDFImage.ts";
+import { PDFDocument } from "../PDFDocument.ts";
+import { PDFPage } from "../PDFPage.ts";
+import { PDFFont } from "../PDFFont.ts";
+import { PDFImage } from "../PDFImage.ts";
 import { ImageAlignment } from "../image/alignment.ts";
 import {
   AppearanceProviderFor,
   defaultButtonAppearanceProvider,
   normalizeAppearance,
 } from "./appearances.ts";
-import PDFField, {
+import {
   assertFieldAppearanceOptions,
   FieldAppearanceOptions,
+  PDFField,
 } from "./PDFField.ts";
 import { rgb } from "../colors.ts";
 import { degrees } from "../rotations.ts";
@@ -20,12 +21,12 @@ import {
   PDFRef,
   PDFStream,
   PDFWidgetAnnotation,
-} from "../../core/index.ts";
+} from "../../core/mod.ts";
 import {
   assertIs,
   assertOrUndefined,
   assertPositive,
-} from "../../utils/index.ts";
+} from "../../utils/mod.ts";
 
 /**
  * Represents a button field of a [[PDFForm]].
@@ -36,7 +37,7 @@ import {
  * modal or resetting the form. Buttons are typically rectangular in shape and
  * have a text label describing the action that they perform when clicked.
  */
-export default class PDFButton extends PDFField {
+export class PDFButton extends PDFField {
   /**
    * > **NOTE:** You probably don't want to call this method directly. Instead,
    * > consider using the [[PDFForm.getButton]] method, which will create an

@@ -1,5 +1,5 @@
-import PDFDocument from "../PDFDocument.ts";
-import PDFPage from "../PDFPage.ts";
+import { PDFDocument } from "../PDFDocument.ts";
+import { PDFPage } from "../PDFPage.ts";
 import {
   AppearanceProviderFor,
   defaultCheckBoxAppearanceProvider,
@@ -7,9 +7,10 @@ import {
 } from "./appearances.ts";
 import { rgb } from "../colors.ts";
 import { degrees } from "../rotations.ts";
-import PDFField, {
+import {
   assertFieldAppearanceOptions,
   FieldAppearanceOptions,
+  PDFField,
 } from "./PDFField.ts";
 
 import {
@@ -18,8 +19,8 @@ import {
   PDFName,
   PDFRef,
   PDFWidgetAnnotation,
-} from "../../core/index.ts";
-import { assertIs, assertOrUndefined } from "../../utils/index.ts";
+} from "../../core/mod.ts";
+import { assertIs, assertOrUndefined } from "../../utils/mod.ts";
 
 /**
  * Represents a check box field of a [[PDFForm]].
@@ -30,7 +31,7 @@ import { assertIs, assertOrUndefined } from "../../utils/index.ts";
  * each option is represented by a single check box. Check boxes are typically
  * square in shape and display a check mark when they are in the `on` state.
  */
-export default class PDFCheckBox extends PDFField {
+export class PDFCheckBox extends PDFField {
   /**
    * > **NOTE:** You probably don't want to call this method directly. Instead,
    * > consider using the [[PDFForm.getCheckBox]] method, which will create an

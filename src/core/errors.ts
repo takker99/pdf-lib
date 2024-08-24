@@ -1,6 +1,6 @@
 // tslint:disable: max-classes-per-file
-import PDFObject from "src/core/objects/PDFObject";
-import { arrayAsString } from "src/utils";
+import { PDFObject } from "./objects/PDFObject.ts";
+import { arrayAsString } from "../utils/mod.ts";
 
 export class MethodNotImplementedError extends Error {
   constructor(className: string, methodName: string) {

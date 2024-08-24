@@ -1,6 +1,6 @@
-import PDFRef from "../objects/PDFRef.ts";
-import CharCodes from "../syntax/CharCodes.ts";
-import { copyStringIntoBuffer, padStart } from "../../utils/index.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
+import { CharCodes } from "../syntax/CharCodes.ts";
+import { copyStringIntoBuffer, padStart } from "../../utils/mod.ts";
 
 export interface Entry {
   ref: PDFRef;
@@ -12,7 +12,7 @@ export interface Entry {
  * Entries should be added using the [[addEntry]] and [[addDeletedEntry]]
  * methods **in order of ascending object number**.
  */
-class PDFCrossRefSection {
+export class PDFCrossRefSection {
   static create = () =>
     new PDFCrossRefSection({
       ref: PDFRef.of(0, 65535),
@@ -169,5 +169,3 @@ class PDFCrossRefSection {
     }
   }
 }
-
-export default PDFCrossRefSection;

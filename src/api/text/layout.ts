@@ -1,15 +1,15 @@
-import PDFFont from "../PDFFont.ts";
+import { PDFFont } from "../PDFFont.ts";
 import { CombedTextLayoutError } from "../errors.ts";
 import { TextAlignment } from "./alignment.ts";
 
-import { PDFHexString } from "../../core/index.ts";
+import { PDFHexString } from "../../core/mod.ts";
 import {
   charAtIndex,
   charSplit,
   cleanText,
   lineSplit,
   mergeLines,
-} from "../../utils/index.ts";
+} from "../../utils/mod.ts";
 
 export interface TextPosition {
   text: string;

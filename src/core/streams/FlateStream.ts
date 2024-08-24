@@ -15,7 +15,7 @@
  */
 
 /* tslint:disable  no-conditional-assignment */
-import DecodeStream from "./DecodeStream.ts";
+import { DecodeStream } from "./DecodeStream.ts";
 import { StreamType } from "./Stream.ts";
 
 // prettier-ignore
@@ -668,7 +668,7 @@ const fixedDistCodeTab = [
   5,
 ] as [Int32Array, number];
 
-class FlateStream extends DecodeStream {
+export class FlateStream extends DecodeStream {
   private stream: StreamType;
   private codeSize: number;
   private codeBuf: number;
@@ -956,5 +956,3 @@ class FlateStream extends DecodeStream {
     return [codes, maxLen];
   }
 }
-
-export default FlateStream;

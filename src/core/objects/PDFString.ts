@@ -1,5 +1,5 @@
-import PDFObject from "./PDFObject.ts";
-import CharCodes from "../syntax/CharCodes.ts";
+import { PDFObject } from "./PDFObject.ts";
+import { CharCodes } from "../syntax/CharCodes.ts";
 import {
   copyStringIntoBuffer,
   hasUtf16BOM,
@@ -8,10 +8,10 @@ import {
   pdfDocEncodingDecode,
   toCharCode,
   utf16Decode,
-} from "../../utils/index.ts";
+} from "../../utils/mod.ts";
 import { InvalidPDFDateStringError } from "../errors.ts";
 
-class PDFString extends PDFObject {
+export class PDFString extends PDFObject {
   // The PDF spec allows newlines and parens to appear directly within a literal
   // string. These character _may_ be escaped. But they do not _have_ to be. So
   // for simplicity, we will not bother escaping them.
@@ -114,5 +114,3 @@ class PDFString extends PDFObject {
     return this.value.length + 2;
   }
 }
-
-export default PDFString;

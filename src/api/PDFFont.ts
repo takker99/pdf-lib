@@ -1,19 +1,19 @@
-import Embeddable from "./Embeddable.ts";
-import PDFDocument from "./PDFDocument.ts";
+import { Embeddable } from "./Embeddable.ts";
+import { PDFDocument } from "./PDFDocument.ts";
 import {
   CustomFontEmbedder,
   PDFHexString,
   PDFRef,
   StandardFontEmbedder,
-} from "../core/index.ts";
-import { assertIs, assertOrUndefined } from "../utils/index.ts";
+} from "../core/mod.ts";
+import { assertIs, assertOrUndefined } from "../utils/mod.ts";
 
 export type FontEmbedder = CustomFontEmbedder | StandardFontEmbedder;
 
 /**
  * Represents a font that has been embedded in a [[PDFDocument]].
  */
-export default class PDFFont implements Embeddable {
+export class PDFFont implements Embeddable {
   /**
    * > **NOTE:** You probably don't want to call this method directly. Instead,
    * > consider using the [[PDFDocument.embedFont]] and

@@ -1,18 +1,18 @@
-import Embeddable from "./Embeddable.ts";
-import PDFDocument from "./PDFDocument.ts";
-import FileEmbedder from "../core/embedders/FileEmbedder.ts";
+import { Embeddable } from "./Embeddable.ts";
+import { PDFDocument } from "./PDFDocument.ts";
+import { FileEmbedder } from "../core/embedders/FileEmbedder.ts";
 import {
   PDFArray,
   PDFDict,
   PDFHexString,
   PDFName,
   PDFRef,
-} from "../core/index.ts";
+} from "../core/mod.ts";
 
 /**
  * Represents a file that has been embedded in a [[PDFDocument]].
  */
-export default class PDFEmbeddedFile implements Embeddable {
+export class PDFEmbeddedFile implements Embeddable {
   /**
    * > **NOTE:** You probably don't want to call this method directly. Instead,
    * > consider using the [[PDFDocument.attach]] method, which will create

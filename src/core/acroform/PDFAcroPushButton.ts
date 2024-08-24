@@ -1,10 +1,10 @@
-import PDFDict from "../objects/PDFDict.ts";
-import PDFAcroButton from "./PDFAcroButton.ts";
-import PDFContext from "../PDFContext.ts";
-import PDFRef from "../objects/PDFRef.ts";
+import { PDFDict } from "../objects/PDFDict.ts";
+import { PDFAcroButton } from "./PDFAcroButton.ts";
+import { PDFContext } from "../PDFContext.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
 import { AcroButtonFlags } from "./flags.ts";
 
-class PDFAcroPushButton extends PDFAcroButton {
+export class PDFAcroPushButton extends PDFAcroButton {
   static fromDict = (dict: PDFDict, ref: PDFRef) =>
     new PDFAcroPushButton(dict, ref);
 
@@ -18,5 +18,3 @@ class PDFAcroPushButton extends PDFAcroButton {
     return new PDFAcroPushButton(dict, ref);
   };
 }
-
-export default PDFAcroPushButton;

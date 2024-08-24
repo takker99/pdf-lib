@@ -1,18 +1,18 @@
-import Embeddable from "./Embeddable.ts";
-import PDFDocument from "./PDFDocument.ts";
-import JavaScriptEmbedder from "../core/embedders/JavaScriptEmbedder.ts";
+import { Embeddable } from "./Embeddable.ts";
+import { PDFDocument } from "./PDFDocument.ts";
+import { JavaScriptEmbedder } from "../core/embedders/JavaScriptEmbedder.ts";
 import {
   PDFArray,
   PDFDict,
   PDFHexString,
   PDFName,
   PDFRef,
-} from "../core/index.ts";
+} from "../core/mod.ts";
 
 /**
  * Represents JavaScript that has been embedded in a [[PDFDocument]].
  */
-export default class PDFJavaScript implements Embeddable {
+export class PDFJavaScript implements Embeddable {
   /**
    * > **NOTE:** You probably don't want to call this method directly. Instead,
    * > consider using the [[PDFDocument.addJavaScript]] method, which will

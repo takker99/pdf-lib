@@ -2,18 +2,18 @@ import {
   MissingPageContentsEmbeddingError,
   UnrecognizedStreamTypeError,
 } from "../errors.ts";
-import PDFArray from "../objects/PDFArray.ts";
-import PDFNumber from "../objects/PDFNumber.ts";
-import PDFRawStream from "../objects/PDFRawStream.ts";
-import PDFRef from "../objects/PDFRef.ts";
-import PDFStream from "../objects/PDFStream.ts";
-import PDFContext from "../PDFContext.ts";
+import { PDFArray } from "../objects/PDFArray.ts";
+import { PDFNumber } from "../objects/PDFNumber.ts";
+import { PDFRawStream } from "../objects/PDFRawStream.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
+import { PDFStream } from "../objects/PDFStream.ts";
+import { PDFContext } from "../PDFContext.ts";
 import { decodePDFRawStream } from "../streams/decode.ts";
-import PDFContentStream from "../structures/PDFContentStream.ts";
-import PDFPageLeaf from "../structures/PDFPageLeaf.ts";
-import CharCodes from "../syntax/CharCodes.ts";
+import { PDFContentStream } from "../structures/PDFContentStream.ts";
+import { PDFPageLeaf } from "../structures/PDFPageLeaf.ts";
+import { CharCodes } from "../syntax/CharCodes.ts";
 import { TransformationMatrix } from "../../types/matrix.ts";
-import { mergeIntoTypedArray } from "../../utils/index.ts";
+import { mergeIntoTypedArray } from "../../utils/mod.ts";
 
 /**
  * Represents a page bounding box.
@@ -55,7 +55,7 @@ const boundingBoxAdjustedMatrix = (
   bb: PageBoundingBox,
 ): TransformationMatrix => [1, 0, 0, 1, -bb.left, -bb.bottom];
 
-class PDFPageEmbedder {
+export class PDFPageEmbedder {
   static for(
     page: PDFPageLeaf,
     boundingBox?: PageBoundingBox,
@@ -135,5 +135,3 @@ class PDFPageEmbedder {
     return mergeIntoTypedArray(...decodedContents);
   }
 }
-
-export default PDFPageEmbedder;

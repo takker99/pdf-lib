@@ -1,8 +1,8 @@
-import PDFDocument from "../PDFDocument.ts";
-import PDFField from "./PDFField.ts";
+import { PDFDocument } from "../PDFDocument.ts";
+import { PDFField } from "./PDFField.ts";
 
-import { PDFAcroSignature, PDFRef } from "../../core/index.ts";
-import { assertIs } from "../../utils/index.ts";
+import { PDFAcroSignature, PDFRef } from "../../core/mod.ts";
+import { assertIs } from "../../utils/mod.ts";
 
 /**
  * Represents a signature field of a [[PDFForm]].
@@ -11,7 +11,7 @@ import { assertIs } from "../../utils/index.ts";
  * currently provide any specialized APIs for creating digital signatures or
  * reading the contents of existing digital signatures.
  */
-export default class PDFSignature extends PDFField {
+export class PDFSignature extends PDFField {
   /**
    * > **NOTE:** You probably don't want to call this method directly. Instead,
    * > consider using the [[PDFForm.getSignature]] method, which will create an

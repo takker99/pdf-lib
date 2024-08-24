@@ -1,15 +1,15 @@
-import Embeddable from "./Embeddable.ts";
+import { Embeddable } from "./Embeddable.ts";
 import {
   EncryptedPDFError,
   FontkitNotRegisteredError,
   ForeignPageError,
   RemovePageFromEmptyDocumentError,
 } from "./errors.ts";
-import PDFEmbeddedPage from "./PDFEmbeddedPage.ts";
-import PDFFont from "./PDFFont.ts";
-import PDFImage from "./PDFImage.ts";
-import PDFPage from "./PDFPage.ts";
-import PDFForm from "./form/PDFForm.ts";
+import { PDFEmbeddedPage } from "./PDFEmbeddedPage.ts";
+import { PDFFont } from "./PDFFont.ts";
+import { PDFImage } from "./PDFImage.ts";
+import { PDFPage } from "./PDFPage.ts";
+import { PDFForm } from "./form/PDFForm.ts";
 import { PageSizes } from "./sizes.ts";
 import { StandardFonts } from "./StandardFonts.ts";
 import {
@@ -34,7 +34,7 @@ import {
   PngEmbedder,
   StandardFontEmbedder,
   UnexpectedObjectTypeError,
-} from "../core/index.ts";
+} from "../core/mod.ts";
 import {
   AttachmentOptions,
   Base64SaveOptions,
@@ -45,8 +45,8 @@ import {
   SaveOptions,
   SetTitleOptions,
 } from "./PDFDocumentOptions.ts";
-import PDFObject from "../core/objects/PDFObject.ts";
-import PDFRef from "../core/objects/PDFRef.ts";
+import { PDFObject } from "../core/objects/PDFObject.ts";
+import { PDFRef } from "../core/objects/PDFRef.ts";
 import { Fontkit } from "../types/fontkit.ts";
 import { TransformationMatrix } from "../types/matrix.ts";
 import {
@@ -54,25 +54,26 @@ import {
   assertIsOneOfOrUndefined,
   assertOrUndefined,
   assertRange,
-  Cache,
   canBeConvertedToUint8Array,
   encodeToBase64,
   isStandardFont,
   pluckIndices,
   range,
   toUint8Array,
-} from "../utils/index.ts";
-import FileEmbedder, {
+} from "../utils/mod.ts";
+import { Cache } from "../utils/Cache.ts";
+import {
   AFRelationship,
+  FileEmbedder,
 } from "../core/embedders/FileEmbedder.ts";
-import PDFEmbeddedFile from "./PDFEmbeddedFile.ts";
-import PDFJavaScript from "./PDFJavaScript.ts";
-import JavaScriptEmbedder from "../core/embedders/JavaScriptEmbedder.ts";
+import { PDFEmbeddedFile } from "./PDFEmbeddedFile.ts";
+import { PDFJavaScript } from "./PDFJavaScript.ts";
+import { JavaScriptEmbedder } from "../core/embedders/JavaScriptEmbedder.ts";
 
 /**
  * Represents a PDF document.
  */
-export default class PDFDocument {
+export class PDFDocument {
   /**
    * Load an existing [[PDFDocument]]. The input data can be provided in
    * multiple formats:

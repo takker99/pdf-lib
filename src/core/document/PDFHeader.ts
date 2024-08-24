@@ -1,7 +1,7 @@
-import CharCodes from "../syntax/CharCodes.ts";
-import { charFromCode, copyStringIntoBuffer } from "../../utils/index.ts";
+import { CharCodes } from "../syntax/CharCodes.ts";
+import { charFromCode, copyStringIntoBuffer } from "../../utils/mod.ts";
 
-class PDFHeader {
+export class PDFHeader {
   static forVersion = (major: number, minor: number) =>
     new PDFHeader(major, minor);
 
@@ -45,5 +45,3 @@ class PDFHeader {
     return offset - initialOffset;
   }
 }
-
-export default PDFHeader;

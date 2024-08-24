@@ -1,11 +1,11 @@
-import PDFDict from "../objects/PDFDict.ts";
-import PDFName from "../objects/PDFName.ts";
-import PDFNumber from "../objects/PDFNumber.ts";
-import PDFArray from "../objects/PDFArray.ts";
-import PDFHexString from "../objects/PDFHexString.ts";
-import PDFString from "../objects/PDFString.ts";
+import { PDFDict } from "../objects/PDFDict.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFNumber } from "../objects/PDFNumber.ts";
+import { PDFArray } from "../objects/PDFArray.ts";
+import { PDFHexString } from "../objects/PDFHexString.ts";
+import { PDFString } from "../objects/PDFString.ts";
 
-class AppearanceCharacteristics {
+export class AppearanceCharacteristics {
   readonly dict: PDFDict;
 
   static fromDict = (dict: PDFDict): AppearanceCharacteristics =>
@@ -129,5 +129,3 @@ class AppearanceCharacteristics {
     }
   }
 }
-
-export default AppearanceCharacteristics;

@@ -4,33 +4,33 @@ import {
   Position,
   UnbalancedParenthesisError,
 } from "../errors.ts";
-import PDFArray from "../objects/PDFArray.ts";
-import PDFBool from "../objects/PDFBool.ts";
-import PDFDict, { DictMap } from "../objects/PDFDict.ts";
-import PDFHexString from "../objects/PDFHexString.ts";
-import PDFName from "../objects/PDFName.ts";
-import PDFNull from "../objects/PDFNull.ts";
-import PDFNumber from "../objects/PDFNumber.ts";
-import PDFObject from "../objects/PDFObject.ts";
-import PDFRawStream from "../objects/PDFRawStream.ts";
-import PDFRef from "../objects/PDFRef.ts";
-import PDFStream from "../objects/PDFStream.ts";
-import PDFString from "../objects/PDFString.ts";
-import BaseParser from "./BaseParser.ts";
-import ByteStream from "./ByteStream.ts";
-import PDFContext from "../PDFContext.ts";
-import PDFCatalog from "../structures/PDFCatalog.ts";
-import PDFPageLeaf from "../structures/PDFPageLeaf.ts";
-import PDFPageTree from "../structures/PDFPageTree.ts";
-import CharCodes from "../syntax/CharCodes.ts";
+import { PDFArray } from "../objects/PDFArray.ts";
+import { PDFBool } from "../objects/PDFBool.ts";
+import { DictMap, PDFDict } from "../objects/PDFDict.ts";
+import { PDFHexString } from "../objects/PDFHexString.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFNull } from "../objects/PDFNull.ts";
+import { PDFNumber } from "../objects/PDFNumber.ts";
+import { PDFObject } from "../objects/PDFObject.ts";
+import { PDFRawStream } from "../objects/PDFRawStream.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
+import { PDFStream } from "../objects/PDFStream.ts";
+import { PDFString } from "../objects/PDFString.ts";
+import { BaseParser } from "./BaseParser.ts";
+import { ByteStream } from "./ByteStream.ts";
+import { PDFContext } from "../PDFContext.ts";
+import { PDFCatalog } from "../structures/PDFCatalog.ts";
+import { PDFPageLeaf } from "../structures/PDFPageLeaf.ts";
+import { PDFPageTree } from "../structures/PDFPageTree.ts";
+import { CharCodes } from "../syntax/CharCodes.ts";
 import { IsDelimiter } from "../syntax/Delimiters.ts";
 import { Keywords } from "../syntax/Keywords.ts";
 import { IsDigit, IsNumeric } from "../syntax/Numeric.ts";
 import { IsWhitespace } from "../syntax/Whitespace.ts";
-import { charFromCode } from "../../utils/index.ts";
+import { charFromCode } from "../../utils/mod.ts";
 
 // TODO: Throw error if eof is reached before finishing object parse...
-class PDFObjectParser extends BaseParser {
+export class PDFObjectParser extends BaseParser {
   static forBytes = (
     bytes: Uint8Array,
     context: PDFContext,
@@ -270,5 +270,3 @@ class PDFObjectParser extends BaseParser {
     return end;
   }
 }
-
-export default PDFObjectParser;

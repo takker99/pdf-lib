@@ -1,6 +1,6 @@
-import PDFCrossRefSection from "../document/PDFCrossRefSection.ts";
-import PDFHeader from "../document/PDFHeader.ts";
-import PDFTrailer from "../document/PDFTrailer.ts";
+import { PDFCrossRefSection } from "../document/PDFCrossRefSection.ts";
+import { PDFHeader } from "../document/PDFHeader.ts";
+import { PDFTrailer } from "../document/PDFTrailer.ts";
 import {
   MissingKeywordError,
   MissingPDFHeaderError,
@@ -8,23 +8,23 @@ import {
   ReparseError,
   StalledParserError,
 } from "../errors.ts";
-import PDFDict from "../objects/PDFDict.ts";
-import PDFInvalidObject from "../objects/PDFInvalidObject.ts";
-import PDFName from "../objects/PDFName.ts";
-import PDFObject from "../objects/PDFObject.ts";
-import PDFRawStream from "../objects/PDFRawStream.ts";
-import PDFRef from "../objects/PDFRef.ts";
-import ByteStream from "./ByteStream.ts";
-import PDFObjectParser from "./PDFObjectParser.ts";
-import PDFObjectStreamParser from "./PDFObjectStreamParser.ts";
-import PDFXRefStreamParser from "./PDFXRefStreamParser.ts";
-import PDFContext from "../PDFContext.ts";
-import CharCodes from "../syntax/CharCodes.ts";
+import { PDFDict } from "../objects/PDFDict.ts";
+import { PDFInvalidObject } from "../objects/PDFInvalidObject.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFObject } from "../objects/PDFObject.ts";
+import { PDFRawStream } from "../objects/PDFRawStream.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
+import { ByteStream } from "./ByteStream.ts";
+import { PDFObjectParser } from "./PDFObjectParser.ts";
+import { PDFObjectStreamParser } from "./PDFObjectStreamParser.ts";
+import { PDFXRefStreamParser } from "./PDFXRefStreamParser.ts";
+import { PDFContext } from "../PDFContext.ts";
+import { CharCodes } from "../syntax/CharCodes.ts";
 import { Keywords } from "../syntax/Keywords.ts";
 import { IsDigit } from "../syntax/Numeric.ts";
-import { waitForTick } from "../../utils/index.ts";
+import { waitForTick } from "../../utils/mod.ts";
 
-class PDFParser extends PDFObjectParser {
+export class PDFParser extends PDFObjectParser {
   static forBytesWithOptions = (
     pdfBytes: Uint8Array,
     objectsPerTick?: number,
@@ -360,5 +360,3 @@ class PDFParser extends PDFObjectParser {
     }
   }
 }
-
-export default PDFParser;

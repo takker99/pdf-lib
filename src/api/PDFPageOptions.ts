@@ -1,5 +1,5 @@
 import { Color } from "./colors.ts";
-import PDFFont from "./PDFFont.ts";
+import { PDFFont } from "./PDFFont.ts";
 import { Rotation } from "./rotations.ts";
 import { LineCapStyle } from "./operators.ts";
 

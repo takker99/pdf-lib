@@ -1,10 +1,10 @@
-import PDFDict from "../objects/PDFDict.ts";
-import PDFRef from "../objects/PDFRef.ts";
-import PDFName from "../objects/PDFName.ts";
-import PDFContext from "../PDFContext.ts";
-import PDFAcroField from "./PDFAcroField.ts";
+import { PDFDict } from "../objects/PDFDict.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFContext } from "../PDFContext.ts";
+import { PDFAcroField } from "./PDFAcroField.ts";
 
-class PDFAcroNonTerminal extends PDFAcroField {
+export class PDFAcroNonTerminal extends PDFAcroField {
   static fromDict = (dict: PDFDict, ref: PDFRef) =>
     new PDFAcroNonTerminal(dict, ref);
 
@@ -29,5 +29,3 @@ class PDFAcroNonTerminal extends PDFAcroField {
     return { Kids: Kids2 };
   }
 }
-
-export default PDFAcroNonTerminal;

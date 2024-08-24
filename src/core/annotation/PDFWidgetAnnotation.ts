@@ -1,14 +1,14 @@
-import PDFDict from "../objects/PDFDict.ts";
-import PDFName from "../objects/PDFName.ts";
-import PDFRef from "../objects/PDFRef.ts";
-import PDFString from "../objects/PDFString.ts";
-import PDFHexString from "../objects/PDFHexString.ts";
-import PDFContext from "../PDFContext.ts";
-import BorderStyle from "./BorderStyle.ts";
-import PDFAnnotation from "./PDFAnnotation.ts";
-import AppearanceCharacteristics from "./AppearanceCharacteristics.ts";
+import { PDFDict } from "../objects/PDFDict.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
+import { PDFString } from "../objects/PDFString.ts";
+import { PDFHexString } from "../objects/PDFHexString.ts";
+import { PDFContext } from "../PDFContext.ts";
+import { BorderStyle } from "./BorderStyle.ts";
+import { PDFAnnotation } from "./PDFAnnotation.ts";
+import { AppearanceCharacteristics } from "./AppearanceCharacteristics.ts";
 
-class PDFWidgetAnnotation extends PDFAnnotation {
+export class PDFWidgetAnnotation extends PDFAnnotation {
   static fromDict = (dict: PDFDict): PDFWidgetAnnotation =>
     new PDFWidgetAnnotation(dict);
 
@@ -108,5 +108,3 @@ class PDFWidgetAnnotation extends PDFAnnotation {
     return undefined;
   }
 }
-
-export default PDFWidgetAnnotation;

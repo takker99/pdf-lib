@@ -1,12 +1,12 @@
-import PDFRef from "../objects/PDFRef.ts";
-import PDFDict from "../objects/PDFDict.ts";
-import PDFName from "../objects/PDFName.ts";
-import PDFAcroButton from "./PDFAcroButton.ts";
-import PDFContext from "../PDFContext.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
+import { PDFDict } from "../objects/PDFDict.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFAcroButton } from "./PDFAcroButton.ts";
+import { PDFContext } from "../PDFContext.ts";
 import { AcroButtonFlags } from "./flags.ts";
 import { InvalidAcroFieldValueError } from "../errors.ts";
 
-class PDFAcroRadioButton extends PDFAcroButton {
+export class PDFAcroRadioButton extends PDFAcroButton {
   static fromDict = (dict: PDFDict, ref: PDFRef) =>
     new PDFAcroRadioButton(dict, ref);
 
@@ -54,5 +54,3 @@ class PDFAcroRadioButton extends PDFAcroButton {
     return onValues;
   }
 }
-
-export default PDFAcroRadioButton;

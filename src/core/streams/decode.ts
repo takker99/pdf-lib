@@ -2,18 +2,18 @@ import {
   UnexpectedObjectTypeError,
   UnsupportedEncodingError,
 } from "../errors.ts";
-import PDFArray from "../objects/PDFArray.ts";
-import PDFDict from "../objects/PDFDict.ts";
-import PDFName from "../objects/PDFName.ts";
-import PDFNull from "../objects/PDFNull.ts";
-import PDFNumber from "../objects/PDFNumber.ts";
-import PDFRawStream from "../objects/PDFRawStream.ts";
-import Ascii85Stream from "./Ascii85Stream.ts";
-import AsciiHexStream from "./AsciiHexStream.ts";
-import FlateStream from "./FlateStream.ts";
-import LZWStream from "./LZWStream.ts";
-import RunLengthStream from "./RunLengthStream.ts";
-import Stream, { StreamType } from "./Stream.ts";
+import { PDFArray } from "../objects/PDFArray.ts";
+import { PDFDict } from "../objects/PDFDict.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFNull } from "../objects/PDFNull.ts";
+import { PDFNumber } from "../objects/PDFNumber.ts";
+import { PDFRawStream } from "../objects/PDFRawStream.ts";
+import { Ascii85Stream } from "./Ascii85Stream.ts";
+import { AsciiHexStream } from "./AsciiHexStream.ts";
+import { FlateStream } from "./FlateStream.ts";
+import { LZWStream } from "./LZWStream.ts";
+import { RunLengthStream } from "./RunLengthStream.ts";
+import { Stream, StreamType } from "./Stream.ts";
 
 const decodeStream = (
   stream: StreamType,

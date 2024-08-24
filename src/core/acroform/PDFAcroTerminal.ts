@@ -1,11 +1,11 @@
-import PDFDict from "../objects/PDFDict.ts";
-import PDFName from "../objects/PDFName.ts";
-import PDFRef from "../objects/PDFRef.ts";
-import PDFAcroField from "./PDFAcroField.ts";
-import PDFWidgetAnnotation from "../annotation/PDFWidgetAnnotation.ts";
+import { PDFDict } from "../objects/PDFDict.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
+import { PDFAcroField } from "./PDFAcroField.ts";
+import { PDFWidgetAnnotation } from "../annotation/PDFWidgetAnnotation.ts";
 import { IndexOutOfBoundsError } from "../errors.ts";
 
-class PDFAcroTerminal extends PDFAcroField {
+export class PDFAcroTerminal extends PDFAcroField {
   static fromDict = (dict: PDFDict, ref: PDFRef) =>
     new PDFAcroTerminal(dict, ref);
 
@@ -66,5 +66,3 @@ class PDFAcroTerminal extends PDFAcroField {
     return { Kids: Kids2 };
   }
 }
-
-export default PDFAcroTerminal;

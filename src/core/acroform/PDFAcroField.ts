@@ -1,12 +1,12 @@
-import PDFDict from "../objects/PDFDict.ts";
-import PDFString from "../objects/PDFString.ts";
-import PDFHexString from "../objects/PDFHexString.ts";
-import PDFName from "../objects/PDFName.ts";
-import PDFObject from "../objects/PDFObject.ts";
-import PDFNumber from "../objects/PDFNumber.ts";
-import PDFArray from "../objects/PDFArray.ts";
-import PDFRef from "../objects/PDFRef.ts";
-import { findLastMatch } from "../../utils/index.ts";
+import { PDFDict } from "../objects/PDFDict.ts";
+import { PDFString } from "../objects/PDFString.ts";
+import { PDFHexString } from "../objects/PDFHexString.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFObject } from "../objects/PDFObject.ts";
+import { PDFNumber } from "../objects/PDFNumber.ts";
+import { PDFArray } from "../objects/PDFArray.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
+import { findLastMatch } from "../../utils/mod.ts";
 import { MissingDAEntryError, MissingTfOperatorError } from "../errors.ts";
 
 // Examples:
@@ -16,7 +16,7 @@ import { MissingDAEntryError, MissingTfOperatorError } from "../errors.ts";
 const tfRegex =
   /\/([^\0\t\n\f\r\ ]+)[\0\t\n\f\r\ ]*(\d*\.\d+|\d+)?[\0\t\n\f\r\ ]+Tf/;
 
-class PDFAcroField {
+export class PDFAcroField {
   readonly dict: PDFDict;
   readonly ref: PDFRef;
 
@@ -164,5 +164,3 @@ class PDFAcroField {
     if (parent) parent.ascend(visitor);
   }
 }
-
-export default PDFAcroField;

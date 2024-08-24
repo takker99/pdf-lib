@@ -1,7 +1,7 @@
-import PDFDict from "../objects/PDFDict.ts";
-import CharCodes from "../syntax/CharCodes.ts";
+import { PDFDict } from "../objects/PDFDict.ts";
+import { CharCodes } from "../syntax/CharCodes.ts";
 
-class PDFTrailerDict {
+export class PDFTrailerDict {
   static of = (dict: PDFDict) => new PDFTrailerDict(dict);
 
   readonly dict: PDFDict;
@@ -35,5 +35,3 @@ class PDFTrailerDict {
     return offset - initialOffset;
   }
 }
-
-export default PDFTrailerDict;

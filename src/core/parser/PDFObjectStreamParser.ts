@@ -1,13 +1,13 @@
 import { ReparseError } from "../errors.ts";
-import PDFName from "../objects/PDFName.ts";
-import PDFNumber from "../objects/PDFNumber.ts";
-import PDFRawStream from "../objects/PDFRawStream.ts";
-import PDFRef from "../objects/PDFRef.ts";
-import ByteStream from "./ByteStream.ts";
-import PDFObjectParser from "./PDFObjectParser.ts";
-import { waitForTick } from "../../utils/index.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFNumber } from "../objects/PDFNumber.ts";
+import { PDFRawStream } from "../objects/PDFRawStream.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
+import { ByteStream } from "./ByteStream.ts";
+import { PDFObjectParser } from "./PDFObjectParser.ts";
+import { waitForTick } from "../../utils/mod.ts";
 
-class PDFObjectStreamParser extends PDFObjectParser {
+export class PDFObjectStreamParser extends PDFObjectParser {
   static forStream = (
     rawStream: PDFRawStream,
     shouldWaitForTick?: () => boolean,
@@ -63,5 +63,3 @@ class PDFObjectStreamParser extends PDFObjectParser {
     return offsetsAndObjectNumbers;
   }
 }
-
-export default PDFObjectStreamParser;

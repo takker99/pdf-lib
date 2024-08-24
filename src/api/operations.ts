@@ -34,12 +34,7 @@ import {
 } from "./operators.ts";
 import { degrees, Rotation, toRadians } from "./rotations.ts";
 import { svgPathToOperators } from "./svgPath.ts";
-import {
-  PDFHexString,
-  PDFName,
-  PDFNumber,
-  PDFOperator,
-} from "../core/index.ts";
+import { PDFHexString, PDFName, PDFNumber, PDFOperator } from "../core/mod.ts";
 import { asNumber } from "./objects.ts";
 
 export interface DrawTextOptions {

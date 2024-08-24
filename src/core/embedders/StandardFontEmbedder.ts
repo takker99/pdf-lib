@@ -5,10 +5,10 @@ import {
   FontNames,
 } from "@pdf-lib/standard-fonts";
 
-import PDFHexString from "../objects/PDFHexString.ts";
-import PDFRef from "../objects/PDFRef.ts";
-import PDFContext from "../PDFContext.ts";
-import { toCodePoint, toHexString } from "../../utils/index.ts";
+import { PDFHexString } from "../objects/PDFHexString.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
+import { PDFContext } from "../PDFContext.ts";
+import { toCodePoint, toHexString } from "../../utils/mod.ts";
 
 export interface Glyph {
   code: number;
@@ -20,7 +20,7 @@ export interface Glyph {
  * this class borrows from:
  *   https://github.com/foliojs/pdfkit/blob/f91bdd61c164a72ea06be1a43dc0a412afc3925f/lib/font/afm.coffee
  */
-class StandardFontEmbedder {
+export class StandardFontEmbedder {
   static for = (fontName: FontNames, customName?: string) =>
     new StandardFontEmbedder(fontName, customName);
 
@@ -127,5 +127,3 @@ class StandardFontEmbedder {
     return glyphs;
   }
 }
-
-export default StandardFontEmbedder;

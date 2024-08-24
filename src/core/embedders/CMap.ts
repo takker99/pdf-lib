@@ -1,6 +1,6 @@
 import { Glyph } from "../../types/fontkit.ts";
 
-import { toHexString, toHexStringOfMinLength } from "../../utils/index.ts";
+import { toHexString, toHexStringOfMinLength } from "../../utils/mod.ts";
 import {
   hasSurrogates,
   highSurrogate,

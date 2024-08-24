@@ -1,15 +1,15 @@
-import PDFArray from "../objects/PDFArray.ts";
-import PDFBool from "../objects/PDFBool.ts";
-import PDFDict from "../objects/PDFDict.ts";
-import PDFName from "../objects/PDFName.ts";
-import PDFNumber from "../objects/PDFNumber.ts";
-import PDFContext from "../PDFContext.ts";
+import { PDFArray } from "../objects/PDFArray.ts";
+import { PDFBool } from "../objects/PDFBool.ts";
+import { PDFDict } from "../objects/PDFDict.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFNumber } from "../objects/PDFNumber.ts";
+import { PDFContext } from "../PDFContext.ts";
 import {
   assertEachIs,
   assertInteger,
   assertIsOneOf,
   assertRange,
-} from "../../utils/index.ts";
+} from "../../utils/mod.ts";
 
 const asEnum = <T extends string | number, U extends { [key: string]: T }>(
   rawValue: T | undefined,
@@ -94,7 +94,7 @@ interface PageRange {
   end: number;
 }
 
-class ViewerPreferences {
+export class ViewerPreferences {
   /** @ignore */
   readonly dict: PDFDict;
 
@@ -575,5 +575,3 @@ class ViewerPreferences {
     this.dict.set(PDFName.of("NumCopies"), NumCopies);
   }
 }
-
-export default ViewerPreferences;

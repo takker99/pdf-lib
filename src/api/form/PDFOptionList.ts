@@ -1,9 +1,10 @@
-import PDFDocument from "../PDFDocument.ts";
-import PDFPage from "../PDFPage.ts";
-import PDFFont from "../PDFFont.ts";
-import PDFField, {
+import { PDFDocument } from "../PDFDocument.ts";
+import { PDFPage } from "../PDFPage.ts";
+import { PDFFont } from "../PDFFont.ts";
+import {
   assertFieldAppearanceOptions,
   FieldAppearanceOptions,
+  PDFField,
 } from "./PDFField.ts";
 import {
   AppearanceProviderFor,
@@ -21,13 +22,13 @@ import {
   PDFStream,
   PDFString,
   PDFWidgetAnnotation,
-} from "../../core/index.ts";
+} from "../../core/mod.ts";
 import {
   assertIs,
   assertIsSubset,
   assertOrUndefined,
   assertPositive,
-} from "../../utils/index.ts";
+} from "../../utils/mod.ts";
 
 /**
  * Represents an option list field of a [[PDFForm]].
@@ -40,7 +41,7 @@ import {
  * with a highlighted background. Some option lists allow users to select
  * more than one option (see [[PDFOptionList.isMultiselect]]).
  */
-export default class PDFOptionList extends PDFField {
+export class PDFOptionList extends PDFField {
   /**
    * > **NOTE:** You probably don't want to call this method directly. Instead,
    * > consider using the [[PDFForm.getOptionList]] method, which will create

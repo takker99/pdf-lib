@@ -1,9 +1,9 @@
-import PDFDict from "../objects/PDFDict.ts";
-import PDFAcroChoice from "./PDFAcroChoice.ts";
-import PDFContext from "../PDFContext.ts";
-import PDFRef from "../objects/PDFRef.ts";
+import { PDFDict } from "../objects/PDFDict.ts";
+import { PDFAcroChoice } from "./PDFAcroChoice.ts";
+import { PDFContext } from "../PDFContext.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
 
-class PDFAcroListBox extends PDFAcroChoice {
+export class PDFAcroListBox extends PDFAcroChoice {
   static fromDict = (dict: PDFDict, ref: PDFRef) =>
     new PDFAcroListBox(dict, ref);
 
@@ -16,5 +16,3 @@ class PDFAcroListBox extends PDFAcroChoice {
     return new PDFAcroListBox(dict, ref);
   };
 }
-
-export default PDFAcroListBox;

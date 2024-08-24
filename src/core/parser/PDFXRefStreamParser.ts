@@ -1,12 +1,12 @@
 import { ReparseError } from "../errors.ts";
-import PDFArray from "../objects/PDFArray.ts";
-import PDFDict from "../objects/PDFDict.ts";
-import PDFName from "../objects/PDFName.ts";
-import PDFNumber from "../objects/PDFNumber.ts";
-import PDFRawStream from "../objects/PDFRawStream.ts";
-import PDFRef from "../objects/PDFRef.ts";
-import ByteStream from "./ByteStream.ts";
-import PDFContext from "../PDFContext.ts";
+import { PDFArray } from "../objects/PDFArray.ts";
+import { PDFDict } from "../objects/PDFDict.ts";
+import { PDFName } from "../objects/PDFName.ts";
+import { PDFNumber } from "../objects/PDFNumber.ts";
+import { PDFRawStream } from "../objects/PDFRawStream.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
+import { ByteStream } from "./ByteStream.ts";
+import { PDFContext } from "../PDFContext.ts";
 
 export interface Entry {
   ref: PDFRef;
@@ -15,7 +15,7 @@ export interface Entry {
   inObjectStream: boolean;
 }
 
-class PDFXRefStreamParser {
+export class PDFXRefStreamParser {
   static forStream = (rawStream: PDFRawStream) =>
     new PDFXRefStreamParser(rawStream);
 
@@ -126,5 +126,3 @@ class PDFXRefStreamParser {
     return entries;
   }
 }
-
-export default PDFXRefStreamParser;

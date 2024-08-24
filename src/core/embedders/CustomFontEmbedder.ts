@@ -2,23 +2,23 @@ import { Font, Fontkit, Glyph, TypeFeatures } from "../../types/fontkit.ts";
 
 import { createCmap } from "./CMap.ts";
 import { deriveFontFlags } from "./FontFlags.ts";
-import PDFHexString from "../objects/PDFHexString.ts";
-import PDFRef from "../objects/PDFRef.ts";
-import PDFString from "../objects/PDFString.ts";
-import PDFContext from "../PDFContext.ts";
+import { PDFHexString } from "../objects/PDFHexString.ts";
+import { PDFRef } from "../objects/PDFRef.ts";
+import { PDFString } from "../objects/PDFString.ts";
+import { PDFContext } from "../PDFContext.ts";
 import {
   byAscendingId,
-  Cache,
   sortedUniq,
   toHexStringOfMinLength,
-} from "../../utils/index.ts";
+} from "../../utils/mod.ts";
+import { Cache } from "../../utils/Cache.ts";
 
 /**
  * A note of thanks to the developers of https://github.com/foliojs/pdfkit, as
  * this class borrows from:
  *   https://github.com/devongovett/pdfkit/blob/e71edab0dd4657b5a767804ba86c94c58d01fbca/lib/image/jpeg.coffee
  */
-class CustomFontEmbedder {
+export class CustomFontEmbedder {
   static async for(
     fontkit: Fontkit,
     fontData: Uint8Array,
@@ -245,5 +245,3 @@ class CustomFontEmbedder {
     return sortedUniq(glyphs.sort(byAscendingId), (g) => g.id);
   };
 }
-
-export default CustomFontEmbedder;

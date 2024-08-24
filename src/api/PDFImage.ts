@@ -1,14 +1,14 @@
-import Embeddable from "./Embeddable.ts";
-import PDFDocument from "./PDFDocument.ts";
-import { JpegEmbedder, PDFRef, PngEmbedder } from "../core/index.ts";
-import { assertIs } from "../utils/index.ts";
+import { Embeddable } from "./Embeddable.ts";
+import { PDFDocument } from "./PDFDocument.ts";
+import { JpegEmbedder, PDFRef, PngEmbedder } from "../core/mod.ts";
+import { assertIs } from "../utils/mod.ts";
 
 export type ImageEmbedder = JpegEmbedder | PngEmbedder;
 
 /**
  * Represents an image that has been embedded in a [[PDFDocument]].
  */
-export default class PDFImage implements Embeddable {
+export class PDFImage implements Embeddable {
   /**
    * > **NOTE:** You probably don't want to call this method directly. Instead,
    * > consider using the [[PDFDocument.embedPng]] and [[PDFDocument.embedJpg]]
