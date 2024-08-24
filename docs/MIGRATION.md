@@ -1,8 +1,13 @@
-The latest release of `pdf-lib` (`v1.0.0`) includes several breaking API changes. If you have code written for older versions of `pdf-lib` (`v0.x.x`), you can use the following instructions to help migrate your code to v1.0.0.
+The latest release of `pdf-lib` (`v1.0.0`) includes several breaking API
+changes. If you have code written for older versions of `pdf-lib` (`v0.x.x`),
+you can use the following instructions to help migrate your code to v1.0.0.
 
-Note that many of the API methods are now asynchronous and return promises, so you'll need to `await` on them (or use promise chaining: `.then(res => ...)`).
+Note that many of the API methods are now asynchronous and return promises, so
+you'll need to `await` on them (or use promise chaining: `.then(res => ...)`).
 
-- Rename _`PDFDocumentFactory`_ to **`PDFDocument`**. `PDFDocument.create` and `PDFDocument.load` are now async (they return promises), so you'll need to `await` on them.
+- Rename _`PDFDocumentFactory`_ to **`PDFDocument`**. `PDFDocument.create` and
+  `PDFDocument.load` are now async (they return promises), so you'll need to
+  `await` on them.
 
 * To create a new PDF document:
 
@@ -16,7 +21,10 @@ Note that many of the API methods are now asynchronous and return promises, so y
   const pdfDoc = await PDFDocument.load(pdfBuffer);
   ```
 
-- The purpose of making these methods asynchronous is to avoid blocking the event loop (especially for browser-based usage). If you aren't running this code client-side and are not concerned about blocking the event loop, you can speed up parsing times with:
+- The purpose of making these methods asynchronous is to avoid blocking the
+  event loop (especially for browser-based usage). If you aren't running this
+  code client-side and are not concerned about blocking the event loop, you can
+  speed up parsing times with:
 
   ```js
   PDFDocument.load(..., { parseSpeed: ParseSpeeds.Fastest })
@@ -28,17 +36,19 @@ Note that many of the API methods are now asynchronous and return promises, so y
   PDFDocument.save({ objectsPerTick: Infinity });
   ```
 
-- To draw content on a page in old versions of `pdf-lib`, you needed to create a content stream, invoke some operators, register the content stream, and add it to the document. Something like the following:
+- To draw content on a page in old versions of `pdf-lib`, you needed to create a
+  content stream, invoke some operators, register the content stream, and add it
+  to the document. Something like the following:
 
   ```js
   const contentStream = pdfDoc.createContentStream(
     drawText(
-      timesRomanFont.encodeText('Creating PDFs in JavaScript is awesome!'),
+      timesRomanFont.encodeText("Creating PDFs in JavaScript is awesome!"),
       {
         x: 50,
         y: 450,
         size: 15,
-        font: 'TimesRoman',
+        font: "TimesRoman",
         colorRgb: [0, 0.53, 0.71],
       },
     ),
@@ -46,10 +56,17 @@ Note that many of the API methods are now asynchronous and return promises, so y
   page.addContentStreams(pdfDoc.register(contentStream));
   ```
 
-  However, in new versions of `pdf-lib`, this is much simpler. You simply invoke drawing methods on the page, such as [`PDFPage.drawText`](https://pdf-lib.js.org/docs/api/classes/pdfpage#drawtext), [`PDFPage.drawImage`](https://pdf-lib.js.org/docs/api/classes/pdfpage#drawimage), [`PDFPage.drawRectangle`](https://pdf-lib.js.org/docs/api/classes/pdfpage#drawrectangle), or [`PDFPage.drawSvgPath`](https://pdf-lib.js.org/docs/api/classes/pdfpage#drawsvgpath). So the above example becomes:
+  However, in new versions of `pdf-lib`, this is much simpler. You simply invoke
+  drawing methods on the page, such as
+  [`PDFPage.drawText`](https://pdf-lib.js.org/docs/api/classes/pdfpage#drawtext),
+  [`PDFPage.drawImage`](https://pdf-lib.js.org/docs/api/classes/pdfpage#drawimage),
+  [`PDFPage.drawRectangle`](https://pdf-lib.js.org/docs/api/classes/pdfpage#drawrectangle),
+  or
+  [`PDFPage.drawSvgPath`](https://pdf-lib.js.org/docs/api/classes/pdfpage#drawsvgpath).
+  So the above example becomes:
 
   ```js
-  page.drawText('Creating PDFs in JavaScript is awesome!', {
+  page.drawText("Creating PDFs in JavaScript is awesome!", {
     x: 50,
     y: 450,
     size: 15,
@@ -58,25 +75,34 @@ Note that many of the API methods are now asynchronous and return promises, so y
   });
   ```
 
-  Please see the [Usage Examples](#usage-examples) for more in depth examples of drawing content on a page in the new versions of `pdf-lib`. You may also find the [Complete Examples](#complete-examples) to be a useful reference.
+  Please see the [Usage Examples](#usage-examples) for more in depth examples of
+  drawing content on a page in the new versions of `pdf-lib`. You may also find
+  the [Complete Examples](#complete-examples) to be a useful reference.
 
-- Change _`getMaybe`_ function calls to **`get`** calls. If a property doesn't exist, then `undefined` will be returned. Note, however, that PDF name strings with need to be wrapped in `PDFName.of(...)`. For example, to look up the AcroForm object you'll need to change _`pdfDoc.catalog.getMaybe('AcroForm')`_ to **`pdfDoc.catalog.get(PDFName.of('AcroForm'))`**.
+- Change _`getMaybe`_ function calls to **`get`** calls. If a property doesn't
+  exist, then `undefined` will be returned. Note, however, that PDF name strings
+  with need to be wrapped in `PDFName.of(...)`. For example, to look up the
+  AcroForm object you'll need to change _`pdfDoc.catalog.getMaybe('AcroForm')`_
+  to **`pdfDoc.catalog.get(PDFName.of('AcroForm'))`**.
 
   ```js
   const acroForm = await pdfDoc.context.lookup(
-    pdfDoc.catalog.get(PDFName.of('AcroForm')),
+    pdfDoc.catalog.get(PDFName.of("AcroForm")),
   );
   ```
 
-  > v0.x.x converted the strings passed to `get` and `getMaybe` to `PDFName` objects, but v1.0.0 does not do this conversion for you. So you must always pass actual `PDFName` objects instead of strings.
+  > v0.x.x converted the strings passed to `get` and `getMaybe` to `PDFName`
+  > objects, but v1.0.0 does not do this conversion for you. So you must always
+  > pass actual `PDFName` objects instead of strings.
 
 - To find the AcroForm field references now becomes:
   ```js
   const acroFieldRefs = await pdfDoc.context.lookup(
-    acroForm.get(PDFName.of('Fields')),
+    acroForm.get(PDFName.of("Fields")),
   );
   ```
-- To add a new page replace _`pdfDoc.createPage([width, height])`_ with **`pdfDoc.addPage([width, height])`**
+- To add a new page replace _`pdfDoc.createPage([width, height])`_ with
+  **`pdfDoc.addPage([width, height])`**
   ```js
   const page = pdfDoc.addPage([500, 750]);
   ```
@@ -93,9 +119,13 @@ Note that many of the API methods are now asynchronous and return promises, so y
   page.getHeight();
   ```
 
-* To add images replace _`pdfDoc.embedPNG`_ with **`pdfDoc.embedPng`** and _`pdfDoc.embedJPG`_ with **`pdfDoc.embedJpg`**
+* To add images replace _`pdfDoc.embedPNG`_ with **`pdfDoc.embedPng`** and
+  _`pdfDoc.embedJPG`_ with **`pdfDoc.embedJpg`**
 
-* The `pdfDoc.embedPng` and `pdfDoc.embedJpg` methods now return `PDFImage` objects which have the width and height of the image as properties. You can also scale down the width and height by a constant factor using the `PDFImage.scale` method:
+* The `pdfDoc.embedPng` and `pdfDoc.embedJpg` methods now return `PDFImage`
+  objects which have the width and height of the image as properties. You can
+  also scale down the width and height by a constant factor using the
+  `PDFImage.scale` method:
   ```js
   const aBigImage = await pdfDoc.embedPng(aBigImageBytes);
   const { width, height } = aBigImage.scale(0.25);
@@ -105,7 +135,8 @@ Note that many of the API methods are now asynchronous and return promises, so y
   const image = await pdfDoc.embedJpg(mediaBuffer);
   // image.width, image.height can be used instead of the dims object.
   ```
-* To save the PDF replace _`PDFDocumentWriter.saveToBytes(pdfDoc)`_ with **`pdfDoc.save()`**
+* To save the PDF replace _`PDFDocumentWriter.saveToBytes(pdfDoc)`_ with
+  **`pdfDoc.save()`**
 
   ```js
   const pdfDocBytes = await pdfDoc.save();
@@ -115,9 +146,9 @@ Note that many of the API methods are now asynchronous and return promises, so y
 
   ```js
   const pdfUrl = URL.createObjectURL(
-    new Blob([await pdfDoc.save()], { type: 'application/pdf' }),
+    new Blob([await pdfDoc.save()], { type: "application/pdf" }),
   );
-  window.open(pdfUrl, '_blank');
+  window.open(pdfUrl, "_blank");
   ```
 
   (note: `URL.revokeObjectURL` should be called later to free up memory)
@@ -128,12 +159,19 @@ Note that many of the API methods are now asynchronous and return promises, so y
   pdfDoc.getPages().length;
   ```
 
-* To copy pages from one document to another you must now call **`destPdf.copyPages(srcPdf, srcPageIndexesArray)`** to copy pages. You can see an example of this in the [Copy Pages](#copy-pages) usage example. Admittedly, this API is slightly less ergonomic than what exists in v0.x.x, but it has two key benefits:
+* To copy pages from one document to another you must now call
+  **`destPdf.copyPages(srcPdf, srcPageIndexesArray)`** to copy pages. You can
+  see an example of this in the [Copy Pages](#copy-pages) usage example.
+  Admittedly, this API is slightly less ergonomic than what exists in v0.x.x,
+  but it has two key benefits:
 
-  1. It avoids making PDFDocument.addPage and PDFDocument.insertPage async.
-     When copying multiple pages from the source document, the resulting merged document should have a smaller file size. This is because the page copying API that exists in v0.x.x was intended for copying just one or two pages.
+  1. It avoids making PDFDocument.addPage and PDFDocument.insertPage async. When
+     copying multiple pages from the source document, the resulting merged
+     document should have a smaller file size. This is because the page copying
+     API that exists in v0.x.x was intended for copying just one or two pages.
 
-  2. When copying large numbers of pages, it could result in redundant objects being created. This new page copying API should eliminate that.
+  2. When copying large numbers of pages, it could result in redundant objects
+     being created. This new page copying API should eliminate that.
 
   ```js
   async function mergePdfs(pdfsToMerge: string[]) {

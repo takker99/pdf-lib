@@ -1,7 +1,7 @@
-import PDFString from 'src/core/objects/PDFString';
-import PDFHexString from 'src/core/objects/PDFHexString';
-import PDFContext from 'src/core/PDFContext';
-import PDFRef from 'src/core/objects/PDFRef';
+import PDFString from "../objects/PDFString.ts";
+import PDFHexString from "../objects/PDFHexString.ts";
+import PDFContext from "../PDFContext.ts";
+import PDFRef from "../objects/PDFRef.ts";
 
 /**
  * From the PDF-A3 specification, section **3.1. Requirements - General**.
@@ -9,14 +9,14 @@ import PDFRef from 'src/core/objects/PDFRef';
  * * https://www.pdfa.org/wp-content/uploads/2018/10/PDF20_AN002-AF.pdf
  */
 export enum AFRelationship {
-  Source = 'Source',
-  Data = 'Data',
-  Alternative = 'Alternative',
-  Supplement = 'Supplement',
-  EncryptedPayload = 'EncryptedPayload',
-  FormData = 'EncryptedPayload',
-  Schema = 'Schema',
-  Unspecified = 'Unspecified',
+  Source = "Source",
+  Data = "Data",
+  Alternative = "Alternative",
+  Supplement = "Supplement",
+  EncryptedPayload = "EncryptedPayload",
+  FormData = "EncryptedPayload",
+  Schema = "Schema",
+  Unspecified = "Unspecified",
 }
 
 export interface EmbeddedFileOptions {
@@ -50,7 +50,7 @@ class FileEmbedder {
     this.options = options;
   }
 
-  async embedIntoContext(context: PDFContext, ref?: PDFRef): Promise<PDFRef> {
+  embedIntoContext(context: PDFContext, ref?: PDFRef): Promise<PDFRef> {
     const {
       mimeType,
       description,
@@ -60,7 +60,7 @@ class FileEmbedder {
     } = this.options;
 
     const embeddedFileStream = context.flateStream(this.fileData, {
-      Type: 'EmbeddedFile',
+      Type: "EmbeddedFile",
       Subtype: mimeType ?? undefined,
       Params: {
         Size: this.fileData.length,
@@ -75,7 +75,7 @@ class FileEmbedder {
     const embeddedFileStreamRef = context.register(embeddedFileStream);
 
     const fileSpecDict = context.obj({
-      Type: 'Filespec',
+      Type: "Filespec",
       F: PDFString.of(this.fileName), // TODO: Assert that this is plain ASCII
       UF: PDFHexString.fromText(this.fileName),
       EF: { F: embeddedFileStreamRef },
@@ -85,9 +85,9 @@ class FileEmbedder {
 
     if (ref) {
       context.assign(ref, fileSpecDict);
-      return ref;
+      return Promise.resolve(ref);
     } else {
-      return context.register(fileSpecDict);
+      return Promise.resolve(context.register(fileSpecDict));
     }
   }
 }

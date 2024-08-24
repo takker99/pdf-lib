@@ -1,21 +1,21 @@
-import { Color } from 'src/api/colors';
-import PDFFont from 'src/api/PDFFont';
-import { Rotation } from 'src/api/rotations';
-import { LineCapStyle } from 'src/api/operators';
+import { Color } from "./colors.ts";
+import PDFFont from "./PDFFont.ts";
+import { Rotation } from "./rotations.ts";
+import { LineCapStyle } from "./operators.ts";
 
 export enum BlendMode {
-  Normal = 'Normal',
-  Multiply = 'Multiply',
-  Screen = 'Screen',
-  Overlay = 'Overlay',
-  Darken = 'Darken',
-  Lighten = 'Lighten',
-  ColorDodge = 'ColorDodge',
-  ColorBurn = 'ColorBurn',
-  HardLight = 'HardLight',
-  SoftLight = 'SoftLight',
-  Difference = 'Difference',
-  Exclusion = 'Exclusion',
+  Normal = "Normal",
+  Multiply = "Multiply",
+  Screen = "Screen",
+  Overlay = "Overlay",
+  Darken = "Darken",
+  Lighten = "Lighten",
+  ColorDodge = "ColorDodge",
+  ColorBurn = "ColorBurn",
+  HardLight = "HardLight",
+  SoftLight = "SoftLight",
+  Difference = "Difference",
+  Exclusion = "Exclusion",
 }
 
 export interface PDFPageDrawTextOptions {

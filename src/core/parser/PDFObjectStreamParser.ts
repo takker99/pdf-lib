@@ -1,11 +1,11 @@
-import { ReparseError } from 'src/core/errors';
-import PDFName from 'src/core/objects/PDFName';
-import PDFNumber from 'src/core/objects/PDFNumber';
-import PDFRawStream from 'src/core/objects/PDFRawStream';
-import PDFRef from 'src/core/objects/PDFRef';
-import ByteStream from 'src/core/parser/ByteStream';
-import PDFObjectParser from 'src/core/parser/PDFObjectParser';
-import { waitForTick } from 'src/utils';
+import { ReparseError } from "../errors.ts";
+import PDFName from "../objects/PDFName.ts";
+import PDFNumber from "../objects/PDFNumber.ts";
+import PDFRawStream from "../objects/PDFRawStream.ts";
+import PDFRef from "../objects/PDFRef.ts";
+import ByteStream from "./ByteStream.ts";
+import PDFObjectParser from "./PDFObjectParser.ts";
+import { waitForTick } from "../../utils/index.ts";
 
 class PDFObjectStreamParser extends PDFObjectParser {
   static forStream = (
@@ -25,13 +25,13 @@ class PDFObjectStreamParser extends PDFObjectParser {
 
     this.alreadyParsed = false;
     this.shouldWaitForTick = shouldWaitForTick || (() => false);
-    this.firstOffset = dict.lookup(PDFName.of('First'), PDFNumber).asNumber();
-    this.objectCount = dict.lookup(PDFName.of('N'), PDFNumber).asNumber();
+    this.firstOffset = dict.lookup(PDFName.of("First"), PDFNumber).asNumber();
+    this.objectCount = dict.lookup(PDFName.of("N"), PDFNumber).asNumber();
   }
 
   async parseIntoContext(): Promise<void> {
     if (this.alreadyParsed) {
-      throw new ReparseError('PDFObjectStreamParser', 'parseIntoContext');
+      throw new ReparseError("PDFObjectStreamParser", "parseIntoContext");
     }
     this.alreadyParsed = true;
 

@@ -1,9 +1,9 @@
-import fs from 'fs';
-import { PDFContext, PDFRawStream, PDFRef, PngEmbedder } from 'src/core';
+import fs from "fs";
+import { PDFContext, PDFRawStream, PDFRef, PngEmbedder } from "src/core";
 
-const greyscalePng = fs.readFileSync('./assets/images/greyscale_bird.png');
-const rgbaPng = fs.readFileSync('./assets/images/minions_banana_alpha.png');
-const rgbPng = fs.readFileSync('./assets/images/minions_banana_no_alpha.png');
+const greyscalePng = fs.readFileSync("./assets/images/greyscale_bird.png");
+const rgbaPng = fs.readFileSync("./assets/images/minions_banana_alpha.png");
+const rgbPng = fs.readFileSync("./assets/images/minions_banana_no_alpha.png");
 
 describe(`PngEmbedder`, () => {
   it(`can be constructed with PngEmbedder.for(...)`, async () => {
@@ -59,7 +59,7 @@ describe(`PngEmbedder`, () => {
     expect(embedder.bitsPerComponent).toBe(8);
     expect(embedder.height).toBe(375);
     expect(embedder.width).toBe(600);
-    expect(embedder.colorSpace).toBe('DeviceRGB');
+    expect(embedder.colorSpace).toBe("DeviceRGB");
   });
 
   it(`can extract properties of RGBA PNG images`, async () => {
@@ -68,7 +68,7 @@ describe(`PngEmbedder`, () => {
     expect(embedder.bitsPerComponent).toBe(8);
     expect(embedder.height).toBe(640);
     expect(embedder.width).toBe(960);
-    expect(embedder.colorSpace).toBe('DeviceRGB');
+    expect(embedder.colorSpace).toBe("DeviceRGB");
   });
 
   it(`can extract properties of RGB PNG images`, async () => {
@@ -77,6 +77,6 @@ describe(`PngEmbedder`, () => {
     expect(embedder.bitsPerComponent).toBe(8);
     expect(embedder.height).toBe(640);
     expect(embedder.width).toBe(960);
-    expect(embedder.colorSpace).toBe('DeviceRGB');
+    expect(embedder.colorSpace).toBe("DeviceRGB");
   });
 });

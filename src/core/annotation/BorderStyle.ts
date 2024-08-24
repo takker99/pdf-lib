@@ -1,6 +1,6 @@
-import PDFDict from 'src/core/objects/PDFDict';
-import PDFName from 'src/core/objects/PDFName';
-import PDFNumber from 'src/core/objects/PDFNumber';
+import PDFDict from "../objects/PDFDict.ts";
+import PDFName from "../objects/PDFName.ts";
+import PDFNumber from "../objects/PDFNumber.ts";
 
 // TODO: Also handle the `/S` and `/D` entries
 class BorderStyle {
@@ -13,7 +13,7 @@ class BorderStyle {
   }
 
   W(): PDFNumber | undefined {
-    const W = this.dict.lookup(PDFName.of('W'));
+    const W = this.dict.lookup(PDFName.of("W"));
     if (W instanceof PDFNumber) return W;
     return undefined;
   }
@@ -24,7 +24,7 @@ class BorderStyle {
 
   setWidth(width: number) {
     const W = this.dict.context.obj(width);
-    this.dict.set(PDFName.of('W'), W);
+    this.dict.set(PDFName.of("W"), W);
   }
 }
 

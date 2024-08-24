@@ -1,41 +1,46 @@
-import { Color, setFillingColor, setStrokingColor } from 'src/api/colors';
+import { Color, setFillingColor, setStrokingColor } from "./colors.ts";
 import {
+  appendBezierCurve,
+  beginMarkedContent,
   beginText,
+  clip,
   closePath,
   drawObject,
+  endMarkedContent,
+  endPath,
   endText,
   fill,
   fillAndStroke,
+  LineCapStyle,
   lineTo,
   moveTo,
   nextLine,
   popGraphicsState,
   pushGraphicsState,
   rotateAndSkewTextRadiansAndTranslate,
+  rotateDegrees,
   rotateRadians,
   scale,
+  setDashPattern,
   setFontAndSize,
+  setGraphicsState,
+  setLineCap,
   setLineHeight,
   setLineWidth,
   showText,
   skewRadians,
   stroke,
   translate,
-  LineCapStyle,
-  setLineCap,
-  rotateDegrees,
-  setGraphicsState,
-  setDashPattern,
-  beginMarkedContent,
-  endMarkedContent,
-  clip,
-  endPath,
-  appendBezierCurve,
-} from 'src/api/operators';
-import { Rotation, degrees, toRadians } from 'src/api/rotations';
-import { svgPathToOperators } from 'src/api/svgPath';
-import { PDFHexString, PDFName, PDFNumber, PDFOperator } from 'src/core';
-import { asNumber } from 'src/api/objects';
+} from "./operators.ts";
+import { degrees, Rotation, toRadians } from "./rotations.ts";
+import { svgPathToOperators } from "./svgPath.ts";
+import {
+  PDFHexString,
+  PDFName,
+  PDFNumber,
+  PDFOperator,
+} from "../core/index.ts";
+import { asNumber } from "./objects.ts";
 
 export interface DrawTextOptions {
   color: Color;
@@ -209,10 +214,13 @@ export const drawRectangle = (options: {
     closePath(),
 
     // prettier-ignore
-    options.color && options.borderWidth ? fillAndStroke()
-  : options.color                      ? fill()
-  : options.borderColor                ? stroke()
-  : closePath(),
+    options.color && options.borderWidth
+      ? fillAndStroke()
+      : options.color
+      ? fill()
+      : options.borderColor
+      ? stroke()
+      : closePath(),
 
     popGraphicsState(),
   ].filter(Boolean) as PDFOperator[];
@@ -312,24 +320,27 @@ export const drawEllipse = (options: {
     // See https://github.com/Hopding/pdf-lib/pull/511#issuecomment-667685655.
     ...(options.rotate === undefined
       ? drawEllipsePath({
-          x: options.x,
-          y: options.y,
-          xScale: options.xScale,
-          yScale: options.yScale,
-        })
+        x: options.x,
+        y: options.y,
+        xScale: options.xScale,
+        yScale: options.yScale,
+      })
       : drawEllipseCurves({
-          x: options.x,
-          y: options.y,
-          xScale: options.xScale,
-          yScale: options.yScale,
-          rotate: options.rotate ?? degrees(0),
-        })),
+        x: options.x,
+        y: options.y,
+        xScale: options.xScale,
+        yScale: options.yScale,
+        rotate: options.rotate ?? degrees(0),
+      })),
 
     // prettier-ignore
-    options.color && options.borderWidth ? fillAndStroke()
-  : options.color                      ? fill()
-  : options.borderColor                ? stroke()
-  : closePath(),
+    options.color && options.borderWidth
+      ? fillAndStroke()
+      : options.color
+      ? fill()
+      : options.borderColor
+      ? stroke()
+      : closePath(),
 
     popGraphicsState(),
   ].filter(Boolean) as PDFOperator[];
@@ -370,10 +381,13 @@ export const drawSvgPath = (
     ...svgPathToOperators(path),
 
     // prettier-ignore
-    options.color && options.borderWidth ? fillAndStroke()
-  : options.color                      ? fill()
-  : options.borderColor                ? stroke()
-  : closePath(),
+    options.color && options.borderWidth
+      ? fillAndStroke()
+      : options.color
+      ? fill()
+      : options.borderColor
+      ? stroke()
+      : closePath(),
 
     popGraphicsState(),
   ].filter(Boolean) as PDFOperator[];
@@ -442,23 +456,27 @@ export const rotateInPlace = (options: {
   height: number | PDFNumber;
   rotation: 0 | 90 | 180 | 270;
 }) =>
-    options.rotation === 0 ? [
+  options.rotation === 0
+    ? [
       translate(0, 0),
-      rotateDegrees(0)
+      rotateDegrees(0),
     ]
-  : options.rotation === 90 ? [
+    : options.rotation === 90
+    ? [
       translate(options.width, 0),
-      rotateDegrees(90)
+      rotateDegrees(90),
     ]
-  : options.rotation === 180 ? [
+    : options.rotation === 180
+    ? [
       translate(options.width, options.height),
-      rotateDegrees(180)
+      rotateDegrees(180),
     ]
-  : options.rotation === 270 ? [
+    : options.rotation === 270
+    ? [
       translate(0, options.height),
-      rotateDegrees(270)
+      rotateDegrees(270),
     ]
-  : []; // Invalid rotation - noop
+    : []; // Invalid rotation - noop
 
 export const drawCheckBox = (options: {
   x: number | PDFNumber;
@@ -684,7 +702,7 @@ export const drawTextField = (options: {
   });
 
   const markedContent = [
-    beginMarkedContent('Tx'),
+    beginMarkedContent("Tx"),
     pushGraphicsState(),
     ...lines,
     popGraphicsState(),
@@ -782,7 +800,7 @@ export const drawOptionList = (options: {
   });
 
   const markedContent = [
-    beginMarkedContent('Tx'),
+    beginMarkedContent("Tx"),
     pushGraphicsState(),
     ...lines,
     popGraphicsState(),

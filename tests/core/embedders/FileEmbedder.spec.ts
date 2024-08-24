@@ -1,14 +1,14 @@
-import fs from 'fs';
-import { PDFContext, PDFDict, PDFRef, FileEmbedder } from 'src/index';
+import fs from "fs";
+import { FileEmbedder, PDFContext, PDFDict, PDFRef } from "src/index";
 
 const catRidingUnicornJpg = fs.readFileSync(
-  'assets/images/cat_riding_unicorn.jpg',
+  "assets/images/cat_riding_unicorn.jpg",
 );
-const usConstitutionPdf = fs.readFileSync('assets/pdfs/us_constitution.pdf');
+const usConstitutionPdf = fs.readFileSync("assets/pdfs/us_constitution.pdf");
 
 describe(`FileEmbedder`, () => {
   it(`can be constructed with FileEmbedder.for(...)`, () => {
-    const embedder = FileEmbedder.for(catRidingUnicornJpg, 'cat.jpg');
+    const embedder = FileEmbedder.for(catRidingUnicornJpg, "cat.jpg");
     expect(embedder).toBeInstanceOf(FileEmbedder);
   });
 
@@ -16,12 +16,12 @@ describe(`FileEmbedder`, () => {
     const context = PDFContext.create();
     const embedder = FileEmbedder.for(
       catRidingUnicornJpg,
-      'cat_riding_unicorn.jpg',
+      "cat_riding_unicorn.jpg",
       {
-        mimeType: 'image/jpeg',
-        description: 'Cool cat riding a unicorn! 🦄🐈🕶️',
-        creationDate: new Date('2019/12/01'),
-        modificationDate: new Date('2020/04/19'),
+        mimeType: "image/jpeg",
+        description: "Cool cat riding a unicorn! 🦄🐈🕶️",
+        creationDate: new Date("2019/12/01"),
+        modificationDate: new Date("2020/04/19"),
       },
     );
 
@@ -36,12 +36,12 @@ describe(`FileEmbedder`, () => {
     const predefinedRef = PDFRef.of(9999);
     const embedder = FileEmbedder.for(
       usConstitutionPdf,
-      'us_constitution.pdf',
+      "us_constitution.pdf",
       {
-        mimeType: 'application/pdf',
-        description: 'Constitution of the United States 🇺🇸🦅',
-        creationDate: new Date('1787/09/17'),
-        modificationDate: new Date('1992/05/07'),
+        mimeType: "application/pdf",
+        description: "Constitution of the United States 🇺🇸🦅",
+        creationDate: new Date("1787/09/17"),
+        modificationDate: new Date("1992/05/07"),
       },
     );
 

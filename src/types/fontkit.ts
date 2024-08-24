@@ -73,7 +73,7 @@ export interface Path {
    * Compiles the path to a JavaScript function that can be applied with a
    * graphics context in order to render the path.
    */
-  toFunction(): Function; // tslint:disable-line ban-types
+  toFunction(): CallableFunction;
 
   /**
    * Converts the path to an SVG path data string.
@@ -120,14 +120,14 @@ export interface Glyph {
    * For COLR glyphs, which are vector based, this returns an array of objects
    * representing the glyphs and colors for each layer in render order.
    */
-  layers: any[];
+  layers: unknown[];
 
   // Methods
   /**
    * Renders the glyph to the given graphics context, at the specified
    * font size.
    */
-  render(context: any, size: number): void;
+  render(context: unknown, size: number): void;
 
   // Color Glyph Properties/Methods
   /**
@@ -197,7 +197,7 @@ export interface GlyphRun {
    * The direction requested for shaping, as passed in (either ltr or rtl).
    * If `null`, the default direction of the script is used.
    */
-  direction: 'ltr' | 'rtl' | null;
+  direction: "ltr" | "rtl" | null;
 
   /**
    * The features requested during shaping. This is a combination of user
@@ -223,8 +223,8 @@ export interface GlyphRun {
 
 export interface SubsetStream {
   on: (
-    eventType: 'data' | 'end',
-    callback: (data: Uint8Array) => any,
+    eventType: "data" | "end",
+    callback: (data: Uint8Array) => unknown,
   ) => SubsetStream;
 }
 
@@ -520,7 +520,7 @@ export interface AATFeatures {
   morx?: boolean;
   name?: boolean;
   opbd?: boolean;
-  'OS/2'?: boolean;
+  "OS/2"?: boolean;
   post?: boolean;
   prep?: boolean;
   prop?: boolean;
@@ -560,19 +560,24 @@ export interface Font {
   ascent: number /** The font’s ascender */;
   descent: number /** The font’s descender */;
   lineGap: number /** Amount of space that should be included between lines */;
-  underlinePosition: number /** Offset from the normal underline position that should be used */;
+  underlinePosition:
+    number /** Offset from the normal underline position that should be used */;
   underlineThickness: number /** Weight of the underline that should be used */;
-  italicAngle: number /** If this is an italic font, the angle the cursor should be drawn at to match the font design */;
+  italicAngle:
+    number /** If this is an italic font, the angle the cursor should be drawn at to match the font design */;
   capHeight: number /** Height of capital letters above the baseline. */;
   xHeight: number /** Height of lower case letters. */;
-  bbox: BoundingBox /** Font’s bounding box, i.e. the box that encloses all glyphs in the font */;
+  bbox:
+    BoundingBox /** Font’s bounding box, i.e. the box that encloses all glyphs in the font */;
 
   // Other properties
   numGlyphs: number /** Number of glyphs in the font */;
-  characterSet: number[] /** Array of all of the unicode code points supported by the font */;
-  availableFeatures: (keyof TypeFeatures)[] /** Array of all OpenType feature tags (or mapped AAT tags) supported by the font */;
-  cff: any;
-  'OS/2': { sFamilyClass: number };
+  characterSet:
+    number[] /** Array of all of the unicode code points supported by the font */;
+  availableFeatures:
+    (keyof TypeFeatures)[] /** Array of all OpenType feature tags (or mapped AAT tags) supported by the font */;
+  cff: unknown;
+  "OS/2": { sFamilyClass: number };
   head: { macStyle: { italic: boolean } };
   post: { isFixedPitch: boolean };
 

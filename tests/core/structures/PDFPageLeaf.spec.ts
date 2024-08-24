@@ -6,7 +6,7 @@ import {
   PDFPageLeaf,
   PDFPageTree,
   PDFRef,
-} from 'src/index';
+} from "src/index";
 
 describe(`PDFPageLeaf`, () => {
   it(`can be constructed directly from a Map and PDFContext`, () => {
@@ -15,10 +15,10 @@ describe(`PDFPageLeaf`, () => {
     const pageTree = PDFPageLeaf.fromMapWithContext(dict, context);
 
     expect(pageTree).toBeInstanceOf(PDFPageLeaf);
-    expect(pageTree.get(PDFName.of('Type'))).toBeUndefined();
-    expect(pageTree.get(PDFName.of('Kids'))).toBeUndefined();
-    expect(pageTree.get(PDFName.of('Count'))).toBeUndefined();
-    expect(pageTree.get(PDFName.of('Parent'))).toBeUndefined();
+    expect(pageTree.get(PDFName.of("Type"))).toBeUndefined();
+    expect(pageTree.get(PDFName.of("Kids"))).toBeUndefined();
+    expect(pageTree.get(PDFName.of("Count"))).toBeUndefined();
+    expect(pageTree.get(PDFName.of("Parent"))).toBeUndefined();
   });
 
   it(`is constructed with the correct Type and entries`, () => {
@@ -27,10 +27,10 @@ describe(`PDFPageLeaf`, () => {
     const pageTree = PDFPageLeaf.withContextAndParent(context, parentRef);
 
     expect(pageTree).toBeInstanceOf(PDFPageLeaf);
-    expect(pageTree.get(PDFName.of('Type'))).toBe(PDFName.of('Page'));
-    expect(pageTree.get(PDFName.of('Parent'))).toBe(parentRef);
-    expect(pageTree.get(PDFName.of('Resources'))).toBeInstanceOf(PDFDict);
-    expect(pageTree.get(PDFName.of('MediaBox'))).toBeInstanceOf(PDFArray);
+    expect(pageTree.get(PDFName.of("Type"))).toBe(PDFName.of("Page"));
+    expect(pageTree.get(PDFName.of("Parent"))).toBe(parentRef);
+    expect(pageTree.get(PDFName.of("Resources"))).toBeInstanceOf(PDFDict);
+    expect(pageTree.get(PDFName.of("MediaBox"))).toBeInstanceOf(PDFArray);
   });
 
   it(`returns its Parent, Contents, Annots, BleedBox, TrimBox, Resources, MediaBox, CropBox, and Rotate entry values when they are references`, () => {
@@ -68,14 +68,14 @@ describe(`PDFPageLeaf`, () => {
 
     parent.pushLeafNode(pageLeafRef);
 
-    pageLeaf.set(PDFName.of('Contents'), contentsRef);
-    pageLeaf.set(PDFName.of('Annots'), annotsRef);
-    pageLeaf.set(PDFName.of('BleedBox'), bleedBoxRef);
-    pageLeaf.set(PDFName.of('TrimBox'), trimBoxRef);
-    pageLeaf.set(PDFName.of('Resources'), resourcesRef);
-    pageLeaf.set(PDFName.of('MediaBox'), mediaBoxRef);
-    pageLeaf.set(PDFName.of('CropBox'), cropBoxRef);
-    pageLeaf.set(PDFName.of('Rotate'), rotateRef);
+    pageLeaf.set(PDFName.of("Contents"), contentsRef);
+    pageLeaf.set(PDFName.of("Annots"), annotsRef);
+    pageLeaf.set(PDFName.of("BleedBox"), bleedBoxRef);
+    pageLeaf.set(PDFName.of("TrimBox"), trimBoxRef);
+    pageLeaf.set(PDFName.of("Resources"), resourcesRef);
+    pageLeaf.set(PDFName.of("MediaBox"), mediaBoxRef);
+    pageLeaf.set(PDFName.of("CropBox"), cropBoxRef);
+    pageLeaf.set(PDFName.of("Rotate"), rotateRef);
 
     expect(pageLeaf.Parent()).toBe(parent);
     expect(pageLeaf.Contents()).toBe(contents);
@@ -115,14 +115,14 @@ describe(`PDFPageLeaf`, () => {
 
     parent.pushLeafNode(pageLeafRef);
 
-    pageLeaf.set(PDFName.of('Contents'), contents);
-    pageLeaf.set(PDFName.of('Annots'), annots);
-    pageLeaf.set(PDFName.of('BleedBox'), bleedBox);
-    pageLeaf.set(PDFName.of('TrimBox'), trimBox);
-    pageLeaf.set(PDFName.of('Resources'), resources);
-    pageLeaf.set(PDFName.of('MediaBox'), mediaBox);
-    pageLeaf.set(PDFName.of('CropBox'), cropBox);
-    pageLeaf.set(PDFName.of('Rotate'), rotate);
+    pageLeaf.set(PDFName.of("Contents"), contents);
+    pageLeaf.set(PDFName.of("Annots"), annots);
+    pageLeaf.set(PDFName.of("BleedBox"), bleedBox);
+    pageLeaf.set(PDFName.of("TrimBox"), trimBox);
+    pageLeaf.set(PDFName.of("Resources"), resources);
+    pageLeaf.set(PDFName.of("MediaBox"), mediaBox);
+    pageLeaf.set(PDFName.of("CropBox"), cropBox);
+    pageLeaf.set(PDFName.of("Rotate"), rotate);
 
     expect(pageLeaf.Parent()).toBe(parent);
     expect(pageLeaf.Contents()).toBe(contents);
@@ -153,18 +153,18 @@ describe(`PDFPageLeaf`, () => {
     const parent = PDFPageTree.withContext(context);
     const parentRef = context.register(parent);
 
-    parent.set(PDFName.of('Resources'), resourcesRef);
-    parent.set(PDFName.of('MediaBox'), mediaBoxRef);
-    parent.set(PDFName.of('CropBox'), cropBoxRef);
-    parent.set(PDFName.of('Rotate'), rotateRef);
+    parent.set(PDFName.of("Resources"), resourcesRef);
+    parent.set(PDFName.of("MediaBox"), mediaBoxRef);
+    parent.set(PDFName.of("CropBox"), cropBoxRef);
+    parent.set(PDFName.of("Rotate"), rotateRef);
 
     const pageLeaf = PDFPageLeaf.withContextAndParent(context, parentRef);
     const pageLeafRef = context.register(pageLeaf);
 
     parent.pushLeafNode(pageLeafRef);
 
-    pageLeaf.delete(PDFName.of('Resources'));
-    pageLeaf.delete(PDFName.of('MediaBox'));
+    pageLeaf.delete(PDFName.of("Resources"));
+    pageLeaf.delete(PDFName.of("MediaBox"));
 
     expect(pageLeaf.Parent()).toBe(parent);
     expect(pageLeaf.Resources()).toBe(resources);
@@ -194,18 +194,18 @@ describe(`PDFPageLeaf`, () => {
     const parent = PDFPageTree.withContext(context);
     const parentRef = context.register(parent);
 
-    parent.set(PDFName.of('Resources'), resourcesRef);
-    parent.set(PDFName.of('MediaBox'), mediaBoxRef);
-    parent.set(PDFName.of('CropBox'), cropBoxRef);
-    parent.set(PDFName.of('Rotate'), rotateRef);
+    parent.set(PDFName.of("Resources"), resourcesRef);
+    parent.set(PDFName.of("MediaBox"), mediaBoxRef);
+    parent.set(PDFName.of("CropBox"), cropBoxRef);
+    parent.set(PDFName.of("Rotate"), rotateRef);
 
     const pageLeaf = PDFPageLeaf.withContextAndParent(context, parentRef);
     const pageLeafRef = context.register(pageLeaf);
 
     parent.pushLeafNode(pageLeafRef);
 
-    pageLeaf.delete(PDFName.of('Resources'));
-    pageLeaf.delete(PDFName.of('MediaBox'));
+    pageLeaf.delete(PDFName.of("Resources"));
+    pageLeaf.delete(PDFName.of("MediaBox"));
 
     const { Resources, Font, XObject } = pageLeaf.normalizedEntries();
 
@@ -225,7 +225,7 @@ describe(`PDFPageLeaf`, () => {
     const parentRef = PDFRef.of(1);
     const pageTree = PDFPageLeaf.withContextAndParent(context, parentRef);
     pageTree.setParent(PDFRef.of(21));
-    expect(pageTree.get(PDFName.of('Parent'))).toBe(PDFRef.of(21));
+    expect(pageTree.get(PDFName.of("Parent"))).toBe(PDFRef.of(21));
   });
 
   it(`can add content stream refs`, () => {
@@ -234,9 +234,9 @@ describe(`PDFPageLeaf`, () => {
     const pageTree = PDFPageLeaf.withContextAndParent(context, parentRef);
 
     pageTree.addContentStream(PDFRef.of(21));
-    expect(pageTree.Contents()!.toString()).toBe('[ 21 0 R ]');
+    expect(pageTree.Contents()!.toString()).toBe("[ 21 0 R ]");
     pageTree.addContentStream(PDFRef.of(99));
-    expect(pageTree.Contents()!.toString()).toBe('[ 21 0 R 99 0 R ]');
+    expect(pageTree.Contents()!.toString()).toBe("[ 21 0 R 99 0 R ]");
   });
 
   it(`can set font dictionary refs`, () => {
@@ -244,14 +244,14 @@ describe(`PDFPageLeaf`, () => {
     const parentRef = PDFRef.of(1);
     const pageTree = PDFPageLeaf.withContextAndParent(context, parentRef);
 
-    const Font = PDFName.of('Font');
-    pageTree.setFontDictionary(PDFName.of('Foo'), PDFRef.of(21));
+    const Font = PDFName.of("Font");
+    pageTree.setFontDictionary(PDFName.of("Foo"), PDFRef.of(21));
     expect(pageTree.Resources()!.get(Font)!.toString()).toBe(
-      '<<\n/Foo 21 0 R\n>>',
+      "<<\n/Foo 21 0 R\n>>",
     );
-    pageTree.setFontDictionary(PDFName.of('Bar'), PDFRef.of(99));
+    pageTree.setFontDictionary(PDFName.of("Bar"), PDFRef.of(99));
     expect(pageTree.Resources()!.get(Font)!.toString()).toBe(
-      '<<\n/Foo 21 0 R\n/Bar 99 0 R\n>>',
+      "<<\n/Foo 21 0 R\n/Bar 99 0 R\n>>",
     );
   });
 
@@ -260,14 +260,14 @@ describe(`PDFPageLeaf`, () => {
     const parentRef = PDFRef.of(1);
     const pageTree = PDFPageLeaf.withContextAndParent(context, parentRef);
 
-    const XObject = PDFName.of('XObject');
-    pageTree.setXObject(PDFName.of('Foo'), PDFRef.of(21));
+    const XObject = PDFName.of("XObject");
+    pageTree.setXObject(PDFName.of("Foo"), PDFRef.of(21));
     expect(pageTree.Resources()!.get(XObject)!.toString()).toBe(
-      '<<\n/Foo 21 0 R\n>>',
+      "<<\n/Foo 21 0 R\n>>",
     );
-    pageTree.setXObject(PDFName.of('Bar'), PDFRef.of(99));
+    pageTree.setXObject(PDFName.of("Bar"), PDFRef.of(99));
     expect(pageTree.Resources()!.get(XObject)!.toString()).toBe(
-      '<<\n/Foo 21 0 R\n/Bar 99 0 R\n>>',
+      "<<\n/Foo 21 0 R\n/Bar 99 0 R\n>>",
     );
   });
 
@@ -276,14 +276,14 @@ describe(`PDFPageLeaf`, () => {
     const parentRef = PDFRef.of(1);
     const pageTree = PDFPageLeaf.withContextAndParent(context, parentRef);
 
-    const ExtGState = PDFName.of('ExtGState');
-    pageTree.setExtGState(PDFName.of('Foo'), PDFRef.of(21));
+    const ExtGState = PDFName.of("ExtGState");
+    pageTree.setExtGState(PDFName.of("Foo"), PDFRef.of(21));
     expect(pageTree.Resources()!.get(ExtGState)!.toString()).toBe(
-      '<<\n/Foo 21 0 R\n>>',
+      "<<\n/Foo 21 0 R\n>>",
     );
-    pageTree.setExtGState(PDFName.of('Bar'), context.obj({ CA: 0.1 }));
+    pageTree.setExtGState(PDFName.of("Bar"), context.obj({ CA: 0.1 }));
     expect(pageTree.Resources()!.get(ExtGState)!.toString()).toBe(
-      '<<\n/Foo 21 0 R\n/Bar <<\n/CA 0.1\n>>\n>>',
+      "<<\n/Foo 21 0 R\n/Bar <<\n/CA 0.1\n>>\n>>",
     );
   });
 
@@ -313,19 +313,19 @@ describe(`PDFPageLeaf`, () => {
     const context = PDFContext.create();
     const parentRef = PDFRef.of(1);
     const pageTree = PDFPageLeaf.withContextAndParent(context, parentRef);
-    const stream = context.stream('foo');
+    const stream = context.stream("foo");
     const streamRef = PDFRef.of(21);
     context.assign(streamRef, stream);
-    pageTree.set(PDFName.of('Contents'), streamRef);
+    pageTree.set(PDFName.of("Contents"), streamRef);
 
     expect(pageTree.Contents()).toBe(stream);
-    expect(pageTree.Resources()!.toString()).toBe('<<\n>>');
+    expect(pageTree.Resources()!.toString()).toBe("<<\n>>");
 
     pageTree.normalize();
 
-    expect(pageTree.Contents()!.toString()).toBe('[ 21 0 R ]');
+    expect(pageTree.Contents()!.toString()).toBe("[ 21 0 R ]");
     expect(pageTree.Resources()!.toString()).toBe(
-      '<<\n/Font <<\n>>\n/XObject <<\n>>\n/ExtGState <<\n>>\n>>',
+      "<<\n/Font <<\n>>\n/XObject <<\n>>\n/ExtGState <<\n>>\n>>",
     );
   });
 
@@ -333,13 +333,13 @@ describe(`PDFPageLeaf`, () => {
     const context = PDFContext.create();
     const map = new Map();
     const pageTree = PDFPageLeaf.fromMapWithContext(map, context);
-    const stream = context.stream('foo');
+    const stream = context.stream("foo");
     const streamRef = PDFRef.of(21);
     context.assign(streamRef, stream);
-    pageTree.set(PDFName.of('Contents'), streamRef);
+    pageTree.set(PDFName.of("Contents"), streamRef);
 
     expect(pageTree.Contents()).toBe(stream);
-    expect(pageTree.get(PDFName.of('Resources'))).toBeUndefined();
+    expect(pageTree.get(PDFName.of("Resources"))).toBeUndefined();
 
     pageTree.normalize();
 
@@ -349,7 +349,7 @@ describe(`PDFPageLeaf`, () => {
       `[ ${pushRef} 21 0 R ${popRef} ]`,
     );
     expect(pageTree.Resources()!.toString()).toBe(
-      '<<\n/Font <<\n>>\n/XObject <<\n>>\n/ExtGState <<\n>>\n>>',
+      "<<\n/Font <<\n>>\n/XObject <<\n>>\n/ExtGState <<\n>>\n>>",
     );
   });
 });

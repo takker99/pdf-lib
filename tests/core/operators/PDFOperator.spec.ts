@@ -5,11 +5,11 @@ import {
   PDFString,
   toCharCode,
   typedArrayFor,
-} from 'src/index';
+} from "src/index";
 
 describe(`PDFOperator`, () => {
   it(`can be constructed with args`, () => {
-    const str = PDFString.of('FooBar');
+    const str = PDFString.of("FooBar");
     expect(PDFOperator.of(Ops.ShowText, [str])).toBeInstanceOf(PDFOperator);
   });
 
@@ -35,7 +35,7 @@ describe(`PDFOperator`, () => {
   });
 
   it(`can be converted to a string without args`, () => {
-    expect(String(PDFOperator.of(Ops.ClosePath))).toBe('h');
+    expect(String(PDFOperator.of(Ops.ClosePath))).toBe("h");
   });
 
   it(`can be converted to a string with args`, () => {
@@ -43,7 +43,7 @@ describe(`PDFOperator`, () => {
       PDFNumber.of(25.43),
       PDFNumber.of(-50),
     ]);
-    expect(String(op)).toBe('25.43 -50 Td');
+    expect(String(op)).toBe("25.43 -50 Td");
   });
 
   it(`can provide its size in bytes without args`, () => {
@@ -60,9 +60,9 @@ describe(`PDFOperator`, () => {
 
   it(`can be serialized without args`, () => {
     const op = PDFOperator.of(Ops.ClosePath);
-    const buffer = new Uint8Array(op.sizeInBytes() + 3).fill(toCharCode(' '));
+    const buffer = new Uint8Array(op.sizeInBytes() + 3).fill(toCharCode(" "));
     expect(op.copyBytesInto(buffer, 2)).toBe(1);
-    expect(buffer).toEqual(typedArrayFor('  h '));
+    expect(buffer).toEqual(typedArrayFor("  h "));
   });
 
   it(`can be serialized with args`, () => {
@@ -70,8 +70,8 @@ describe(`PDFOperator`, () => {
       PDFNumber.of(25.43),
       PDFNumber.of(-50),
     ]);
-    const buffer = new Uint8Array(op.sizeInBytes() + 3).fill(toCharCode(' '));
+    const buffer = new Uint8Array(op.sizeInBytes() + 3).fill(toCharCode(" "));
     expect(op.copyBytesInto(buffer, 2)).toBe(12);
-    expect(buffer).toEqual(typedArrayFor('  25.43 -50 Td '));
+    expect(buffer).toEqual(typedArrayFor("  25.43 -50 Td "));
   });
 });

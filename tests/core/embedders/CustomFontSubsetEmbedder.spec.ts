@@ -1,14 +1,14 @@
-import fontkit from '@pdf-lib/fontkit';
-import fs from 'fs';
+import fontkit from "@pdf-lib/fontkit";
+import fs from "fs";
 
 import {
   CustomFontSubsetEmbedder,
   PDFContext,
   PDFDict,
   PDFHexString,
-} from 'src/index';
+} from "src/index";
 
-const ubuntuFont = fs.readFileSync('./assets/fonts/ubuntu/Ubuntu-R.ttf');
+const ubuntuFont = fs.readFileSync("./assets/fonts/ubuntu/Ubuntu-R.ttf");
 
 describe(`CustomFontSubsetEmbedder`, () => {
   it(`can be constructed with CustomFontSubsetEmbedder.for(...)`, async () => {
@@ -30,9 +30,9 @@ describe(`CustomFontSubsetEmbedder`, () => {
   });
 
   it(`can encode text strings into PDFHexString objects`, async () => {
-    const text = 'Stuff and thingz!';
+    const text = "Stuff and thingz!";
     const hexCodes =
-      '00010002000300040005000600070008000500020009000A0007000B000C000D';
+      "00010002000300040005000600070008000500020009000A0007000B000C000D";
     const embedder = await CustomFontSubsetEmbedder.for(fontkit, ubuntuFont);
 
     expect(embedder.encodeText(text)).toBeInstanceOf(PDFHexString);
@@ -42,7 +42,7 @@ describe(`CustomFontSubsetEmbedder`, () => {
   });
 
   it(`can measure the width of text strings at the given font size`, async () => {
-    const text = 'Stuff and thingz!';
+    const text = "Stuff and thingz!";
     const embedder = await CustomFontSubsetEmbedder.for(fontkit, ubuntuFont);
     expect(embedder.widthOfTextAtSize(text, 12)).toBe(90.672);
     expect(embedder.widthOfTextAtSize(text, 24)).toBe(181.344);

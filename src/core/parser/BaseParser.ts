@@ -1,9 +1,9 @@
-import { NumberParsingError } from 'src/core/errors';
-import ByteStream from 'src/core/parser/ByteStream';
-import CharCodes from 'src/core/syntax/CharCodes';
-import { IsDigit, IsNumeric } from 'src/core/syntax/Numeric';
-import { IsWhitespace } from 'src/core/syntax/Whitespace';
-import { charFromCode } from 'src/utils';
+import { NumberParsingError } from "../errors.ts";
+import ByteStream from "./ByteStream.ts";
+import CharCodes from "../syntax/CharCodes.ts";
+import { IsDigit, IsNumeric } from "../syntax/Numeric.ts";
+import { IsWhitespace } from "../syntax/Whitespace.ts";
+import { charFromCode } from "../../utils/index.ts";
 
 const { Newline, CarriageReturn } = CharCodes;
 
@@ -18,7 +18,7 @@ class BaseParser {
   }
 
   protected parseRawInt(): number {
-    let value = '';
+    let value = "";
 
     while (!this.bytes.done()) {
       const byte = this.bytes.peek();
@@ -38,7 +38,7 @@ class BaseParser {
   // TODO: Maybe handle exponential format?
   // TODO: Compare performance of string concatenation to charFromCode(...bytes)
   protected parseRawNumber(): number {
-    let value = '';
+    let value = "";
 
     // Parse integer-part, the leading (+ | - | . | 0-9)
     while (!this.bytes.done()) {
@@ -63,11 +63,13 @@ class BaseParser {
 
     if (numberValue > Number.MAX_SAFE_INTEGER) {
       if (this.capNumbers) {
-        const msg = `Parsed number that is too large for some PDF readers: ${value}, using Number.MAX_SAFE_INTEGER instead.`;
+        const msg =
+          `Parsed number that is too large for some PDF readers: ${value}, using Number.MAX_SAFE_INTEGER instead.`;
         console.warn(msg);
         return Number.MAX_SAFE_INTEGER;
       } else {
-        const msg = `Parsed number that is too large for some PDF readers: ${value}, not capping.`;
+        const msg =
+          `Parsed number that is too large for some PDF readers: ${value}, not capping.`;
         console.warn(msg);
       }
     }

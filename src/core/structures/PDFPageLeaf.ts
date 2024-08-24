@@ -1,19 +1,19 @@
-import PDFArray from 'src/core/objects/PDFArray';
-import PDFDict, { DictMap } from 'src/core/objects/PDFDict';
-import PDFName from 'src/core/objects/PDFName';
-import PDFNumber from 'src/core/objects/PDFNumber';
-import PDFObject from 'src/core/objects/PDFObject';
-import PDFRef from 'src/core/objects/PDFRef';
-import PDFStream from 'src/core/objects/PDFStream';
-import PDFContext from 'src/core/PDFContext';
-import PDFPageTree from 'src/core/structures/PDFPageTree';
+import PDFArray from "../objects/PDFArray.ts";
+import PDFDict, { DictMap } from "../objects/PDFDict.ts";
+import PDFName from "../objects/PDFName.ts";
+import PDFNumber from "../objects/PDFNumber.ts";
+import PDFObject from "../objects/PDFObject.ts";
+import PDFRef from "../objects/PDFRef.ts";
+import PDFStream from "../objects/PDFStream.ts";
+import PDFContext from "../PDFContext.ts";
+import PDFPageTree from "./PDFPageTree.ts";
 
 class PDFPageLeaf extends PDFDict {
   static readonly InheritableEntries = [
-    'Resources',
-    'MediaBox',
-    'CropBox',
-    'Rotate',
+    "Resources",
+    "MediaBox",
+    "CropBox",
+    "Rotate",
   ];
 
   static withContextAndParent = (context: PDFContext, parent: PDFRef) => {
@@ -62,7 +62,7 @@ class PDFPageLeaf extends PDFDict {
   }
 
   Contents(): PDFStream | PDFArray | undefined {
-    return this.lookup(PDFName.of('Contents')) as
+    return this.lookup(PDFName.of("Contents")) as
       | PDFStream
       | PDFArray
       | undefined;
@@ -219,23 +219,23 @@ class PDFPageLeaf extends PDFDict {
 
     // TODO: Clone `Resources` if it is inherited
     const dictOrRef = this.getInheritableAttribute(PDFName.Resources);
-    const Resources =
-      context.lookupMaybe(dictOrRef, PDFDict) || context.obj({});
+    const Resources = context.lookupMaybe(dictOrRef, PDFDict) ||
+      context.obj({});
     this.set(PDFName.Resources, Resources);
 
     // TODO: Clone `Font` if it is inherited
-    const Font =
-      Resources.lookupMaybe(PDFName.Font, PDFDict) || context.obj({});
+    const Font = Resources.lookupMaybe(PDFName.Font, PDFDict) ||
+      context.obj({});
     Resources.set(PDFName.Font, Font);
 
     // TODO: Clone `XObject` if it is inherited
-    const XObject =
-      Resources.lookupMaybe(PDFName.XObject, PDFDict) || context.obj({});
+    const XObject = Resources.lookupMaybe(PDFName.XObject, PDFDict) ||
+      context.obj({});
     Resources.set(PDFName.XObject, XObject);
 
     // TODO: Clone `ExtGState` if it is inherited
-    const ExtGState =
-      Resources.lookupMaybe(PDFName.ExtGState, PDFDict) || context.obj({});
+    const ExtGState = Resources.lookupMaybe(PDFName.ExtGState, PDFDict) ||
+      context.obj({});
     Resources.set(PDFName.ExtGState, ExtGState);
 
     const Annots = this.Annots() || context.obj([]);

@@ -1,8 +1,18 @@
-import { Font, Fontkit, Glyph, Subset, TypeFeatures } from 'src/types/fontkit';
+import {
+  Font,
+  Fontkit,
+  Glyph,
+  Subset,
+  TypeFeatures,
+} from "../../types/fontkit.ts";
 
-import CustomFontEmbedder from 'src/core/embedders/CustomFontEmbedder';
-import PDFHexString from 'src/core/objects/PDFHexString';
-import { Cache, mergeUint8Arrays, toHexStringOfMinLength } from 'src/utils';
+import CustomFontEmbedder from "./CustomFontEmbedder.ts";
+import PDFHexString from "../objects/PDFHexString.ts";
+import {
+  Cache,
+  mergeUint8Arrays,
+  toHexStringOfMinLength,
+} from "../../utils/index.ts";
 
 /**
  * A note of thanks to the developers of https://github.com/foliojs/pdfkit, as
@@ -58,7 +68,7 @@ class CustomFontSubsetEmbedder extends CustomFontEmbedder {
     }
 
     this.glyphCache.invalidate();
-    return PDFHexString.of(hexCodes.join(''));
+    return PDFHexString.of(hexCodes.join(""));
   }
 
   protected isCFF(): boolean {
@@ -74,9 +84,9 @@ class CustomFontSubsetEmbedder extends CustomFontEmbedder {
       const parts: Uint8Array[] = [];
       this.subset
         .encodeStream()
-        .on('data', (bytes) => parts.push(bytes))
-        .on('end', () => resolve(mergeUint8Arrays(parts)))
-        .on('error' as any, (err) => reject(err));
+        .on("data", (bytes) => parts.push(bytes))
+        .on("end", () => resolve(mergeUint8Arrays(parts)))
+        .on("error" as any, (err) => reject(err));
     });
   }
 }

@@ -1,19 +1,29 @@
-import PDFRef from 'src/core/objects/PDFRef';
-import PDFContext from 'src/core/PDFContext';
+import PDFRef from "../objects/PDFRef.ts";
+import PDFContext from "../PDFContext.ts";
 
 // prettier-ignore
 const MARKERS = [
-  0xffc0, 0xffc1, 0xffc2,
-  0xffc3, 0xffc5, 0xffc6,
-  0xffc7, 0xffc8, 0xffc9,
-  0xffca, 0xffcb, 0xffcc,
-  0xffcd, 0xffce, 0xffcf,
+  0xffc0,
+  0xffc1,
+  0xffc2,
+  0xffc3,
+  0xffc5,
+  0xffc6,
+  0xffc7,
+  0xffc8,
+  0xffc9,
+  0xffca,
+  0xffcb,
+  0xffcc,
+  0xffcd,
+  0xffce,
+  0xffcf,
 ];
 
 enum ColorSpace {
-  DeviceGray = 'DeviceGray',
-  DeviceRGB = 'DeviceRGB',
-  DeviceCMYK = 'DeviceCMYK',
+  DeviceGray = "DeviceGray",
+  DeviceRGB = "DeviceRGB",
+  DeviceCMYK = "DeviceCMYK",
 }
 
 const ChannelToColorSpace: { [idx: number]: ColorSpace | undefined } = {
@@ -28,11 +38,11 @@ const ChannelToColorSpace: { [idx: number]: ColorSpace | undefined } = {
  *   https://github.com/foliojs/pdfkit/blob/a6af76467ce06bd6a2af4aa7271ccac9ff152a7d/lib/image/jpeg.js
  */
 class JpegEmbedder {
-  static async for(imageData: Uint8Array) {
+  static for(imageData: Uint8Array) {
     const dataView = new DataView(imageData.buffer);
 
     const soi = dataView.getUint16(0);
-    if (soi !== 0xffd8) throw new Error('SOI not found in JPEG');
+    if (soi !== 0xffd8) throw new Error("SOI not found in JPEG");
 
     let pos = 2;
     let marker: number;
@@ -44,7 +54,7 @@ class JpegEmbedder {
       pos += dataView.getUint16(pos);
     }
 
-    if (!MARKERS.includes(marker!)) throw new Error('Invalid JPEG');
+    if (!MARKERS.includes(marker!)) throw new Error("Invalid JPEG");
     pos += 2;
 
     const bitsPerComponent = dataView.getUint8(pos++);
@@ -57,7 +67,7 @@ class JpegEmbedder {
     const channelByte = dataView.getUint8(pos++);
     const channelName = ChannelToColorSpace[channelByte];
 
-    if (!channelName) throw new Error('Unknown JPEG channel.');
+    if (!channelName) throw new Error("Unknown JPEG channel.");
 
     const colorSpace = channelName;
 
@@ -91,15 +101,15 @@ class JpegEmbedder {
     this.colorSpace = colorSpace;
   }
 
-  async embedIntoContext(context: PDFContext, ref?: PDFRef): Promise<PDFRef> {
+  embedIntoContext(context: PDFContext, ref?: PDFRef): Promise<PDFRef> {
     const xObject = context.stream(this.imageData, {
-      Type: 'XObject',
-      Subtype: 'Image',
+      Type: "XObject",
+      Subtype: "Image",
       BitsPerComponent: this.bitsPerComponent,
       Width: this.width,
       Height: this.height,
       ColorSpace: this.colorSpace,
-      Filter: 'DCTDecode',
+      Filter: "DCTDecode",
 
       // CMYK JPEG streams in PDF are typically stored complemented,
       // with 1 as 'off' and 0 as 'on' (PDF 32000-1:2008, 8.6.4.4).
@@ -109,17 +119,16 @@ class JpegEmbedder {
       //
       // Applying a swap here as a hedge that most bytes passing
       // through this method will benefit from it.
-      Decode:
-        this.colorSpace === ColorSpace.DeviceCMYK
-          ? [1, 0, 1, 0, 1, 0, 1, 0]
-          : undefined,
+      Decode: this.colorSpace === ColorSpace.DeviceCMYK
+        ? [1, 0, 1, 0, 1, 0, 1, 0]
+        : undefined,
     });
 
     if (ref) {
       context.assign(ref, xObject);
-      return ref;
+      return Promise.resolve(ref);
     } else {
-      return context.register(xObject);
+      return Promise.resolve(context.register(xObject));
     }
   }
 }

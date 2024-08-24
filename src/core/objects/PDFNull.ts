@@ -1,5 +1,5 @@
-import PDFObject from 'src/core/objects/PDFObject';
-import CharCodes from 'src/core/syntax/CharCodes';
+import PDFObject from "./PDFObject.ts";
+import CharCodes from "../syntax/CharCodes.ts";
 
 class PDFNull extends PDFObject {
   asNull(): null {
@@ -11,7 +11,7 @@ class PDFNull extends PDFObject {
   }
 
   toString(): string {
-    return 'null';
+    return "null";
   }
 
   sizeInBytes(): number {

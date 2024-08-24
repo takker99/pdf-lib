@@ -7,11 +7,10 @@
  *
  *     Copyright (c) 2012 Niklas von Hertzen
  *     Licensed under the MIT license.
- *
  */
 
 const chars =
-  'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/';
+  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 // Use a lookup table to find the index.
 const lookup = new Uint8Array(256);
@@ -20,7 +19,7 @@ for (let i = 0; i < chars.length; i++) {
 }
 
 export const encodeToBase64 = (bytes: Uint8Array): string => {
-  let base64 = '';
+  let base64 = "";
   const len = bytes.length;
   for (let i = 0; i < len; i += 3) {
     base64 += chars[bytes[i] >> 2];
@@ -30,9 +29,9 @@ export const encodeToBase64 = (bytes: Uint8Array): string => {
   }
 
   if (len % 3 === 2) {
-    base64 = base64.substring(0, base64.length - 1) + '=';
+    base64 = base64.substring(0, base64.length - 1) + "=";
   } else if (len % 3 === 1) {
-    base64 = base64.substring(0, base64.length - 2) + '==';
+    base64 = base64.substring(0, base64.length - 2) + "==";
   }
 
   return base64;
@@ -48,9 +47,9 @@ export const decodeFromBase64 = (base64: string): Uint8Array => {
   let encoded3;
   let encoded4;
 
-  if (base64[base64.length - 1] === '=') {
+  if (base64[base64.length - 1] === "=") {
     bufferLength--;
-    if (base64[base64.length - 2] === '=') {
+    if (base64[base64.length - 2] === "=") {
       bufferLength--;
     }
   }
@@ -73,7 +72,8 @@ export const decodeFromBase64 = (base64: string): Uint8Array => {
 
 // This regex is designed to be as flexible as possible. It will parse certain
 // invalid data URIs.
-const DATA_URI_PREFIX_REGEX = /^(data)?:?([\w\/\+]+)?;?(charset=[\w-]+|base64)?.*,/i;
+const DATA_URI_PREFIX_REGEX =
+  /^(data)?:?([\w\/\+]+)?;?(charset=[\w-]+|base64)?.*,/i;
 
 /**
  * If the `dataUri` input is a data URI, then the data URI prefix must not be

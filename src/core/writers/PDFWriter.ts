@@ -1,14 +1,14 @@
-import PDFCrossRefSection from 'src/core/document/PDFCrossRefSection';
-import PDFHeader from 'src/core/document/PDFHeader';
-import PDFTrailer from 'src/core/document/PDFTrailer';
-import PDFTrailerDict from 'src/core/document/PDFTrailerDict';
-import PDFDict from 'src/core/objects/PDFDict';
-import PDFObject from 'src/core/objects/PDFObject';
-import PDFRef from 'src/core/objects/PDFRef';
-import PDFContext from 'src/core/PDFContext';
-import PDFObjectStream from 'src/core/structures/PDFObjectStream';
-import CharCodes from 'src/core/syntax/CharCodes';
-import { copyStringIntoBuffer, waitForTick } from 'src/utils';
+import PDFCrossRefSection from "../document/PDFCrossRefSection.ts";
+import PDFHeader from "../document/PDFHeader.ts";
+import PDFTrailer from "../document/PDFTrailer.ts";
+import PDFTrailerDict from "../document/PDFTrailerDict.ts";
+import PDFDict from "../objects/PDFDict.ts";
+import PDFObject from "../objects/PDFObject.ts";
+import PDFRef from "../objects/PDFRef.ts";
+import PDFContext from "../PDFContext.ts";
+import PDFObjectStream from "../structures/PDFObjectStream.ts";
+import CharCodes from "../syntax/CharCodes.ts";
+import { copyStringIntoBuffer, waitForTick } from "../../utils/index.ts";
 
 export interface SerializationInfo {
   size: number;
@@ -78,8 +78,9 @@ class PDFWriter {
       buffer[offset++] = CharCodes.Newline;
       buffer[offset++] = CharCodes.Newline;
 
-      const n =
-        object instanceof PDFObjectStream ? object.getObjectsCount() : 1;
+      const n = object instanceof PDFObjectStream
+        ? object.getObjectsCount()
+        : 1;
       if (this.shouldWaitForTick(n)) await waitForTick();
     }
 

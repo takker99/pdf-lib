@@ -1,15 +1,15 @@
-import PDFFont from 'src/api/PDFFont';
-import { CombedTextLayoutError } from 'src/api/errors';
-import { TextAlignment } from 'src/api/text/alignment';
+import PDFFont from "../PDFFont.ts";
+import { CombedTextLayoutError } from "../errors.ts";
+import { TextAlignment } from "./alignment.ts";
 
-import { PDFHexString } from 'src/core';
+import { PDFHexString } from "../../core/index.ts";
 import {
+  charAtIndex,
+  charSplit,
   cleanText,
   lineSplit,
   mergeLines,
-  charAtIndex,
-  charSplit,
-} from 'src/utils';
+} from "../../utils/index.ts";
 
 export interface TextPosition {
   text: string;
@@ -49,14 +49,14 @@ const computeFontSize = (
       linesUsed += 1;
 
       const line = lines[lineIdx];
-      const words = line.split(' ');
+      const words = line.split(" ");
 
       // Layout the words using the current `fontSize`, line wrapping
       // whenever we reach the end of the current line.
       let spaceInLineRemaining = bounds.width;
       for (let idx = 0, len = words.length; idx < len; idx++) {
         const isLastWord = idx === len - 1;
-        const word = isLastWord ? words[idx] : words[idx] + ' ';
+        const word = isLastWord ? words[idx] : words[idx] + " ";
         const widthOfWord = font.widthOfTextAtSize(word, fontSize);
         spaceInLineRemaining -= widthOfWord;
         if (spaceInLineRemaining <= 0) {
@@ -190,12 +190,13 @@ export const layoutMultilineText = (
       );
 
       // prettier-ignore
-      const x = (
-          alignment === TextAlignment.Left   ? bounds.x
-        : alignment === TextAlignment.Center ? bounds.x + (bounds.width / 2) - (width / 2)
-        : alignment === TextAlignment.Right  ? bounds.x + bounds.width - width
-        : bounds.x
-      );
+      const x = alignment === TextAlignment.Left
+        ? bounds.x
+        : alignment === TextAlignment.Center
+        ? bounds.x + (bounds.width / 2) - (width / 2)
+        : alignment === TextAlignment.Right
+        ? bounds.x + bounds.width - width
+        : bounds.x;
 
       y -= lineHeight;
 
@@ -326,12 +327,13 @@ export const layoutSinglelineText = (
   const height = font.heightAtSize(fontSize, { descender: false });
 
   // prettier-ignore
-  const x = (
-      alignment === TextAlignment.Left   ? bounds.x
-    : alignment === TextAlignment.Center ? bounds.x + (bounds.width / 2) - (width / 2)
-    : alignment === TextAlignment.Right  ? bounds.x + bounds.width - width
-    : bounds.x
-  );
+  const x = alignment === TextAlignment.Left
+    ? bounds.x
+    : alignment === TextAlignment.Center
+    ? bounds.x + (bounds.width / 2) - (width / 2)
+    : alignment === TextAlignment.Right
+    ? bounds.x + bounds.width - width
+    : bounds.x;
 
   const y = bounds.y + (bounds.height / 2 - height / 2);
 

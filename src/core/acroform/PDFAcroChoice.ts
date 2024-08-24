@@ -1,13 +1,13 @@
-import PDFAcroTerminal from 'src/core/acroform/PDFAcroTerminal';
-import PDFHexString from 'src/core/objects/PDFHexString';
-import PDFString from 'src/core/objects/PDFString';
-import PDFArray from 'src/core/objects/PDFArray';
-import PDFName from 'src/core/objects/PDFName';
-import { AcroChoiceFlags } from 'src/core/acroform/flags';
+import PDFAcroTerminal from "./PDFAcroTerminal.ts";
+import PDFHexString from "../objects/PDFHexString.ts";
+import PDFString from "../objects/PDFString.ts";
+import PDFArray from "../objects/PDFArray.ts";
+import PDFName from "../objects/PDFName.ts";
+import { AcroChoiceFlags } from "./flags.ts";
 import {
   InvalidAcroFieldValueError,
   MultiSelectValueError,
-} from 'src/core/errors';
+} from "../errors.ts";
 
 class PDFAcroChoice extends PDFAcroTerminal {
   setValues(values: (PDFString | PDFHexString)[]) {
@@ -20,16 +20,16 @@ class PDFAcroChoice extends PDFAcroTerminal {
     }
 
     if (values.length === 0) {
-      this.dict.delete(PDFName.of('V'));
+      this.dict.delete(PDFName.of("V"));
     }
     if (values.length === 1) {
-      this.dict.set(PDFName.of('V'), values[0]);
+      this.dict.set(PDFName.of("V"), values[0]);
     }
     if (values.length > 1) {
       if (!this.hasFlag(AcroChoiceFlags.MultiSelect)) {
         throw new MultiSelectValueError();
       }
-      this.dict.set(PDFName.of('V'), this.dict.context.obj(values));
+      this.dict.set(PDFName.of("V"), this.dict.context.obj(values));
     }
 
     this.updateSelectedIndices(values);
@@ -56,9 +56,9 @@ class PDFAcroChoice extends PDFAcroTerminal {
           (o) => val === (o.display || o.value).decodeText(),
         );
       }
-      this.dict.set(PDFName.of('I'), this.dict.context.obj(indices.sort()));
+      this.dict.set(PDFName.of("I"), this.dict.context.obj(indices.sort()));
     } else {
-      this.dict.delete(PDFName.of('I'));
+      this.dict.delete(PDFName.of("I"));
     }
   }
 
@@ -85,7 +85,7 @@ class PDFAcroChoice extends PDFAcroTerminal {
 
   Opt(): PDFArray | PDFString | PDFHexString | undefined {
     return this.dict.lookupMaybe(
-      PDFName.of('Opt'),
+      PDFName.of("Opt"),
       PDFString,
       PDFHexString,
       PDFArray,
@@ -103,7 +103,7 @@ class PDFAcroChoice extends PDFAcroTerminal {
       const { value, display } = options[idx];
       newOpt[idx] = this.dict.context.obj([value, display || value]);
     }
-    this.dict.set(PDFName.of('Opt'), this.dict.context.obj(newOpt));
+    this.dict.set(PDFName.of("Opt"), this.dict.context.obj(newOpt));
   }
 
   getOptions(): {

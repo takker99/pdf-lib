@@ -1,5 +1,5 @@
-import { PDFBool, PrivateConstructorError } from 'src/core';
-import { toCharCode, typedArrayFor } from 'src/utils';
+import { PDFBool, PrivateConstructorError } from "src/core";
+import { toCharCode, typedArrayFor } from "src/utils";
 
 describe(`PDFBool`, () => {
   it(`cannot be publicly constructed`, () => {
@@ -19,8 +19,8 @@ describe(`PDFBool`, () => {
   });
 
   it(`can be converted to a string`, () => {
-    expect(String(PDFBool.True)).toBe('true');
-    expect(String(PDFBool.False)).toBe('false');
+    expect(String(PDFBool.True)).toBe("true");
+    expect(String(PDFBool.False)).toBe("false");
   });
 
   it(`can provide its size in bytes`, () => {
@@ -29,14 +29,14 @@ describe(`PDFBool`, () => {
   });
 
   it(`can be serialized when true`, () => {
-    const buffer = new Uint8Array(8).fill(toCharCode(' '));
+    const buffer = new Uint8Array(8).fill(toCharCode(" "));
     expect(PDFBool.True.copyBytesInto(buffer, 3)).toBe(4);
-    expect(buffer).toEqual(typedArrayFor('   true '));
+    expect(buffer).toEqual(typedArrayFor("   true "));
   });
 
   it(`can be serialized when false`, () => {
-    const buffer = new Uint8Array(9).fill(toCharCode(' '));
+    const buffer = new Uint8Array(9).fill(toCharCode(" "));
     expect(PDFBool.False.copyBytesInto(buffer, 1)).toBe(5);
-    expect(buffer).toEqual(typedArrayFor(' false   '));
+    expect(buffer).toEqual(typedArrayFor(" false   "));
   });
 });

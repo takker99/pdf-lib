@@ -1,2 +1,2 @@
-export * from 'src/api/text/alignment';
-export * from 'src/api/text/layout';
+export * from "./alignment.ts";
+export * from "./layout.ts";

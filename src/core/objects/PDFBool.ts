@@ -1,6 +1,6 @@
-import { PrivateConstructorError } from 'src/core/errors';
-import PDFObject from 'src/core/objects/PDFObject';
-import CharCodes from 'src/core/syntax/CharCodes';
+import { PrivateConstructorError } from "../errors.ts";
+import PDFObject from "./PDFObject.ts";
+import CharCodes from "../syntax/CharCodes.ts";
 
 const ENFORCER = {};
 
@@ -11,7 +11,7 @@ class PDFBool extends PDFObject {
   private readonly value: boolean;
 
   private constructor(enforcer: any, value: boolean) {
-    if (enforcer !== ENFORCER) throw new PrivateConstructorError('PDFBool');
+    if (enforcer !== ENFORCER) throw new PrivateConstructorError("PDFBool");
     super();
     this.value = value;
   }

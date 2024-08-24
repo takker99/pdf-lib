@@ -1,15 +1,15 @@
-import { Assets } from '../index.ts';
+import { Assets } from "../index.ts";
 
 // @deno-types="../dummy.d.ts"
 import {
+  degrees,
   ParseSpeeds,
   PDFDocument,
   PDFPage,
   radians,
-  StandardFonts,
   rgb,
-  degrees,
-} from '../../../dist/pdf-lib.esm.js';
+  StandardFonts,
+} from "../../../dist/pdf-lib.esm.js";
 
 export default async (assets: Assets) => {
   const { pdfs, images } = assets;
@@ -41,11 +41,11 @@ export default async (assets: Assets) => {
     middlePage.setFont(font);
 
     // prettier-ignore
-    const text = (
-        fontName === StandardFonts.Symbol ? `${idx + 1}. Τηεσε αρε τηε 14 Στανδαρδ Φοντσ.`
-      : fontName === StandardFonts.ZapfDingbats ? `✑✔✎ ✴❈❅▲❅ ❁❒❅ ▼❈❅ ✑✔ ✳▼❁■❄❁❒❄ ✦❏■▼▲✎`
-      : `${idx + 1}. These are the 14 Standard Fonts.`
-    );
+    const text = fontName === StandardFonts.Symbol
+      ? `${idx + 1}. Τηεσε αρε τηε 14 Στανδαρδ Φοντσ.`
+      : fontName === StandardFonts.ZapfDingbats
+      ? `✑✔✎ ✴❈❅▲❅ ❁❒❅ ▼❈❅ ✑✔ ✳▼❁■❄❁❒❄ ✦❏■▼▲✎`
+      : `${idx + 1}. These are the 14 Standard Fonts.`;
 
     middlePage.drawText(text, {
       rotate: radians(-Math.PI / 6),

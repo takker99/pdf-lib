@@ -1,17 +1,17 @@
-import { Font, Fontkit, Glyph, TypeFeatures } from 'src/types/fontkit';
+import { Font, Fontkit, Glyph, TypeFeatures } from "../../types/fontkit.ts";
 
-import { createCmap } from 'src/core/embedders/CMap';
-import { deriveFontFlags } from 'src/core/embedders/FontFlags';
-import PDFHexString from 'src/core/objects/PDFHexString';
-import PDFRef from 'src/core/objects/PDFRef';
-import PDFString from 'src/core/objects/PDFString';
-import PDFContext from 'src/core/PDFContext';
+import { createCmap } from "./CMap.ts";
+import { deriveFontFlags } from "./FontFlags.ts";
+import PDFHexString from "../objects/PDFHexString.ts";
+import PDFRef from "../objects/PDFRef.ts";
+import PDFString from "../objects/PDFString.ts";
+import PDFContext from "../PDFContext.ts";
 import {
   byAscendingId,
   Cache,
   sortedUniq,
   toHexStringOfMinLength,
-} from 'src/utils';
+} from "../../utils/index.ts";
 
 /**
  * A note of thanks to the developers of https://github.com/foliojs/pdfkit, as
@@ -48,11 +48,11 @@ class CustomFontEmbedder {
     this.font = font;
     this.scale = 1000 / this.font.unitsPerEm;
     this.fontData = fontData;
-    this.fontName = this.font.postscriptName || 'Font';
+    this.fontName = this.font.postscriptName || "Font";
     this.customName = customName;
     this.fontFeatures = fontFeatures;
 
-    this.baseFontName = '';
+    this.baseFontName = "";
     this.glyphCache = Cache.populatedBy(this.allGlyphsInFontSortedById);
   }
 
@@ -66,7 +66,7 @@ class CustomFontEmbedder {
     for (let idx = 0, len = glyphs.length; idx < len; idx++) {
       hexCodes[idx] = toHexStringOfMinLength(glyphs[idx].id, 4);
     }
-    return PDFHexString.of(hexCodes.join(''));
+    return PDFHexString.of(hexCodes.join(""));
   }
 
   // The advanceWidth takes into account kerning automatically, so we don't
@@ -105,8 +105,8 @@ class CustomFontEmbedder {
   }
 
   embedIntoContext(context: PDFContext, ref?: PDFRef): Promise<PDFRef> {
-    this.baseFontName =
-      this.customName || context.addRandomSuffix(this.fontName);
+    this.baseFontName = this.customName ||
+      context.addRandomSuffix(this.fontName);
     return this.embedFontDict(context, ref);
   }
 
@@ -118,10 +118,10 @@ class CustomFontEmbedder {
     const unicodeCMapRef = this.embedUnicodeCmap(context);
 
     const fontDict = context.obj({
-      Type: 'Font',
-      Subtype: 'Type0',
+      Type: "Font",
+      Subtype: "Type0",
       BaseFont: this.baseFontName,
-      Encoding: 'Identity-H',
+      Encoding: "Identity-H",
       DescendantFonts: [cidFontDictRef],
       ToUnicode: unicodeCMapRef,
     });
@@ -142,13 +142,13 @@ class CustomFontEmbedder {
     const fontDescriptorRef = await this.embedFontDescriptor(context);
 
     const cidFontDict = context.obj({
-      Type: 'Font',
-      Subtype: this.isCFF() ? 'CIDFontType0' : 'CIDFontType2',
-      CIDToGIDMap: 'Identity',
+      Type: "Font",
+      Subtype: this.isCFF() ? "CIDFontType0" : "CIDFontType2",
+      CIDToGIDMap: "Identity",
       BaseFont: this.baseFontName,
       CIDSystemInfo: {
-        Registry: PDFString.of('Adobe'),
-        Ordering: PDFString.of('Identity'),
+        Registry: PDFString.of("Adobe"),
+        Ordering: PDFString.of("Identity"),
         Supplement: 0,
       },
       FontDescriptor: fontDescriptorRef,
@@ -166,7 +166,7 @@ class CustomFontEmbedder {
     const { minX, minY, maxX, maxY } = this.font.bbox;
 
     const fontDescriptor = context.obj({
-      Type: 'FontDescriptor',
+      Type: "FontDescriptor",
       FontName: this.baseFontName,
       Flags: deriveFontFlags(this.font),
       FontBBox: [minX * scale, minY * scale, maxX * scale, maxY * scale],
@@ -180,19 +180,19 @@ class CustomFontEmbedder {
       // https://stackoverflow.com/questions/35485179/stemv-value-of-the-truetype-font
       StemV: 0,
 
-      [this.isCFF() ? 'FontFile3' : 'FontFile2']: fontStreamRef,
+      [this.isCFF() ? "FontFile3" : "FontFile2"]: fontStreamRef,
     });
 
     return context.register(fontDescriptor);
   }
 
-  protected async serializeFont(): Promise<Uint8Array> {
-    return this.fontData;
+  protected serializeFont(): Promise<Uint8Array> {
+    return Promise.resolve(this.fontData);
   }
 
   protected async embedFontStream(context: PDFContext): Promise<PDFRef> {
     const fontStream = context.flateStream(await this.serializeFont(), {
-      Subtype: this.isCFF() ? 'CIDFontType0C' : undefined,
+      Subtype: this.isCFF() ? "CIDFontType0C" : undefined,
     });
     return context.register(fontStream);
   }

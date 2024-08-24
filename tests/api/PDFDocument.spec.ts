@@ -1,7 +1,9 @@
-import fontkit from '@pdf-lib/fontkit';
-import fs from 'fs';
+import fontkit from "@pdf-lib/fontkit";
+import fs from "fs";
 import {
+  Duplex,
   EncryptedPDFError,
+  NonFullScreenPageMode,
   ParseSpeeds,
   PDFArray,
   PDFDict,
@@ -9,18 +11,16 @@ import {
   PDFHexString,
   PDFName,
   PDFPage,
-  Duplex,
-  NonFullScreenPageMode,
   PrintScaling,
   ReadingDirection,
   ViewerPreferences,
-} from 'src/index';
+} from "src/index";
 
 const examplePngImage =
-  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABhGlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TxaoVBzuIdMhQnSyIijhKFYtgobQVWnUwufQLmjQkKS6OgmvBwY/FqoOLs64OroIg+AHi5uak6CIl/i8ptIjx4Lgf7+497t4BQqPCVLNrAlA1y0jFY2I2tyr2vKIfAgLoRVhipp5IL2bgOb7u4ePrXZRneZ/7cwwoeZMBPpF4jumGRbxBPLNp6Zz3iUOsJCnE58TjBl2Q+JHrsstvnIsOCzwzZGRS88QhYrHYwXIHs5KhEk8TRxRVo3wh67LCeYuzWqmx1j35C4N5bSXNdZphxLGEBJIQIaOGMiqwEKVVI8VEivZjHv4Rx58kl0yuMhg5FlCFCsnxg//B727NwtSkmxSMAd0vtv0xCvTsAs26bX8f23bzBPA/A1da219tALOfpNfbWuQIGNwGLq7bmrwHXO4Aw0+6ZEiO5KcpFArA+xl9Uw4YugX61tzeWvs4fQAy1NXyDXBwCIwVKXvd492Bzt7+PdPq7wcdn3KFLu4iBAAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAlFJREFUeNrt289r02AYB/Dvk6Sl4EDKpllTlFKsnUdBHXgUBEHwqHj2IJ72B0zwKHhxJ08i/gDxX/AiRfSkBxELXTcVxTa2s2xTsHNN8ngQbQL70RZqG/Z9b29JnvflkydP37whghG3ZaegoxzfwB5vBCAAAQhAAAIQgAAEIAABCEAAAhCAAAQgwB5rstWPtnP0LqBX/vZNyLF6vVrpN/hucewhb4g+B2AyAwiwY7NGOXijviS9vBeYh6CEP4edBLDADCAAAQhAAAIQgAAEIAABCDAUAFF/GIN1DM+PBYCo/ohMXDQ1WPjoeUZH1mMBEEh0oqLGvsHCy0S4NzWVWotJBogbvZB+brDwQT7UWSmXy5sxyQB9HQEROdVv4HQ+vx+QmS4iXsWmCK7Usu8AhOqAXMzlcn3VgWTbugQgEYrxMkZ/gyUPgnuhe2C6/Stxvdeg2ezMJERvhOuoZ+JBrNYBRuDdBtDuXkDM25nCHLbZSv9X6A4VHU+DpwCcbvbjcetLtTaOANtuirrux08HM0euisjDEMKC7RQuq+C+pVJqpzx3NZ3+eeBza9I0rWJgyHnxg2sAJrqnaHUzFcyN60Jox13hprv8aNopZBS4GcqWWVHM+lAkN0zY7ncgkYBukRoKLPpiXVj9UFkfV4Bdl8Jf60u3IMZZAG/6iLuhkDvaSZ74VqtUx3kp3NN7gUZt8RmA43a2eEY1OCfQ04AcBpAGkAKwpkBLIG8BfQE/eNJsvG/G4VlARj0BfjDBx2ECEIAABCAAAQhAAAIQgAAE+P/tN8YvpvbTDBOlAAAAAElFTkSuQmCC';
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAABhGlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TxaoVBzuIdMhQnSyIijhKFYtgobQVWnUwufQLmjQkKS6OgmvBwY/FqoOLs64OroIg+AHi5uak6CIl/i8ptIjx4Lgf7+497t4BQqPCVLNrAlA1y0jFY2I2tyr2vKIfAgLoRVhipp5IL2bgOb7u4ePrXZRneZ/7cwwoeZMBPpF4jumGRbxBPLNp6Zz3iUOsJCnE58TjBl2Q+JHrsstvnIsOCzwzZGRS88QhYrHYwXIHs5KhEk8TRxRVo3wh67LCeYuzWqmx1j35C4N5bSXNdZphxLGEBJIQIaOGMiqwEKVVI8VEivZjHv4Rx58kl0yuMhg5FlCFCsnxg//B727NwtSkmxSMAd0vtv0xCvTsAs26bX8f23bzBPA/A1da219tALOfpNfbWuQIGNwGLq7bmrwHXO4Aw0+6ZEiO5KcpFArA+xl9Uw4YugX61tzeWvs4fQAy1NXyDXBwCIwVKXvd492Bzt7+PdPq7wcdn3KFLu4iBAAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAlFJREFUeNrt289r02AYB/Dvk6Sl4EDKpllTlFKsnUdBHXgUBEHwqHj2IJ72B0zwKHhxJ08i/gDxX/AiRfSkBxELXTcVxTa2s2xTsHNN8ngQbQL70RZqG/Z9b29JnvflkydP37whghG3ZaegoxzfwB5vBCAAAQhAAAIQgAAEIAABCEAAAhCAAAQgwB5rstWPtnP0LqBX/vZNyLF6vVrpN/hucewhb4g+B2AyAwiwY7NGOXijviS9vBeYh6CEP4edBLDADCAAAQhAAAIQgAAEIAABCDAUAFF/GIN1DM+PBYCo/ohMXDQ1WPjoeUZH1mMBEEh0oqLGvsHCy0S4NzWVWotJBogbvZB+brDwQT7UWSmXy5sxyQB9HQEROdVv4HQ+vx+QmS4iXsWmCK7Usu8AhOqAXMzlcn3VgWTbugQgEYrxMkZ/gyUPgnuhe2C6/Stxvdeg2ezMJERvhOuoZ+JBrNYBRuDdBtDuXkDM25nCHLbZSv9X6A4VHU+DpwCcbvbjcetLtTaOANtuirrux08HM0euisjDEMKC7RQuq+C+pVJqpzx3NZ3+eeBza9I0rWJgyHnxg2sAJrqnaHUzFcyN60Jox13hprv8aNopZBS4GcqWWVHM+lAkN0zY7ncgkYBukRoKLPpiXVj9UFkfV4Bdl8Jf60u3IMZZAG/6iLuhkDvaSZ74VqtUx3kp3NN7gUZt8RmA43a2eEY1OCfQ04AcBpAGkAKwpkBLIG8BfQE/eNJsvG/G4VlARj0BfjDBx2ECEIAABCAAAQhAAAIQgAAE+P/tN8YvpvbTDBOlAAAAAElFTkSuQmCC";
 
-const unencryptedPdfBytes = fs.readFileSync('assets/pdfs/normal.pdf');
-const oldEncryptedPdfBytes1 = fs.readFileSync('assets/pdfs/encrypted_old.pdf');
+const unencryptedPdfBytes = fs.readFileSync("assets/pdfs/normal.pdf");
+const oldEncryptedPdfBytes1 = fs.readFileSync("assets/pdfs/encrypted_old.pdf");
 
 // Had to remove this file due to DMCA complaint, so commented this line out
 // along with the 2 tests that depend on it. Would be nice to find a new file
@@ -28,14 +28,14 @@ const oldEncryptedPdfBytes1 = fs.readFileSync('assets/pdfs/encrypted_old.pdf');
 // so this solution is okay for now.
 // const oldEncryptedPdfBytes2 = fs.readFileSync('pdf_specification.pdf');
 
-const newEncryptedPdfBytes = fs.readFileSync('assets/pdfs/encrypted_new.pdf');
+const newEncryptedPdfBytes = fs.readFileSync("assets/pdfs/encrypted_new.pdf");
 const invalidObjectsPdfBytes = fs.readFileSync(
-  'assets/pdfs/with_invalid_objects.pdf',
+  "assets/pdfs/with_invalid_objects.pdf",
 );
-const justMetadataPdfbytes = fs.readFileSync('assets/pdfs/just_metadata.pdf');
-const normalPdfBytes = fs.readFileSync('assets/pdfs/normal.pdf');
+const justMetadataPdfbytes = fs.readFileSync("assets/pdfs/just_metadata.pdf");
+const normalPdfBytes = fs.readFileSync("assets/pdfs/normal.pdf");
 const withViewerPrefsPdfBytes = fs.readFileSync(
-  'assets/pdfs/with_viewer_prefs.pdf',
+  "assets/pdfs/with_viewer_prefs.pdf",
 );
 
 describe(`PDFDocument`, () => {
@@ -44,8 +44,8 @@ describe(`PDFDocument`, () => {
 
     beforeAll(() => {
       const ignoredWarnings = [
-        'Trying to parse invalid object:',
-        'Invalid object ref:',
+        "Trying to parse invalid object:",
+        "Invalid object ref:",
       ];
       console.warn = jest.fn((...args) => {
         const isIgnored = ignoredWarnings.find((iw) => args[0].includes(iw));
@@ -146,7 +146,7 @@ describe(`PDFDocument`, () => {
 
   describe(`embedFont() method`, () => {
     it(`serializes the same value on every save`, async () => {
-      const customFont = fs.readFileSync('assets/fonts/ubuntu/Ubuntu-B.ttf');
+      const customFont = fs.readFileSync("assets/fonts/ubuntu/Ubuntu-B.ttf");
       const pdfDoc1 = await PDFDocument.create({ updateMetadata: false });
       const pdfDoc2 = await PDFDocument.create({ updateMetadata: false });
 
@@ -166,16 +166,16 @@ describe(`PDFDocument`, () => {
   describe(`setLanguage() method`, () => {
     it(`sets the language of the document`, async () => {
       const pdfDoc = await PDFDocument.create();
-      expect(pdfDoc.catalog.get(PDFName.of('Lang'))).toBeUndefined();
+      expect(pdfDoc.catalog.get(PDFName.of("Lang"))).toBeUndefined();
 
-      pdfDoc.setLanguage('fr-FR');
-      expect(String(pdfDoc.catalog.get(PDFName.of('Lang')))).toBe('(fr-FR)');
+      pdfDoc.setLanguage("fr-FR");
+      expect(String(pdfDoc.catalog.get(PDFName.of("Lang")))).toBe("(fr-FR)");
 
-      pdfDoc.setLanguage('en');
-      expect(String(pdfDoc.catalog.get(PDFName.of('Lang')))).toBe('(en)');
+      pdfDoc.setLanguage("en");
+      expect(String(pdfDoc.catalog.get(PDFName.of("Lang")))).toBe("(en)");
 
-      pdfDoc.setLanguage('');
-      expect(String(pdfDoc.catalog.get(PDFName.of('Lang')))).toBe('()');
+      pdfDoc.setLanguage("");
+      expect(String(pdfDoc.catalog.get(PDFName.of("Lang")))).toBe("()");
     });
   });
 
@@ -230,24 +230,24 @@ describe(`PDFDocument`, () => {
       expect(pdfDoc.getAuthor()).toBeUndefined();
       expect(pdfDoc.getSubject()).toBeUndefined();
       expect(pdfDoc.getProducer()).toBe(
-        'pdf-lib (https://github.com/Hopding/pdf-lib)',
+        "pdf-lib (https://github.com/Hopding/pdf-lib)",
       );
       expect(pdfDoc.getCreator()).toBe(
-        'pdf-lib (https://github.com/Hopding/pdf-lib)',
+        "pdf-lib (https://github.com/Hopding/pdf-lib)",
       );
       expect(pdfDoc.getKeywords()).toBeUndefined();
       // Dates can not be tested since they have the current time as value.
 
-      const title = '🥚 The Life of an Egg 🍳';
-      const author = 'Humpty Dumpty';
-      const subject = '📘 An Epic Tale of Woe 📖';
-      const keywords = ['eggs', 'wall', 'fall', 'king', 'horses', 'men', '🥚'];
-      const producer = 'PDF App 9000 🤖';
-      const creator = 'PDF App 8000 🤖';
+      const title = "🥚 The Life of an Egg 🍳";
+      const author = "Humpty Dumpty";
+      const subject = "📘 An Epic Tale of Woe 📖";
+      const keywords = ["eggs", "wall", "fall", "king", "horses", "men", "🥚"];
+      const producer = "PDF App 9000 🤖";
+      const creator = "PDF App 8000 🤖";
 
       // Milliseconds  will not get saved, so these dates do not have milliseconds.
-      const creationDate = new Date('1997-08-15T01:58:37Z');
-      const modificationDate = new Date('2018-12-21T07:00:11Z');
+      const creationDate = new Date("1997-08-15T01:58:37Z");
+      const modificationDate = new Date("2018-12-21T07:00:11Z");
 
       pdfDoc.setTitle(title);
       pdfDoc.setAuthor(author);
@@ -263,7 +263,7 @@ describe(`PDFDocument`, () => {
       expect(pdfDoc.getSubject()).toBe(subject);
       expect(pdfDoc.getProducer()).toBe(producer);
       expect(pdfDoc.getCreator()).toBe(creator);
-      expect(pdfDoc.getKeywords()).toBe(keywords.join(' '));
+      expect(pdfDoc.getKeywords()).toBe(keywords.join(" "));
       expect(pdfDoc.getCreationDate()).toStrictEqual(creationDate);
       expect(pdfDoc.getModificationDate()).toStrictEqual(modificationDate);
     });
@@ -272,19 +272,19 @@ describe(`PDFDocument`, () => {
       const pdfDoc = await PDFDocument.load(justMetadataPdfbytes);
 
       expect(pdfDoc.getTitle()).toBe(
-        'Title metadata (StringType=HexString, Encoding=PDFDocEncoding) with some weird chars ˘•€',
+        "Title metadata (StringType=HexString, Encoding=PDFDocEncoding) with some weird chars ˘•€",
       );
       expect(pdfDoc.getAuthor()).toBe(
-        'Author metadata (StringType=HexString, Encoding=UTF-16BE) with some chinese 你怎么敢',
+        "Author metadata (StringType=HexString, Encoding=UTF-16BE) with some chinese 你怎么敢",
       );
       expect(pdfDoc.getSubject()).toBe(
-        'Subject metadata (StringType=LiteralString, Encoding=UTF-16BE) with some chinese 你怎么敢',
+        "Subject metadata (StringType=LiteralString, Encoding=UTF-16BE) with some chinese 你怎么敢",
       );
       expect(pdfDoc.getProducer()).toBe(
-        'pdf-lib (https://github.com/Hopding/pdf-lib)',
+        "pdf-lib (https://github.com/Hopding/pdf-lib)",
       );
       expect(pdfDoc.getKeywords()).toBe(
-        'Keywords metadata (StringType=LiteralString, Encoding=PDFDocEncoding) with  some weird  chars ˘•€',
+        "Keywords metadata (StringType=LiteralString, Encoding=PDFDocEncoding) with  some weird  chars ˘•€",
       );
     });
 
@@ -294,10 +294,10 @@ describe(`PDFDocument`, () => {
       });
 
       expect(pdfDoc.getCreationDate()).toEqual(
-        new Date('2018-01-04T01:05:06.000Z'),
+        new Date("2018-01-04T01:05:06.000Z"),
       );
       expect(pdfDoc.getModificationDate()).toEqual(
-        new Date('2018-01-04T01:05:06.000Z'),
+        new Date("2018-01-04T01:05:06.000Z"),
       );
     });
   });
@@ -307,7 +307,7 @@ describe(`PDFDocument`, () => {
       const pdfDoc = await PDFDocument.create();
 
       expect(
-        pdfDoc.catalog.lookupMaybe(PDFName.of('ViewerPreferences'), PDFDict),
+        pdfDoc.catalog.lookupMaybe(PDFName.of("ViewerPreferences"), PDFDict),
       ).toBeUndefined();
     });
 
@@ -413,24 +413,24 @@ describe(`PDFDocument`, () => {
     it(`does not set the ViewerPreferences dict if the option is not set`, async () => {
       const pdfDoc = await PDFDocument.create();
 
-      pdfDoc.setTitle('Testing setTitle Title');
+      pdfDoc.setTitle("Testing setTitle Title");
 
       expect(
-        pdfDoc.catalog.lookupMaybe(PDFName.of('ViewerPreferences'), PDFDict),
+        pdfDoc.catalog.lookupMaybe(PDFName.of("ViewerPreferences"), PDFDict),
       ).toBeUndefined();
 
-      expect(pdfDoc.getTitle()).toBe('Testing setTitle Title');
+      expect(pdfDoc.getTitle()).toBe("Testing setTitle Title");
     });
 
     it(`creates the ViewerPreferences dict when the option is set`, async () => {
       const pdfDoc = await PDFDocument.create();
 
-      pdfDoc.setTitle('ViewerPrefs Test Creation', {
+      pdfDoc.setTitle("ViewerPrefs Test Creation", {
         showInWindowTitleBar: true,
       });
 
       expect(
-        pdfDoc.catalog.lookupMaybe(PDFName.of('ViewerPreferences'), PDFDict),
+        pdfDoc.catalog.lookupMaybe(PDFName.of("ViewerPreferences"), PDFDict),
       );
     });
   });
@@ -439,37 +439,37 @@ describe(`PDFDocument`, () => {
     it(`adds the script to the catalog`, async () => {
       const pdfDoc = await PDFDocument.create();
       pdfDoc.addJavaScript(
-        'main',
+        "main",
         'console.show(); console.println("Hello World");',
       );
       await pdfDoc.flush();
 
-      expect(pdfDoc.catalog.has(PDFName.of('Names')));
-      const Names = pdfDoc.catalog.lookup(PDFName.of('Names'), PDFDict);
-      expect(Names.has(PDFName.of('JavaScript')));
-      const Javascript = Names.lookup(PDFName.of('JavaScript'), PDFDict);
-      expect(Javascript.has(PDFName.of('Names')));
-      const JSNames = Javascript.lookup(PDFName.of('Names'), PDFArray);
-      expect(JSNames.lookup(0, PDFHexString).decodeText()).toEqual('main');
+      expect(pdfDoc.catalog.has(PDFName.of("Names")));
+      const Names = pdfDoc.catalog.lookup(PDFName.of("Names"), PDFDict);
+      expect(Names.has(PDFName.of("JavaScript")));
+      const Javascript = Names.lookup(PDFName.of("JavaScript"), PDFDict);
+      expect(Javascript.has(PDFName.of("Names")));
+      const JSNames = Javascript.lookup(PDFName.of("Names"), PDFArray);
+      expect(JSNames.lookup(0, PDFHexString).decodeText()).toEqual("main");
     });
 
     it(`does not overwrite scripts`, async () => {
       const pdfDoc = await PDFDocument.create();
       pdfDoc.addJavaScript(
-        'first',
+        "first",
         'console.show(); console.println("First");',
       );
       pdfDoc.addJavaScript(
-        'second',
+        "second",
         'console.show(); console.println("Second");',
       );
       await pdfDoc.flush();
 
-      const Names = pdfDoc.catalog.lookup(PDFName.of('Names'), PDFDict);
-      const Javascript = Names.lookup(PDFName.of('JavaScript'), PDFDict);
-      const JSNames = Javascript.lookup(PDFName.of('Names'), PDFArray);
-      expect(JSNames.lookup(0, PDFHexString).decodeText()).toEqual('first');
-      expect(JSNames.lookup(2, PDFHexString).decodeText()).toEqual('second');
+      const Names = pdfDoc.catalog.lookup(PDFName.of("Names"), PDFDict);
+      const Javascript = Names.lookup(PDFName.of("JavaScript"), PDFDict);
+      const JSNames = Javascript.lookup(PDFName.of("Names"), PDFArray);
+      expect(JSNames.lookup(0, PDFHexString).decodeText()).toEqual("first");
+      expect(JSNames.lookup(2, PDFHexString).decodeText()).toEqual("second");
     });
   });
 
@@ -486,7 +486,7 @@ describe(`PDFDocument`, () => {
         const pdfPage2 = pdfDoc.addPage();
         pdfPage2.drawImage(embeddedImage);
 
-        pdfDoc.setTitle('Unit Test');
+        pdfDoc.setTitle("Unit Test");
       };
 
       await expect(noErrorFunc()).resolves.not.toThrowError();
@@ -508,7 +508,7 @@ describe(`PDFDocument`, () => {
         const page2 = pdfDoc.addPage();
         page2.drawImage(embeddedImage);
 
-        pdfDoc.setTitle('Unit Test');
+        pdfDoc.setTitle("Unit Test");
 
         const pdfBytes2 = await pdfDoc.save();
         expect(pdfBytes2.byteLength).toBeGreaterThan(0);
@@ -517,7 +517,7 @@ describe(`PDFDocument`, () => {
         const pdfPage3 = pdfDoc.addPage();
         pdfPage3.drawImage(embeddedImage);
 
-        pdfDoc.setTitle('Unit Test 2. change');
+        pdfDoc.setTitle("Unit Test 2. change");
 
         const pdfBytes3 = await pdfDoc.save();
         expect(pdfBytes3.byteLength).toBeGreaterThan(0);
@@ -534,16 +534,16 @@ describe(`PDFDocument`, () => {
     beforeAll(async () => {
       const parseSpeed = ParseSpeeds.Fastest;
       srcDoc = await PDFDocument.load(unencryptedPdfBytes, { parseSpeed });
-      const title = '🥚 The Life of an Egg 🍳';
-      const author = 'Humpty Dumpty';
-      const subject = '📘 An Epic Tale of Woe 📖';
-      const keywords = ['eggs', 'wall', 'fall', 'king', 'horses', 'men', '🥚'];
-      const producer = 'PDF App 9000 🤖';
-      const creator = 'PDF App 8000 🤖';
+      const title = "🥚 The Life of an Egg 🍳";
+      const author = "Humpty Dumpty";
+      const subject = "📘 An Epic Tale of Woe 📖";
+      const keywords = ["eggs", "wall", "fall", "king", "horses", "men", "🥚"];
+      const producer = "PDF App 9000 🤖";
+      const creator = "PDF App 8000 🤖";
 
       // Milliseconds  will not get saved, so these dates do not have milliseconds.
-      const creationDate = new Date('1997-08-15T01:58:37Z');
-      const modificationDate = new Date('2018-12-21T07:00:11Z');
+      const creationDate = new Date("1997-08-15T01:58:37Z");
+      const modificationDate = new Date("2018-12-21T07:00:11Z");
 
       srcDoc.setTitle(title);
       srcDoc.setAuthor(author);

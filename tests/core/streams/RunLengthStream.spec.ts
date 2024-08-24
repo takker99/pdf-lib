@@ -1,10 +1,10 @@
-import fs from 'fs';
+import fs from "fs";
 
-import RunLengthStream from 'src/core/streams/RunLengthStream';
-import Stream from 'src/core/streams/Stream';
+import RunLengthStream from "src/core/streams/RunLengthStream";
+import Stream from "src/core/streams/Stream";
 
 const DIR = `tests/core/streams/data/runlength`;
-const FILES = ['1', '2', '3', '4', '5'];
+const FILES = ["1", "2", "3", "4", "5"];
 
 describe(`RunLengthStream`, () => {
   FILES.forEach((file) => {

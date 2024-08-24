@@ -1,34 +1,34 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
+  ActivityIndicator,
+  Dimensions,
   Platform,
+  SafeAreaView,
   StyleSheet,
   Text,
   View,
-  Dimensions,
-  SafeAreaView,
-  ActivityIndicator,
-} from 'react-native';
-import PdfView from 'react-native-pdf';
+} from "react-native";
+import PdfView from "react-native-pdf";
 
-import ErrorDisplay from './ErrorDisplay';
-import TestLauncher from './TestLauncher';
-import TestRunningSpinner from './TestRunningSpinner';
-import TestResultDisplay from './TestResultDisplay';
+import ErrorDisplay from "./ErrorDisplay";
+import TestLauncher from "./TestLauncher";
+import TestRunningSpinner from "./TestRunningSpinner";
+import TestResultDisplay from "./TestResultDisplay";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
 export default class App extends Component {
   static States = {
-    TestLauncher: 'TestLauncher',
-    TestRunning: 'TestRunning',
-    TestDisplaying: 'TestDisplaying',
-    Error: 'Error',
+    TestLauncher: "TestLauncher",
+    TestRunning: "TestRunning",
+    TestDisplaying: "TestDisplaying",
+    Error: "Error",
   };
 
   state = {
@@ -40,7 +40,7 @@ export default class App extends Component {
     testLauncher()
       .then(({ base64Pdf }) => {
         if (!base64Pdf || base64Pdf.length < 1) {
-          throw new Error('Missing `base64Pdf`');
+          throw new Error("Missing `base64Pdf`");
         }
         const end = Date.now();
         const runtimeSecs = (end - start) / 1000;

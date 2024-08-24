@@ -1,16 +1,16 @@
-import PDFDict from 'src/core/objects/PDFDict';
-import PDFName from 'src/core/objects/PDFName';
-import PDFRef from 'src/core/objects/PDFRef';
-import PDFAcroField from 'src/core/acroform/PDFAcroField';
-import PDFWidgetAnnotation from 'src/core/annotation/PDFWidgetAnnotation';
-import { IndexOutOfBoundsError } from 'src/core/errors';
+import PDFDict from "../objects/PDFDict.ts";
+import PDFName from "../objects/PDFName.ts";
+import PDFRef from "../objects/PDFRef.ts";
+import PDFAcroField from "./PDFAcroField.ts";
+import PDFWidgetAnnotation from "../annotation/PDFWidgetAnnotation.ts";
+import { IndexOutOfBoundsError } from "../errors.ts";
 
 class PDFAcroTerminal extends PDFAcroField {
   static fromDict = (dict: PDFDict, ref: PDFRef) =>
     new PDFAcroTerminal(dict, ref);
 
   FT(): PDFName {
-    const nameOrRef = this.getInheritableAttribute(PDFName.of('FT'));
+    const nameOrRef = this.getInheritableAttribute(PDFName.of("FT"));
     return this.dict.context.lookup(nameOrRef, PDFName);
   }
 
@@ -52,19 +52,18 @@ class PDFAcroTerminal extends PDFAcroField {
   }
 
   normalizedEntries() {
-    let Kids = this.Kids();
+    const Kids = this.Kids();
+    if (Kids) return { Kids };
 
     // If this field is itself a widget (because it was only rendered once in
     // the document, so the field and widget properties were merged) then we
     // add itself to the `Kids` array. The alternative would be to try
     // splitting apart the widget properties and creating a separate object
     // for them.
-    if (!Kids) {
-      Kids = this.dict.context.obj([this.ref]);
-      this.dict.set(PDFName.of('Kids'), Kids);
-    }
+    const Kids2 = this.dict.context.obj([this.ref]);
+    this.dict.set(PDFName.of("Kids"), Kids2);
 
-    return { Kids };
+    return { Kids: Kids2 };
   }
 }
 

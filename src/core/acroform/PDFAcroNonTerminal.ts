@@ -1,8 +1,8 @@
-import PDFDict from 'src/core/objects/PDFDict';
-import PDFRef from 'src/core/objects/PDFRef';
-import PDFName from 'src/core/objects/PDFName';
-import PDFContext from 'src/core/PDFContext';
-import PDFAcroField from 'src/core/acroform/PDFAcroField';
+import PDFDict from "../objects/PDFDict.ts";
+import PDFRef from "../objects/PDFRef.ts";
+import PDFName from "../objects/PDFName.ts";
+import PDFContext from "../PDFContext.ts";
+import PDFAcroField from "./PDFAcroField.ts";
 
 class PDFAcroNonTerminal extends PDFAcroField {
   static fromDict = (dict: PDFDict, ref: PDFRef) =>
@@ -20,14 +20,13 @@ class PDFAcroNonTerminal extends PDFAcroField {
   }
 
   normalizedEntries() {
-    let Kids = this.Kids();
+    const Kids = this.Kids();
+    if (Kids) return { Kids };
 
-    if (!Kids) {
-      Kids = this.dict.context.obj([]);
-      this.dict.set(PDFName.of('Kids'), Kids);
-    }
+    const Kids2 = this.dict.context.obj([]);
+    this.dict.set(PDFName.of("Kids"), Kids2);
 
-    return { Kids };
+    return { Kids: Kids2 };
   }
 }
 

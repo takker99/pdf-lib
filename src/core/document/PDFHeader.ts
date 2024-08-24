@@ -1,5 +1,5 @@
-import CharCodes from 'src/core/syntax/CharCodes';
-import { charFromCode, copyStringIntoBuffer } from 'src/utils';
+import CharCodes from "../syntax/CharCodes.ts";
+import { charFromCode, copyStringIntoBuffer } from "../../utils/index.ts";
 
 class PDFHeader {
   static forVersion = (major: number, minor: number) =>

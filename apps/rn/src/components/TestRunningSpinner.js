@@ -1,21 +1,21 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 import {
+  ActivityIndicator,
+  SafeAreaView,
   StyleSheet,
   Text,
-  SafeAreaView,
-  ActivityIndicator,
-} from 'react-native';
-import PdfView from 'react-native-pdf';
+} from "react-native";
+import PdfView from "react-native-pdf";
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   text: {
     fontSize: 20,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: -50,
     marginBottom: 50,
   },

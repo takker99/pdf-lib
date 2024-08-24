@@ -1,25 +1,26 @@
-import { Color, rgb } from 'src/api/colors';
+import { Color, rgb } from "./colors.ts";
 import {
+  drawEllipse,
   drawImage,
   drawLine,
   drawLinesOfText,
   drawPage,
   drawRectangle,
   drawSvgPath,
-  drawEllipse,
-} from 'src/api/operations';
+} from "./operations.ts";
 import {
+  LineCapStyle,
   popGraphicsState,
   pushGraphicsState,
-  translate,
-  LineCapStyle,
   scale,
-} from 'src/api/operators';
-import PDFDocument from 'src/api/PDFDocument';
-import PDFEmbeddedPage from 'src/api/PDFEmbeddedPage';
-import PDFFont from 'src/api/PDFFont';
-import PDFImage from 'src/api/PDFImage';
+  translate,
+} from "./operators.ts";
+import PDFDocument from "./PDFDocument.ts";
+import PDFEmbeddedPage from "./PDFEmbeddedPage.ts";
+import PDFFont from "./PDFFont.ts";
+import PDFImage from "./PDFImage.ts";
 import {
+  BlendMode,
   PDFPageDrawCircleOptions,
   PDFPageDrawEllipseOptions,
   PDFPageDrawImageOptions,
@@ -29,32 +30,31 @@ import {
   PDFPageDrawSquareOptions,
   PDFPageDrawSVGOptions,
   PDFPageDrawTextOptions,
-  BlendMode,
-} from 'src/api/PDFPageOptions';
-import { degrees, Rotation, toDegrees } from 'src/api/rotations';
-import { StandardFonts } from 'src/api/StandardFonts';
+} from "./PDFPageOptions.ts";
+import { degrees, Rotation, toDegrees } from "./rotations.ts";
+import { StandardFonts } from "./StandardFonts.ts";
 import {
+  PDFArray,
   PDFContentStream,
+  PDFDict,
   PDFHexString,
   PDFName,
   PDFOperator,
   PDFPageLeaf,
   PDFRef,
-  PDFDict,
-  PDFArray,
-} from 'src/core';
+} from "../core/index.ts";
 import {
   assertEachIs,
   assertIs,
+  assertIsOneOfOrUndefined,
   assertMultiple,
   assertOrUndefined,
+  assertRangeOrUndefined,
   breakTextIntoLines,
   cleanText,
-  rectanglesAreEqual,
   lineSplit,
-  assertRangeOrUndefined,
-  assertIsOneOfOrUndefined,
-} from 'src/utils';
+  rectanglesAreEqual,
+} from "../utils/index.ts";
 
 /**
  * Represents a single page of a [[PDFDocument]].
@@ -84,7 +84,7 @@ export default class PDFPage {
    * @param doc The document to which the page will belong.
    */
   static create = (doc: PDFDocument) => {
-    assertIs(doc, 'doc', [[PDFDocument, 'PDFDocument']]);
+    assertIs(doc, "doc", [[PDFDocument, "PDFDocument"]]);
     const dummyRef = PDFRef.of(-1);
     const pageLeaf = PDFPageLeaf.withContextAndParent(doc.context, dummyRef);
     const pageRef = doc.context.register(pageLeaf);
@@ -111,9 +111,9 @@ export default class PDFPage {
   private contentStreamRef?: PDFRef;
 
   private constructor(leafNode: PDFPageLeaf, ref: PDFRef, doc: PDFDocument) {
-    assertIs(leafNode, 'leafNode', [[PDFPageLeaf, 'PDFPageLeaf']]);
-    assertIs(ref, 'ref', [[PDFRef, 'PDFRef']]);
-    assertIs(doc, 'doc', [[PDFDocument, 'PDFDocument']]);
+    assertIs(leafNode, "leafNode", [[PDFPageLeaf, "PDFPageLeaf"]]);
+    assertIs(ref, "ref", [[PDFRef, "PDFRef"]]);
+    assertIs(doc, "doc", [[PDFDocument, "PDFDocument"]]);
 
     this.node = leafNode;
     this.ref = ref;
@@ -135,8 +135,8 @@ export default class PDFPage {
    */
   setRotation(angle: Rotation): void {
     const degreesAngle = toDegrees(angle);
-    assertMultiple(degreesAngle, 'degreesAngle', 90);
-    this.node.set(PDFName.of('Rotate'), this.doc.context.obj(degreesAngle));
+    assertMultiple(degreesAngle, "degreesAngle", 90);
+    this.node.set(PDFName.of("Rotate"), this.doc.context.obj(degreesAngle));
   }
 
   /**
@@ -189,8 +189,8 @@ export default class PDFPage {
    * @param height The new height of the page.
    */
   setSize(width: number, height: number): void {
-    assertIs(width, 'width', ['number']);
-    assertIs(height, 'height', ['number']);
+    assertIs(width, "width", ["number"]);
+    assertIs(height, "height", ["number"]);
 
     const mediaBox = this.getMediaBox();
     this.setMediaBox(mediaBox.x, mediaBox.y, width, height);
@@ -200,10 +200,10 @@ export default class PDFPage {
     const trimBox = this.getTrimBox();
     const artBox = this.getArtBox();
 
-    const hasCropBox = this.node.CropBox()!!;
-    const hasBleedBox = this.node.BleedBox()!!;
-    const hasTrimBox = this.node.TrimBox()!!;
-    const hasArtBox = this.node.ArtBox()!!;
+    const hasCropBox = this.node.CropBox();
+    const hasBleedBox = this.node.BleedBox();
+    const hasTrimBox = this.node.TrimBox();
+    const hasArtBox = this.node.ArtBox();
 
     if (hasCropBox && rectanglesAreEqual(cropBox, mediaBox)) {
       this.setCropBox(mediaBox.x, mediaBox.y, width, height);
@@ -232,7 +232,7 @@ export default class PDFPage {
    * @param width The new width of the page.
    */
   setWidth(width: number): void {
-    assertIs(width, 'width', ['number']);
+    assertIs(width, "width", ["number"]);
     this.setSize(width, this.getSize().height);
   }
 
@@ -249,7 +249,7 @@ export default class PDFPage {
    * @param height The new height of the page.
    */
   setHeight(height: number): void {
-    assertIs(height, 'height', ['number']);
+    assertIs(height, "height", ["number"]);
     this.setSize(this.getSize().width, height);
   }
 
@@ -271,10 +271,10 @@ export default class PDFPage {
    * @param height The height of the new MediaBox.
    */
   setMediaBox(x: number, y: number, width: number, height: number): void {
-    assertIs(x, 'x', ['number']);
-    assertIs(y, 'y', ['number']);
-    assertIs(width, 'width', ['number']);
-    assertIs(height, 'height', ['number']);
+    assertIs(x, "x", ["number"]);
+    assertIs(y, "y", ["number"]);
+    assertIs(width, "width", ["number"]);
+    assertIs(height, "height", ["number"]);
     const mediaBox = this.doc.context.obj([x, y, x + width, y + height]);
     this.node.set(PDFName.MediaBox, mediaBox);
   }
@@ -297,10 +297,10 @@ export default class PDFPage {
    * @param height The height of the new CropBox.
    */
   setCropBox(x: number, y: number, width: number, height: number): void {
-    assertIs(x, 'x', ['number']);
-    assertIs(y, 'y', ['number']);
-    assertIs(width, 'width', ['number']);
-    assertIs(height, 'height', ['number']);
+    assertIs(x, "x", ["number"]);
+    assertIs(y, "y", ["number"]);
+    assertIs(width, "width", ["number"]);
+    assertIs(height, "height", ["number"]);
     const cropBox = this.doc.context.obj([x, y, x + width, y + height]);
     this.node.set(PDFName.CropBox, cropBox);
   }
@@ -323,10 +323,10 @@ export default class PDFPage {
    * @param height The height of the new BleedBox.
    */
   setBleedBox(x: number, y: number, width: number, height: number): void {
-    assertIs(x, 'x', ['number']);
-    assertIs(y, 'y', ['number']);
-    assertIs(width, 'width', ['number']);
-    assertIs(height, 'height', ['number']);
+    assertIs(x, "x", ["number"]);
+    assertIs(y, "y", ["number"]);
+    assertIs(width, "width", ["number"]);
+    assertIs(height, "height", ["number"]);
     const bleedBox = this.doc.context.obj([x, y, x + width, y + height]);
     this.node.set(PDFName.BleedBox, bleedBox);
   }
@@ -349,10 +349,10 @@ export default class PDFPage {
    * @param height The height of the new TrimBox.
    */
   setTrimBox(x: number, y: number, width: number, height: number): void {
-    assertIs(x, 'x', ['number']);
-    assertIs(y, 'y', ['number']);
-    assertIs(width, 'width', ['number']);
-    assertIs(height, 'height', ['number']);
+    assertIs(x, "x", ["number"]);
+    assertIs(y, "y", ["number"]);
+    assertIs(width, "width", ["number"]);
+    assertIs(height, "height", ["number"]);
     const trimBox = this.doc.context.obj([x, y, x + width, y + height]);
     this.node.set(PDFName.TrimBox, trimBox);
   }
@@ -375,10 +375,10 @@ export default class PDFPage {
    * @param height The height of the new ArtBox.
    */
   setArtBox(x: number, y: number, width: number, height: number): void {
-    assertIs(x, 'x', ['number']);
-    assertIs(y, 'y', ['number']);
-    assertIs(width, 'width', ['number']);
-    assertIs(height, 'height', ['number']);
+    assertIs(x, "x", ["number"]);
+    assertIs(y, "y", ["number"]);
+    assertIs(width, "width", ["number"]);
+    assertIs(height, "height", ["number"]);
     const artBox = this.doc.context.obj([x, y, x + width, y + height]);
     this.node.set(PDFName.ArtBox, artBox);
   }
@@ -550,8 +550,8 @@ export default class PDFPage {
    * @param y The new position on the y-axis for this page's content.
    */
   translateContent(x: number, y: number): void {
-    assertIs(x, 'x', ['number']);
-    assertIs(y, 'y', ['number']);
+    assertIs(x, "x", ["number"]);
+    assertIs(y, "y", ["number"]);
 
     this.node.normalize();
     this.getContentStream();
@@ -582,8 +582,8 @@ export default class PDFPage {
    *          (e.g. `2.0` is 200%).
    */
   scale(x: number, y: number): void {
-    assertIs(x, 'x', ['number']);
-    assertIs(y, 'y', ['number']);
+    assertIs(x, "x", ["number"]);
+    assertIs(y, "y", ["number"]);
     this.setSize(this.getWidth() * x, this.getHeight() * y);
     this.scaleContent(x, y);
     this.scaleAnnotations(x, y);
@@ -608,8 +608,8 @@ export default class PDFPage {
    *          (e.g. `2.0` is 200%).
    */
   scaleContent(x: number, y: number): void {
-    assertIs(x, 'x', ['number']);
-    assertIs(y, 'y', ['number']);
+    assertIs(x, "x", ["number"]);
+    assertIs(y, "y", ["number"]);
 
     this.node.normalize();
     this.getContentStream();
@@ -640,8 +640,8 @@ export default class PDFPage {
    *          scaled (e.g. `2.0` is 200%).
    */
   scaleAnnotations(x: number, y: number) {
-    assertIs(x, 'x', ['number']);
-    assertIs(y, 'y', ['number']);
+    assertIs(x, "x", ["number"]);
+    assertIs(y, "y", ["number"]);
 
     const annots = this.node.Annots();
     if (!annots) return;
@@ -697,7 +697,7 @@ export default class PDFPage {
    */
   setFont(font: PDFFont): void {
     // TODO: Reuse image Font name if we've already added this image to Resources.Fonts
-    assertIs(font, 'font', [[PDFFont, 'PDFFont']]);
+    assertIs(font, "font", [[PDFFont, "PDFFont"]]);
     this.font = font;
     this.fontKey = this.node.newFontDictionary(this.font.name, this.font.ref);
   }
@@ -717,7 +717,7 @@ export default class PDFPage {
    *                 page.
    */
   setFontSize(fontSize: number): void {
-    assertIs(fontSize, 'fontSize', ['number']);
+    assertIs(fontSize, "fontSize", ["number"]);
     this.fontSize = fontSize;
   }
 
@@ -738,7 +738,7 @@ export default class PDFPage {
    *                  this page.
    */
   setFontColor(fontColor: Color): void {
-    assertIs(fontColor, 'fontColor', [[Object, 'Color']]);
+    assertIs(fontColor, "fontColor", [[Object, "Color"]]);
     this.fontColor = fontColor;
   }
 
@@ -759,7 +759,7 @@ export default class PDFPage {
    *                   this page.
    */
   setLineHeight(lineHeight: number): void {
-    assertIs(lineHeight, 'lineHeight', ['number']);
+    assertIs(lineHeight, "lineHeight", ["number"]);
     this.lineHeight = lineHeight;
   }
 
@@ -812,8 +812,8 @@ export default class PDFPage {
    * @param y The new default position on the y-axis for this page.
    */
   moveTo(x: number, y: number): void {
-    assertIs(x, 'x', ['number']);
-    assertIs(y, 'y', ['number']);
+    assertIs(x, "x", ["number"]);
+    assertIs(y, "y", ["number"]);
     this.x = x;
     this.y = y;
   }
@@ -832,7 +832,7 @@ export default class PDFPage {
    *                  y-axis should be decreased.
    */
   moveDown(yDecrease: number): void {
-    assertIs(yDecrease, 'yDecrease', ['number']);
+    assertIs(yDecrease, "yDecrease", ["number"]);
     this.y -= yDecrease;
   }
 
@@ -850,7 +850,7 @@ export default class PDFPage {
    *                  y-axis should be increased.
    */
   moveUp(yIncrease: number): void {
-    assertIs(yIncrease, 'yIncrease', ['number']);
+    assertIs(yIncrease, "yIncrease", ["number"]);
     this.y += yIncrease;
   }
 
@@ -868,7 +868,7 @@ export default class PDFPage {
    *                  x-axis should be decreased.
    */
   moveLeft(xDecrease: number): void {
-    assertIs(xDecrease, 'xDecrease', ['number']);
+    assertIs(xDecrease, "xDecrease", ["number"]);
     this.x -= xDecrease;
   }
 
@@ -886,7 +886,7 @@ export default class PDFPage {
    *                  x-axis should be increased.
    */
   moveRight(xIncrease: number): void {
-    assertIs(xIncrease, 'xIncrease', ['number']);
+    assertIs(xIncrease, "xIncrease", ["number"]);
     this.x += xIncrease;
   }
 
@@ -920,7 +920,7 @@ export default class PDFPage {
    * @param operator The operators to be pushed.
    */
   pushOperators(...operator: PDFOperator[]): void {
-    assertEachIs(operator, 'operator', [[PDFOperator, 'PDFOperator']]);
+    assertEachIs(operator, "operator", [[PDFOperator, "PDFOperator"]]);
     const contentStream = this.getContentStream();
     contentStream.push(...operator);
   }
@@ -963,30 +963,29 @@ export default class PDFPage {
    * @param options The options to be used when drawing the text.
    */
   drawText(text: string, options: PDFPageDrawTextOptions = {}): void {
-    assertIs(text, 'text', ['string']);
-    assertOrUndefined(options.color, 'options.color', [[Object, 'Color']]);
-    assertRangeOrUndefined(options.opacity, 'opacity.opacity', 0, 1);
-    assertOrUndefined(options.font, 'options.font', [[PDFFont, 'PDFFont']]);
-    assertOrUndefined(options.size, 'options.size', ['number']);
-    assertOrUndefined(options.rotate, 'options.rotate', [[Object, 'Rotation']]);
-    assertOrUndefined(options.xSkew, 'options.xSkew', [[Object, 'Rotation']]);
-    assertOrUndefined(options.ySkew, 'options.ySkew', [[Object, 'Rotation']]);
-    assertOrUndefined(options.x, 'options.x', ['number']);
-    assertOrUndefined(options.y, 'options.y', ['number']);
-    assertOrUndefined(options.lineHeight, 'options.lineHeight', ['number']);
-    assertOrUndefined(options.maxWidth, 'options.maxWidth', ['number']);
-    assertOrUndefined(options.wordBreaks, 'options.wordBreaks', [Array]);
-    assertIsOneOfOrUndefined(options.blendMode, 'options.blendMode', BlendMode);
+    assertIs(text, "text", ["string"]);
+    assertOrUndefined(options.color, "options.color", [[Object, "Color"]]);
+    assertRangeOrUndefined(options.opacity, "opacity.opacity", 0, 1);
+    assertOrUndefined(options.font, "options.font", [[PDFFont, "PDFFont"]]);
+    assertOrUndefined(options.size, "options.size", ["number"]);
+    assertOrUndefined(options.rotate, "options.rotate", [[Object, "Rotation"]]);
+    assertOrUndefined(options.xSkew, "options.xSkew", [[Object, "Rotation"]]);
+    assertOrUndefined(options.ySkew, "options.ySkew", [[Object, "Rotation"]]);
+    assertOrUndefined(options.x, "options.x", ["number"]);
+    assertOrUndefined(options.y, "options.y", ["number"]);
+    assertOrUndefined(options.lineHeight, "options.lineHeight", ["number"]);
+    assertOrUndefined(options.maxWidth, "options.maxWidth", ["number"]);
+    assertOrUndefined(options.wordBreaks, "options.wordBreaks", [Array]);
+    assertIsOneOfOrUndefined(options.blendMode, "options.blendMode", BlendMode);
 
     const { oldFont, newFont, newFontKey } = this.setOrEmbedFont(options.font);
     const fontSize = options.size || this.fontSize;
 
     const wordBreaks = options.wordBreaks || this.doc.defaultWordBreaks;
     const textWidth = (t: string) => newFont.widthOfTextAtSize(t, fontSize);
-    const lines =
-      options.maxWidth === undefined
-        ? lineSplit(cleanText(text))
-        : breakTextIntoLines(text, wordBreaks, options.maxWidth, textWidth);
+    const lines = options.maxWidth === undefined
+      ? lineSplit(cleanText(text))
+      : breakTextIntoLines(text, wordBreaks, options.maxWidth, textWidth);
 
     const encodedLines = new Array(lines.length) as PDFHexString[];
     for (let idx = 0, len = lines.length; idx < len; idx++) {
@@ -1047,18 +1046,18 @@ export default class PDFPage {
    */
   drawImage(image: PDFImage, options: PDFPageDrawImageOptions = {}): void {
     // TODO: Reuse image XObject name if we've already added this image to Resources.XObjects
-    assertIs(image, 'image', [[PDFImage, 'PDFImage']]);
-    assertOrUndefined(options.x, 'options.x', ['number']);
-    assertOrUndefined(options.y, 'options.y', ['number']);
-    assertOrUndefined(options.width, 'options.width', ['number']);
-    assertOrUndefined(options.height, 'options.height', ['number']);
-    assertOrUndefined(options.rotate, 'options.rotate', [[Object, 'Rotation']]);
-    assertOrUndefined(options.xSkew, 'options.xSkew', [[Object, 'Rotation']]);
-    assertOrUndefined(options.ySkew, 'options.ySkew', [[Object, 'Rotation']]);
-    assertRangeOrUndefined(options.opacity, 'opacity.opacity', 0, 1);
-    assertIsOneOfOrUndefined(options.blendMode, 'options.blendMode', BlendMode);
+    assertIs(image, "image", [[PDFImage, "PDFImage"]]);
+    assertOrUndefined(options.x, "options.x", ["number"]);
+    assertOrUndefined(options.y, "options.y", ["number"]);
+    assertOrUndefined(options.width, "options.width", ["number"]);
+    assertOrUndefined(options.height, "options.height", ["number"]);
+    assertOrUndefined(options.rotate, "options.rotate", [[Object, "Rotation"]]);
+    assertOrUndefined(options.xSkew, "options.xSkew", [[Object, "Rotation"]]);
+    assertOrUndefined(options.ySkew, "options.ySkew", [[Object, "Rotation"]]);
+    assertRangeOrUndefined(options.opacity, "opacity.opacity", 0, 1);
+    assertIsOneOfOrUndefined(options.blendMode, "options.blendMode", BlendMode);
 
-    const xObjectKey = this.node.newXObject('Image', image.ref);
+    const xObjectKey = this.node.newXObject("Image", image.ref);
 
     const graphicsStateKey = this.maybeEmbedGraphicsState({
       opacity: options.opacity,
@@ -1117,23 +1116,23 @@ export default class PDFPage {
     options: PDFPageDrawPageOptions = {},
   ): void {
     // TODO: Reuse embeddedPage XObject name if we've already added this embeddedPage to Resources.XObjects
-    assertIs(embeddedPage, 'embeddedPage', [
-      [PDFEmbeddedPage, 'PDFEmbeddedPage'],
+    assertIs(embeddedPage, "embeddedPage", [
+      [PDFEmbeddedPage, "PDFEmbeddedPage"],
     ]);
-    assertOrUndefined(options.x, 'options.x', ['number']);
-    assertOrUndefined(options.y, 'options.y', ['number']);
-    assertOrUndefined(options.xScale, 'options.xScale', ['number']);
-    assertOrUndefined(options.yScale, 'options.yScale', ['number']);
-    assertOrUndefined(options.width, 'options.width', ['number']);
-    assertOrUndefined(options.height, 'options.height', ['number']);
-    assertOrUndefined(options.rotate, 'options.rotate', [[Object, 'Rotation']]);
-    assertOrUndefined(options.xSkew, 'options.xSkew', [[Object, 'Rotation']]);
-    assertOrUndefined(options.ySkew, 'options.ySkew', [[Object, 'Rotation']]);
-    assertRangeOrUndefined(options.opacity, 'opacity.opacity', 0, 1);
-    assertIsOneOfOrUndefined(options.blendMode, 'options.blendMode', BlendMode);
+    assertOrUndefined(options.x, "options.x", ["number"]);
+    assertOrUndefined(options.y, "options.y", ["number"]);
+    assertOrUndefined(options.xScale, "options.xScale", ["number"]);
+    assertOrUndefined(options.yScale, "options.yScale", ["number"]);
+    assertOrUndefined(options.width, "options.width", ["number"]);
+    assertOrUndefined(options.height, "options.height", ["number"]);
+    assertOrUndefined(options.rotate, "options.rotate", [[Object, "Rotation"]]);
+    assertOrUndefined(options.xSkew, "options.xSkew", [[Object, "Rotation"]]);
+    assertOrUndefined(options.ySkew, "options.ySkew", [[Object, "Rotation"]]);
+    assertRangeOrUndefined(options.opacity, "opacity.opacity", 0, 1);
+    assertIsOneOfOrUndefined(options.blendMode, "options.blendMode", BlendMode);
 
     const xObjectKey = this.node.newXObject(
-      'EmbeddedPdfPage',
+      "EmbeddedPdfPage",
       embeddedPage.ref,
     );
 
@@ -1143,18 +1142,18 @@ export default class PDFPage {
     });
 
     // prettier-ignore
-    const xScale = (
-        options.width  !== undefined ? options.width / embeddedPage.width
-      : options.xScale !== undefined ? options.xScale
-      : 1
-    );
+    const xScale = options.width !== undefined
+      ? options.width / embeddedPage.width
+      : options.xScale !== undefined
+      ? options.xScale
+      : 1;
 
     // prettier-ignore
-    const yScale = (
-        options.height !== undefined ? options.height / embeddedPage.height
-      : options.yScale !== undefined ? options.yScale
-      : 1
-    );
+    const yScale = options.height !== undefined
+      ? options.height / embeddedPage.height
+      : options.yScale !== undefined
+      ? options.yScale
+      : 1;
 
     const contentStream = this.getContentStream();
     contentStream.push(
@@ -1209,35 +1208,35 @@ export default class PDFPage {
    * @param options The options to be used when drawing the SVG path.
    */
   drawSvgPath(path: string, options: PDFPageDrawSVGOptions = {}): void {
-    assertIs(path, 'path', ['string']);
-    assertOrUndefined(options.x, 'options.x', ['number']);
-    assertOrUndefined(options.y, 'options.y', ['number']);
-    assertOrUndefined(options.scale, 'options.scale', ['number']);
-    assertOrUndefined(options.rotate, 'options.rotate', [[Object, 'Rotation']]);
-    assertOrUndefined(options.borderWidth, 'options.borderWidth', ['number']);
-    assertOrUndefined(options.color, 'options.color', [[Object, 'Color']]);
-    assertRangeOrUndefined(options.opacity, 'opacity.opacity', 0, 1);
-    assertOrUndefined(options.borderColor, 'options.borderColor', [
-      [Object, 'Color'],
+    assertIs(path, "path", ["string"]);
+    assertOrUndefined(options.x, "options.x", ["number"]);
+    assertOrUndefined(options.y, "options.y", ["number"]);
+    assertOrUndefined(options.scale, "options.scale", ["number"]);
+    assertOrUndefined(options.rotate, "options.rotate", [[Object, "Rotation"]]);
+    assertOrUndefined(options.borderWidth, "options.borderWidth", ["number"]);
+    assertOrUndefined(options.color, "options.color", [[Object, "Color"]]);
+    assertRangeOrUndefined(options.opacity, "opacity.opacity", 0, 1);
+    assertOrUndefined(options.borderColor, "options.borderColor", [
+      [Object, "Color"],
     ]);
-    assertOrUndefined(options.borderDashArray, 'options.borderDashArray', [
+    assertOrUndefined(options.borderDashArray, "options.borderDashArray", [
       Array,
     ]);
-    assertOrUndefined(options.borderDashPhase, 'options.borderDashPhase', [
-      'number',
+    assertOrUndefined(options.borderDashPhase, "options.borderDashPhase", [
+      "number",
     ]);
     assertIsOneOfOrUndefined(
       options.borderLineCap,
-      'options.borderLineCap',
+      "options.borderLineCap",
       LineCapStyle,
     );
     assertRangeOrUndefined(
       options.borderOpacity,
-      'options.borderOpacity',
+      "options.borderOpacity",
       0,
       1,
     );
-    assertIsOneOfOrUndefined(options.blendMode, 'options.blendMode', BlendMode);
+    assertIsOneOfOrUndefined(options.blendMode, "options.blendMode", BlendMode);
 
     const graphicsStateKey = this.maybeEmbedGraphicsState({
       opacity: options.opacity,
@@ -1245,7 +1244,7 @@ export default class PDFPage {
       blendMode: options.blendMode,
     });
 
-    if (!('color' in options) && !('borderColor' in options)) {
+    if (!("color" in options) && !("borderColor" in options)) {
       options.borderColor = rgb(0, 0, 0);
     }
 
@@ -1283,30 +1282,30 @@ export default class PDFPage {
    * @param options The options to be used when drawing the line.
    */
   drawLine(options: PDFPageDrawLineOptions): void {
-    assertIs(options.start, 'options.start', [
-      [Object, '{ x: number, y: number }'],
+    assertIs(options.start, "options.start", [
+      [Object, "{ x: number, y: number }"],
     ]);
-    assertIs(options.end, 'options.end', [
-      [Object, '{ x: number, y: number }'],
+    assertIs(options.end, "options.end", [
+      [Object, "{ x: number, y: number }"],
     ]);
-    assertIs(options.start.x, 'options.start.x', ['number']);
-    assertIs(options.start.y, 'options.start.y', ['number']);
-    assertIs(options.end.x, 'options.end.x', ['number']);
-    assertIs(options.end.y, 'options.end.y', ['number']);
-    assertOrUndefined(options.thickness, 'options.thickness', ['number']);
-    assertOrUndefined(options.color, 'options.color', [[Object, 'Color']]);
-    assertOrUndefined(options.dashArray, 'options.dashArray', [Array]);
-    assertOrUndefined(options.dashPhase, 'options.dashPhase', ['number']);
-    assertIsOneOfOrUndefined(options.lineCap, 'options.lineCap', LineCapStyle);
-    assertRangeOrUndefined(options.opacity, 'opacity.opacity', 0, 1);
-    assertIsOneOfOrUndefined(options.blendMode, 'options.blendMode', BlendMode);
+    assertIs(options.start.x, "options.start.x", ["number"]);
+    assertIs(options.start.y, "options.start.y", ["number"]);
+    assertIs(options.end.x, "options.end.x", ["number"]);
+    assertIs(options.end.y, "options.end.y", ["number"]);
+    assertOrUndefined(options.thickness, "options.thickness", ["number"]);
+    assertOrUndefined(options.color, "options.color", [[Object, "Color"]]);
+    assertOrUndefined(options.dashArray, "options.dashArray", [Array]);
+    assertOrUndefined(options.dashPhase, "options.dashPhase", ["number"]);
+    assertIsOneOfOrUndefined(options.lineCap, "options.lineCap", LineCapStyle);
+    assertRangeOrUndefined(options.opacity, "opacity.opacity", 0, 1);
+    assertIsOneOfOrUndefined(options.blendMode, "options.blendMode", BlendMode);
 
     const graphicsStateKey = this.maybeEmbedGraphicsState({
       borderOpacity: options.opacity,
       blendMode: options.blendMode,
     });
 
-    if (!('color' in options)) {
+    if (!("color" in options)) {
       options.color = rgb(0, 0, 0);
     }
 
@@ -1346,37 +1345,37 @@ export default class PDFPage {
    * @param options The options to be used when drawing the rectangle.
    */
   drawRectangle(options: PDFPageDrawRectangleOptions = {}): void {
-    assertOrUndefined(options.x, 'options.x', ['number']);
-    assertOrUndefined(options.y, 'options.y', ['number']);
-    assertOrUndefined(options.width, 'options.width', ['number']);
-    assertOrUndefined(options.height, 'options.height', ['number']);
-    assertOrUndefined(options.rotate, 'options.rotate', [[Object, 'Rotation']]);
-    assertOrUndefined(options.xSkew, 'options.xSkew', [[Object, 'Rotation']]);
-    assertOrUndefined(options.ySkew, 'options.ySkew', [[Object, 'Rotation']]);
-    assertOrUndefined(options.borderWidth, 'options.borderWidth', ['number']);
-    assertOrUndefined(options.color, 'options.color', [[Object, 'Color']]);
-    assertRangeOrUndefined(options.opacity, 'opacity.opacity', 0, 1);
-    assertOrUndefined(options.borderColor, 'options.borderColor', [
-      [Object, 'Color'],
+    assertOrUndefined(options.x, "options.x", ["number"]);
+    assertOrUndefined(options.y, "options.y", ["number"]);
+    assertOrUndefined(options.width, "options.width", ["number"]);
+    assertOrUndefined(options.height, "options.height", ["number"]);
+    assertOrUndefined(options.rotate, "options.rotate", [[Object, "Rotation"]]);
+    assertOrUndefined(options.xSkew, "options.xSkew", [[Object, "Rotation"]]);
+    assertOrUndefined(options.ySkew, "options.ySkew", [[Object, "Rotation"]]);
+    assertOrUndefined(options.borderWidth, "options.borderWidth", ["number"]);
+    assertOrUndefined(options.color, "options.color", [[Object, "Color"]]);
+    assertRangeOrUndefined(options.opacity, "opacity.opacity", 0, 1);
+    assertOrUndefined(options.borderColor, "options.borderColor", [
+      [Object, "Color"],
     ]);
-    assertOrUndefined(options.borderDashArray, 'options.borderDashArray', [
+    assertOrUndefined(options.borderDashArray, "options.borderDashArray", [
       Array,
     ]);
-    assertOrUndefined(options.borderDashPhase, 'options.borderDashPhase', [
-      'number',
+    assertOrUndefined(options.borderDashPhase, "options.borderDashPhase", [
+      "number",
     ]);
     assertIsOneOfOrUndefined(
       options.borderLineCap,
-      'options.borderLineCap',
+      "options.borderLineCap",
       LineCapStyle,
     );
     assertRangeOrUndefined(
       options.borderOpacity,
-      'options.borderOpacity',
+      "options.borderOpacity",
       0,
       1,
     );
-    assertIsOneOfOrUndefined(options.blendMode, 'options.blendMode', BlendMode);
+    assertIsOneOfOrUndefined(options.blendMode, "options.blendMode", BlendMode);
 
     const graphicsStateKey = this.maybeEmbedGraphicsState({
       opacity: options.opacity,
@@ -1384,7 +1383,7 @@ export default class PDFPage {
       blendMode: options.blendMode,
     });
 
-    if (!('color' in options) && !('borderColor' in options)) {
+    if (!("color" in options) && !("borderColor" in options)) {
       options.color = rgb(0, 0, 0);
     }
 
@@ -1430,7 +1429,7 @@ export default class PDFPage {
    */
   drawSquare(options: PDFPageDrawSquareOptions = {}): void {
     const { size } = options;
-    assertOrUndefined(size, 'size', ['number']);
+    assertOrUndefined(size, "size", ["number"]);
     this.drawRectangle({ ...options, width: size, height: size });
   }
 
@@ -1454,42 +1453,42 @@ export default class PDFPage {
    * @param options The options to be used when drawing the ellipse.
    */
   drawEllipse(options: PDFPageDrawEllipseOptions = {}): void {
-    assertOrUndefined(options.x, 'options.x', ['number']);
-    assertOrUndefined(options.y, 'options.y', ['number']);
-    assertOrUndefined(options.xScale, 'options.xScale', ['number']);
-    assertOrUndefined(options.yScale, 'options.yScale', ['number']);
-    assertOrUndefined(options.rotate, 'options.rotate', [[Object, 'Rotation']]);
-    assertOrUndefined(options.color, 'options.color', [[Object, 'Color']]);
-    assertRangeOrUndefined(options.opacity, 'opacity.opacity', 0, 1);
-    assertOrUndefined(options.borderColor, 'options.borderColor', [
-      [Object, 'Color'],
+    assertOrUndefined(options.x, "options.x", ["number"]);
+    assertOrUndefined(options.y, "options.y", ["number"]);
+    assertOrUndefined(options.xScale, "options.xScale", ["number"]);
+    assertOrUndefined(options.yScale, "options.yScale", ["number"]);
+    assertOrUndefined(options.rotate, "options.rotate", [[Object, "Rotation"]]);
+    assertOrUndefined(options.color, "options.color", [[Object, "Color"]]);
+    assertRangeOrUndefined(options.opacity, "opacity.opacity", 0, 1);
+    assertOrUndefined(options.borderColor, "options.borderColor", [
+      [Object, "Color"],
     ]);
     assertRangeOrUndefined(
       options.borderOpacity,
-      'options.borderOpacity',
+      "options.borderOpacity",
       0,
       1,
     );
-    assertOrUndefined(options.borderWidth, 'options.borderWidth', ['number']);
-    assertOrUndefined(options.borderDashArray, 'options.borderDashArray', [
+    assertOrUndefined(options.borderWidth, "options.borderWidth", ["number"]);
+    assertOrUndefined(options.borderDashArray, "options.borderDashArray", [
       Array,
     ]);
-    assertOrUndefined(options.borderDashPhase, 'options.borderDashPhase', [
-      'number',
+    assertOrUndefined(options.borderDashPhase, "options.borderDashPhase", [
+      "number",
     ]);
     assertIsOneOfOrUndefined(
       options.borderLineCap,
-      'options.borderLineCap',
+      "options.borderLineCap",
       LineCapStyle,
     );
-    assertIsOneOfOrUndefined(options.blendMode, 'options.blendMode', BlendMode);
+    assertIsOneOfOrUndefined(options.blendMode, "options.blendMode", BlendMode);
     const graphicsStateKey = this.maybeEmbedGraphicsState({
       opacity: options.opacity,
       borderOpacity: options.borderOpacity,
       blendMode: options.blendMode,
     });
 
-    if (!('color' in options) && !('borderColor' in options)) {
+    if (!("color" in options) && !("borderColor" in options)) {
       options.color = rgb(0, 0, 0);
     }
 
@@ -1532,7 +1531,7 @@ export default class PDFPage {
    */
   drawCircle(options: PDFPageDrawCircleOptions = {}): void {
     const { size = 100 } = options;
-    assertOrUndefined(size, 'size', ['number']);
+    assertOrUndefined(size, "size", ["number"]);
     this.drawEllipse({ ...options, xScale: size, yScale: size });
   }
 
@@ -1592,25 +1591,25 @@ export default class PDFPage {
     }
 
     const graphicsState = this.doc.context.obj({
-      Type: 'ExtGState',
+      Type: "ExtGState",
       ca: opacity,
       CA: borderOpacity,
       BM: blendMode,
     });
 
-    const key = this.node.newExtGState('GS', graphicsState);
+    const key = this.node.newExtGState("GS", graphicsState);
 
     return key;
   }
 
   private scaleAnnot(annot: PDFDict, x: number, y: number) {
-    const selectors = ['RD', 'CL', 'Vertices', 'QuadPoints', 'L', 'Rect'];
+    const selectors = ["RD", "CL", "Vertices", "QuadPoints", "L", "Rect"];
     for (let idx = 0, len = selectors.length; idx < len; idx++) {
       const list = annot.lookup(PDFName.of(selectors[idx]));
       if (list instanceof PDFArray) list.scalePDFNumbers(x, y);
     }
 
-    const inkLists = annot.lookup(PDFName.of('InkList'));
+    const inkLists = annot.lookup(PDFName.of("InkList"));
     if (inkLists instanceof PDFArray) {
       for (let idx = 0, len = inkLists.size(); idx < len; idx++) {
         const arr = inkLists.lookup(idx);

@@ -1,19 +1,19 @@
 import {
   MissingPageContentsEmbeddingError,
   UnrecognizedStreamTypeError,
-} from 'src/core/errors';
-import PDFArray from 'src/core/objects/PDFArray';
-import PDFNumber from 'src/core/objects/PDFNumber';
-import PDFRawStream from 'src/core/objects/PDFRawStream';
-import PDFRef from 'src/core/objects/PDFRef';
-import PDFStream from 'src/core/objects/PDFStream';
-import PDFContext from 'src/core/PDFContext';
-import { decodePDFRawStream } from 'src/core/streams/decode';
-import PDFContentStream from 'src/core/structures/PDFContentStream';
-import PDFPageLeaf from 'src/core/structures/PDFPageLeaf';
-import CharCodes from 'src/core/syntax/CharCodes';
-import { TransformationMatrix } from 'src/types/matrix';
-import { mergeIntoTypedArray } from 'src/utils';
+} from "../errors.ts";
+import PDFArray from "../objects/PDFArray.ts";
+import PDFNumber from "../objects/PDFNumber.ts";
+import PDFRawStream from "../objects/PDFRawStream.ts";
+import PDFRef from "../objects/PDFRef.ts";
+import PDFStream from "../objects/PDFStream.ts";
+import PDFContext from "../PDFContext.ts";
+import { decodePDFRawStream } from "../streams/decode.ts";
+import PDFContentStream from "../structures/PDFContentStream.ts";
+import PDFPageLeaf from "../structures/PDFPageLeaf.ts";
+import CharCodes from "../syntax/CharCodes.ts";
+import { TransformationMatrix } from "../../types/matrix.ts";
+import { mergeIntoTypedArray } from "../../utils/index.ts";
 
 /**
  * Represents a page bounding box.
@@ -40,12 +40,10 @@ export interface PageBoundingBox {
 const fullPageBoundingBox = (page: PDFPageLeaf) => {
   const mediaBox = page.MediaBox();
 
-  const width =
-    mediaBox.lookup(2, PDFNumber).asNumber() -
+  const width = mediaBox.lookup(2, PDFNumber).asNumber() -
     mediaBox.lookup(0, PDFNumber).asNumber();
 
-  const height =
-    mediaBox.lookup(3, PDFNumber).asNumber() -
+  const height = mediaBox.lookup(3, PDFNumber).asNumber() -
     mediaBox.lookup(1, PDFNumber).asNumber();
 
   return { left: 0, bottom: 0, right: width, top: height };
@@ -58,7 +56,7 @@ const boundingBoxAdjustedMatrix = (
 ): TransformationMatrix => [1, 0, 0, 1, -bb.left, -bb.bottom];
 
 class PDFPageEmbedder {
-  static async for(
+  static for(
     page: PDFPageLeaf,
     boundingBox?: PageBoundingBox,
     transformationMatrix?: TransformationMatrix,
@@ -85,11 +83,11 @@ class PDFPageEmbedder {
     this.width = bb.right - bb.left;
     this.height = bb.top - bb.bottom;
     this.boundingBox = bb;
-    this.transformationMatrix =
-      transformationMatrix ?? boundingBoxAdjustedMatrix(bb);
+    this.transformationMatrix = transformationMatrix ??
+      boundingBoxAdjustedMatrix(bb);
   }
 
-  async embedIntoContext(context: PDFContext, ref?: PDFRef): Promise<PDFRef> {
+  embedIntoContext(context: PDFContext, ref?: PDFRef): Promise<PDFRef> {
     const { Contents, Resources } = this.page.normalizedEntries();
 
     if (!Contents) throw new MissingPageContentsEmbeddingError();
@@ -97,8 +95,8 @@ class PDFPageEmbedder {
 
     const { left, bottom, right, top } = this.boundingBox;
     const xObject = context.flateStream(decodedContents, {
-      Type: 'XObject',
-      Subtype: 'Form',
+      Type: "XObject",
+      Subtype: "Form",
       FormType: 1,
       BBox: [left, bottom, right, top],
       Matrix: this.transformationMatrix,
@@ -107,9 +105,9 @@ class PDFPageEmbedder {
 
     if (ref) {
       context.assign(ref, xObject);
-      return ref;
+      return Promise.resolve(ref);
     } else {
-      return context.register(xObject);
+      return Promise.resolve(context.register(xObject));
     }
   }
 

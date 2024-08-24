@@ -1,14 +1,11 @@
-import PDFContext from 'src/core/PDFContext';
-import PDFDict from 'src/core/objects/PDFDict';
-import PDFArray from 'src/core/objects/PDFArray';
-import PDFName from 'src/core/objects/PDFName';
-import PDFRef from 'src/core/objects/PDFRef';
-import PDFAcroField from 'src/core/acroform/PDFAcroField';
-import PDFAcroNonTerminal from 'src/core/acroform/PDFAcroNonTerminal';
-import {
-  createPDFAcroField,
-  createPDFAcroFields,
-} from 'src/core/acroform/utils';
+import PDFContext from "../PDFContext.ts";
+import PDFDict from "../objects/PDFDict.ts";
+import PDFArray from "../objects/PDFArray.ts";
+import PDFName from "../objects/PDFName.ts";
+import PDFRef from "../objects/PDFRef.ts";
+import PDFAcroField from "./PDFAcroField.ts";
+import PDFAcroNonTerminal from "./PDFAcroNonTerminal.ts";
+import { createPDFAcroField, createPDFAcroFields } from "./utils.ts";
 
 class PDFAcroForm {
   readonly dict: PDFDict;
@@ -25,7 +22,7 @@ class PDFAcroForm {
   }
 
   Fields(): PDFArray | undefined {
-    const fields = this.dict.lookup(PDFName.of('Fields'));
+    const fields = this.dict.lookup(PDFName.of("Fields"));
     if (fields instanceof PDFArray) return fields;
     return undefined;
   }
@@ -70,8 +67,9 @@ class PDFAcroForm {
 
   removeField(field: PDFAcroField): void {
     const parent = field.getParent();
-    const fields =
-      parent === undefined ? this.normalizedEntries().Fields : parent.Kids();
+    const fields = parent === undefined
+      ? this.normalizedEntries().Fields
+      : parent.Kids();
 
     const index = fields?.indexOf(field.ref);
     if (fields === undefined || index === undefined) {
@@ -88,14 +86,12 @@ class PDFAcroForm {
   }
 
   normalizedEntries() {
-    let Fields = this.Fields();
+    const Fields = this.Fields();
+    if (Fields) return { Fields };
 
-    if (!Fields) {
-      Fields = this.dict.context.obj([]);
-      this.dict.set(PDFName.of('Fields'), Fields);
-    }
-
-    return { Fields };
+    const Fields2 = this.dict.context.obj([]);
+    this.dict.set(PDFName.of("Fields"), Fields2);
+    return { Fields: Fields2 };
   }
 }
 

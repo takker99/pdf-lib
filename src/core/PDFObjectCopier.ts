@@ -1,11 +1,11 @@
-import PDFArray from 'src/core/objects/PDFArray';
-import PDFDict from 'src/core/objects/PDFDict';
-import PDFName from 'src/core/objects/PDFName';
-import PDFObject from 'src/core/objects/PDFObject';
-import PDFRef from 'src/core/objects/PDFRef';
-import PDFStream from 'src/core/objects/PDFStream';
-import PDFContext from 'src/core/PDFContext';
-import PDFPageLeaf from 'src/core/structures/PDFPageLeaf';
+import PDFArray from "src/core/objects/PDFArray";
+import PDFDict from "src/core/objects/PDFDict";
+import PDFName from "src/core/objects/PDFName";
+import PDFObject from "src/core/objects/PDFObject";
+import PDFRef from "src/core/objects/PDFRef";
+import PDFStream from "src/core/objects/PDFStream";
+import PDFContext from "src/core/PDFContext";
+import PDFPageLeaf from "src/core/structures/PDFPageLeaf";
 
 /**
  * PDFObjectCopier copies PDFObjects from a src context to a dest context.
@@ -42,14 +42,20 @@ class PDFObjectCopier {
   }
 
   // prettier-ignore
-  copy = <T extends PDFObject>(object: T): T => (
-      object instanceof PDFPageLeaf ? this.copyPDFPage(object)
-    : object instanceof PDFDict     ? this.copyPDFDict(object)
-    : object instanceof PDFArray    ? this.copyPDFArray(object)
-    : object instanceof PDFStream   ? this.copyPDFStream(object)
-    : object instanceof PDFRef      ? this.copyPDFIndirectObject(object)
-    : object.clone()
-  ) as T;
+  copy = <T extends PDFObject>(object: T): T =>
+    (
+      object instanceof PDFPageLeaf
+        ? this.copyPDFPage(object)
+        : object instanceof PDFDict
+        ? this.copyPDFDict(object)
+        : object instanceof PDFArray
+        ? this.copyPDFArray(object)
+        : object instanceof PDFStream
+        ? this.copyPDFStream(object)
+        : object instanceof PDFRef
+        ? this.copyPDFIndirectObject(object)
+        : object.clone()
+    ) as T;
 
   private copyPDFPage = (originalPage: PDFPageLeaf): PDFPageLeaf => {
     const clonedPage = originalPage.clone();
@@ -66,7 +72,7 @@ class PDFObjectCopier {
 
     // Remove the parent reference to prevent the whole donor document's page
     // tree from being copied when we only need a single page.
-    clonedPage.delete(PDFName.of('Parent'));
+    clonedPage.delete(PDFName.of("Parent"));
 
     return this.copyPDFDict(clonedPage) as PDFPageLeaf;
   };

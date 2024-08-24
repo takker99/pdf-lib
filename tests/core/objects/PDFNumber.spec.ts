@@ -1,5 +1,5 @@
-import { PDFNumber } from 'src/core';
-import { toCharCode, typedArrayFor } from 'src/utils';
+import { PDFNumber } from "src/core";
+import { toCharCode, typedArrayFor } from "src/utils";
 
 describe(`PDFNumber`, () => {
   it(`can be constructed from PDFNumber.of(...)`, () => {
@@ -16,16 +16,16 @@ describe(`PDFNumber`, () => {
   });
 
   it(`can be converted to a string`, () => {
-    expect(String(PDFNumber.of(21))).toEqual('21');
-    expect(String(PDFNumber.of(-43))).toEqual('-43');
+    expect(String(PDFNumber.of(21))).toEqual("21");
+    expect(String(PDFNumber.of(-43))).toEqual("-43");
     expect(String(PDFNumber.of(3.403e38))).toEqual(
-      '340300000000000000000000000000000000000',
+      "340300000000000000000000000000000000000",
     );
     expect(String(PDFNumber.of(-3.403e38))).toEqual(
-      '-340300000000000000000000000000000000000',
+      "-340300000000000000000000000000000000000",
     );
     expect(String(PDFNumber.of(-3.403e-38))).toContain(
-      '-0.00000000000000000000000000000000000003403',
+      "-0.00000000000000000000000000000000000003403",
     );
   });
 
@@ -37,14 +37,14 @@ describe(`PDFNumber`, () => {
   });
 
   it(`can be serialized`, () => {
-    const buffer1 = new Uint8Array(8).fill(toCharCode(' '));
+    const buffer1 = new Uint8Array(8).fill(toCharCode(" "));
     expect(PDFNumber.of(21).copyBytesInto(buffer1, 3)).toBe(2);
-    expect(buffer1).toEqual(typedArrayFor('   21   '));
+    expect(buffer1).toEqual(typedArrayFor("   21   "));
 
-    const buffer2 = new Uint8Array(40).fill(toCharCode(' '));
+    const buffer2 = new Uint8Array(40).fill(toCharCode(" "));
     expect(PDFNumber.of(-3.403e38).copyBytesInto(buffer2, 0)).toBe(40);
     expect(buffer2).toEqual(
-      typedArrayFor('-340300000000000000000000000000000000000'),
+      typedArrayFor("-340300000000000000000000000000000000000"),
     );
   });
 });

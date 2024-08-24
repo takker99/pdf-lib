@@ -1,24 +1,24 @@
-import pako from 'pako';
+import pako from "pako";
 
-import PDFHeader from 'src/core/document/PDFHeader';
-import { UnexpectedObjectTypeError } from 'src/core/errors';
-import PDFArray from 'src/core/objects/PDFArray';
-import PDFBool from 'src/core/objects/PDFBool';
-import PDFDict from 'src/core/objects/PDFDict';
-import PDFHexString from 'src/core/objects/PDFHexString';
-import PDFName from 'src/core/objects/PDFName';
-import PDFNull from 'src/core/objects/PDFNull';
-import PDFNumber from 'src/core/objects/PDFNumber';
-import PDFObject from 'src/core/objects/PDFObject';
-import PDFRawStream from 'src/core/objects/PDFRawStream';
-import PDFRef from 'src/core/objects/PDFRef';
-import PDFStream from 'src/core/objects/PDFStream';
-import PDFString from 'src/core/objects/PDFString';
-import PDFOperator from 'src/core/operators/PDFOperator';
-import Ops from 'src/core/operators/PDFOperatorNames';
-import PDFContentStream from 'src/core/structures/PDFContentStream';
-import { typedArrayFor } from 'src/utils';
-import { SimpleRNG } from 'src/utils/rng';
+import PDFHeader from "src/core/document/PDFHeader";
+import { UnexpectedObjectTypeError } from "src/core/errors";
+import PDFArray from "src/core/objects/PDFArray";
+import PDFBool from "src/core/objects/PDFBool";
+import PDFDict from "src/core/objects/PDFDict";
+import PDFHexString from "src/core/objects/PDFHexString";
+import PDFName from "src/core/objects/PDFName";
+import PDFNull from "src/core/objects/PDFNull";
+import PDFNumber from "src/core/objects/PDFNumber";
+import PDFObject from "src/core/objects/PDFObject";
+import PDFRawStream from "src/core/objects/PDFRawStream";
+import PDFRef from "src/core/objects/PDFRef";
+import PDFStream from "src/core/objects/PDFStream";
+import PDFString from "src/core/objects/PDFString";
+import PDFOperator from "src/core/operators/PDFOperator";
+import Ops from "src/core/operators/PDFOperatorNames";
+import PDFContentStream from "src/core/structures/PDFContentStream";
+import { typedArrayFor } from "src/utils";
+import { SimpleRNG } from "src/utils/rng";
 
 type LookupKey = PDFRef | PDFObject | undefined;
 
@@ -196,11 +196,11 @@ class PDFContext {
       return literal;
     } else if (literal === null || literal === undefined) {
       return PDFNull;
-    } else if (typeof literal === 'string') {
+    } else if (typeof literal === "string") {
       return PDFName.of(literal);
-    } else if (typeof literal === 'number') {
+    } else if (typeof literal === "number") {
       return PDFNumber.of(literal);
-    } else if (typeof literal === 'boolean') {
+    } else if (typeof literal === "boolean") {
       return literal ? PDFBool.True : PDFBool.False;
     } else if (Array.isArray(literal)) {
       const array = PDFArray.withContext(this);
@@ -233,7 +233,7 @@ class PDFContext {
   ): PDFRawStream {
     return this.stream(pako.deflate(typedArrayFor(contents)), {
       ...dict,
-      Filter: 'FlateDecode',
+      Filter: "FlateDecode",
     });
   }
 
@@ -252,8 +252,8 @@ class PDFContext {
       BBox: this.obj([0, 0, 0, 0]),
       Matrix: this.obj([1, 0, 0, 1, 0, 0]),
       ...dict,
-      Type: 'XObject',
-      Subtype: 'Form',
+      Type: "XObject",
+      Subtype: "Form",
     });
   }
 

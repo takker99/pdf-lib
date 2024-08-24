@@ -1,8 +1,8 @@
-import PDFDict from 'src/core/objects/PDFDict';
-import PDFOperator from 'src/core/operators/PDFOperator';
-import PDFContext from 'src/core/PDFContext';
-import PDFFlateStream from 'src/core/structures/PDFFlateStream';
-import CharCodes from 'src/core/syntax/CharCodes';
+import PDFDict from "../objects/PDFDict.ts";
+import PDFOperator from "../operators/PDFOperator.ts";
+import PDFContext from "../PDFContext.ts";
+import PDFFlateStream from "./PDFFlateStream.ts";
+import CharCodes from "../syntax/CharCodes.ts";
 
 class PDFContentStream extends PDFFlateStream {
   static of = (dict: PDFDict, operators: PDFOperator[], encode = true) =>
@@ -29,7 +29,7 @@ class PDFContentStream extends PDFFlateStream {
   }
 
   getContentsString(): string {
-    let value = '';
+    let value = "";
     for (let idx = 0, len = this.operators.length; idx < len; idx++) {
       value += `${this.operators[idx]}\n`;
     }

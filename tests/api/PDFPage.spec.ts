@@ -1,7 +1,7 @@
-import fs from 'fs';
-import { PDFArray, PDFDocument, PDFName, StandardFonts } from 'src/index';
+import fs from "fs";
+import { PDFArray, PDFDocument, PDFName, StandardFonts } from "src/index";
 
-const birdPng = fs.readFileSync('assets/images/greyscale_bird.png');
+const birdPng = fs.readFileSync("assets/images/greyscale_bird.png");
 
 describe(`PDFDocument`, () => {
   describe(`getSize() method`, () => {

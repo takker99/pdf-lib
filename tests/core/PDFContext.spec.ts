@@ -1,4 +1,4 @@
-import pako from 'pako';
+import pako from "pako";
 
 import {
   PDFArray,
@@ -12,20 +12,20 @@ import {
   PDFNumber,
   PDFRef,
   PDFString,
-} from 'src/core';
-import { mergeIntoTypedArray } from 'src/utils';
+} from "src/core";
+import { mergeIntoTypedArray } from "src/utils";
 
 describe(`PDFContext`, () => {
   it(`retains assigned objects`, () => {
     const context = PDFContext.create();
 
     const pdfBool = PDFBool.True;
-    const pdfHexString = PDFHexString.of('ABC123');
-    const pdfName = PDFName.of('Foo#Bar!');
+    const pdfHexString = PDFHexString.of("ABC123");
+    const pdfName = PDFName.of("Foo#Bar!");
     const pdfNull = PDFNull;
     const pdfNumber = PDFNumber.of(-24.179);
-    const pdfString = PDFString.of('foobar');
-    const pdfDict = context.obj({ Foo: PDFName.of('Bar') });
+    const pdfString = PDFString.of("foobar");
+    const pdfDict = context.obj({ Foo: PDFName.of("Bar") });
     const pdfArray = context.obj([PDFBool.True, pdfDict]);
 
     context.assign(PDFRef.of(0), pdfBool);
@@ -62,7 +62,7 @@ describe(`PDFContext`, () => {
     const context = PDFContext.create();
 
     const pdfBool = PDFBool.True;
-    const pdfName = PDFName.of('FooBar');
+    const pdfName = PDFName.of("FooBar");
     const pdfNumber = PDFNumber.of(-21.436);
 
     const boolRef = context.register(pdfBool);
@@ -79,19 +79,19 @@ describe(`PDFContext`, () => {
   it(`stream creation`, () => {
     const context = PDFContext.create();
 
-    const stream = context.flateStream('stuff and things!');
+    const stream = context.flateStream("stuff and things!");
     const buffer = new Uint8Array(stream.sizeInBytes());
     stream.copyBytesInto(buffer, 0);
 
     expect(buffer).toEqual(
       mergeIntoTypedArray(
-        '<<\n',
-        '/Filter /FlateDecode\n',
-        '/Length 25\n',
-        '>>\n',
-        'stream\n',
-        pako.deflate('stuff and things!'),
-        '\nendstream',
+        "<<\n",
+        "/Filter /FlateDecode\n",
+        "/Length 25\n",
+        ">>\n",
+        "stream\n",
+        pako.deflate("stuff and things!"),
+        "\nendstream",
       ),
     );
   });
@@ -104,13 +104,13 @@ describe(`PDFContext`, () => {
     });
 
     it(`converts string literals to PDFName instances`, () => {
-      expect(context.obj('foobar')).toBeInstanceOf(PDFName);
-      expect(context.obj('foobar').toString()).toBe('/foobar');
+      expect(context.obj("foobar")).toBeInstanceOf(PDFName);
+      expect(context.obj("foobar").toString()).toBe("/foobar");
     });
 
     it(`converts number literals to PDFNumber instances`, () => {
       expect(context.obj(-21.4e-3)).toBeInstanceOf(PDFNumber);
-      expect(context.obj(-21.4e-3).toString()).toBe('-0.0214');
+      expect(context.obj(-21.4e-3).toString()).toBe("-0.0214");
     });
 
     it(`converts boolean literals to PDFBool instances`, () => {
@@ -122,14 +122,14 @@ describe(`PDFContext`, () => {
       const array = [
         PDFRef.of(21),
         true,
-        PDFHexString.of('ABC123'),
-        'Foo#Bar!',
+        PDFHexString.of("ABC123"),
+        "Foo#Bar!",
         [null, -24.179],
-        { Foo: PDFName.of('Bar') },
+        { Foo: PDFName.of("Bar") },
       ];
       expect(context.obj(array)).toBeInstanceOf(PDFArray);
       expect(context.obj(array).toString()).toEqual(
-        '[ 21 0 R true <ABC123> /Foo#23Bar! [ null -24.179 ] <<\n/Foo /Bar\n>> ]',
+        "[ 21 0 R true <ABC123> /Foo#23Bar! [ null -24.179 ] <<\n/Foo /Bar\n>> ]",
       );
     });
 
@@ -137,10 +137,10 @@ describe(`PDFContext`, () => {
       const dict = {
         Ref: PDFRef.of(21),
         Boolean: true,
-        HexString: PDFHexString.of('ABC123'),
+        HexString: PDFHexString.of("ABC123"),
         Null: null,
         Number: -24.179,
-        Name: 'Foo#Bar!',
+        Name: "Foo#Bar!",
         Dictionary: { Array: [true, null] },
       };
       expect(context.obj(dict)).toBeInstanceOf(PDFDict);

@@ -1,6 +1,6 @@
 // tslint:disable: max-classes-per-file
-import PDFObject from 'src/core/objects/PDFObject';
-import { arrayAsString } from 'src/utils';
+import PDFObject from "src/core/objects/PDFObject";
+import { arrayAsString } from "src/utils";
 
 export class MethodNotImplementedError extends Error {
   constructor(className: string, methodName: string) {
@@ -24,8 +24,7 @@ export class UnexpectedObjectTypeError extends Error {
       ? expected.map(name)
       : [name(expected)];
 
-    const msg =
-      `Expected instance of ${expectedTypes.join(' or ')}, ` +
+    const msg = `Expected instance of ${expectedTypes.join(" or ")}, ` +
       `but got instance of ${actual ? name(actual) : actual}`;
 
     super(msg);
@@ -70,42 +69,48 @@ export class UnrecognizedStreamTypeError extends Error {
 
 export class PageEmbeddingMismatchedContextError extends Error {
   constructor() {
-    const msg = `Found mismatched contexts while embedding pages. All pages in the array passed to \`PDFDocument.embedPages()\` must be from the same document.`;
+    const msg =
+      `Found mismatched contexts while embedding pages. All pages in the array passed to \`PDFDocument.embedPages()\` must be from the same document.`;
     super(msg);
   }
 }
 
 export class PDFArrayIsNotRectangleError extends Error {
   constructor(size: number) {
-    const msg = `Attempted to convert PDFArray with ${size} elements to rectangle, but must have exactly 4 elements.`;
+    const msg =
+      `Attempted to convert PDFArray with ${size} elements to rectangle, but must have exactly 4 elements.`;
     super(msg);
   }
 }
 
 export class InvalidPDFDateStringError extends Error {
   constructor(value: string) {
-    const msg = `Attempted to convert "${value}" to a date, but it does not match the PDF date string format.`;
+    const msg =
+      `Attempted to convert "${value}" to a date, but it does not match the PDF date string format.`;
     super(msg);
   }
 }
 
 export class InvalidTargetIndexError extends Error {
   constructor(targetIndex: number, Count: number) {
-    const msg = `Invalid targetIndex specified: targetIndex=${targetIndex} must be less than Count=${Count}`;
+    const msg =
+      `Invalid targetIndex specified: targetIndex=${targetIndex} must be less than Count=${Count}`;
     super(msg);
   }
 }
 
 export class CorruptPageTreeError extends Error {
   constructor(targetIndex: number, operation: string) {
-    const msg = `Failed to ${operation} at targetIndex=${targetIndex} due to corrupt page tree: It is likely that one or more 'Count' entries are invalid`;
+    const msg =
+      `Failed to ${operation} at targetIndex=${targetIndex} due to corrupt page tree: It is likely that one or more 'Count' entries are invalid`;
     super(msg);
   }
 }
 
 export class IndexOutOfBoundsError extends Error {
   constructor(index: number, min: number, max: number) {
-    const msg = `index should be at least ${min} and at most ${max}, but was actually ${index}`;
+    const msg =
+      `index should be at least ${min} and at most ${max}, but was actually ${index}`;
     super(msg);
   }
 }
@@ -126,7 +131,8 @@ export class MultiSelectValueError extends Error {
 
 export class MissingDAEntryError extends Error {
   constructor(fieldName: string) {
-    const msg = `No /DA (default appearance) entry found for field: ${fieldName}`;
+    const msg =
+      `No /DA (default appearance) entry found for field: ${fieldName}`;
     super(msg);
   }
 }
@@ -148,8 +154,7 @@ export interface Position {
 
 export class NumberParsingError extends Error {
   constructor(pos: Position, value: string) {
-    const msg =
-      `Failed to parse number ` +
+    const msg = `Failed to parse number ` +
       `(line:${pos.line} col:${pos.column} offset=${pos.offset}): "${value}"`;
     super(msg);
   }
@@ -157,8 +162,7 @@ export class NumberParsingError extends Error {
 
 export class PDFParsingError extends Error {
   constructor(pos: Position, details: string) {
-    const msg =
-      `Failed to parse PDF document ` +
+    const msg = `Failed to parse PDF document ` +
       `(line:${pos.line} col:${pos.column} offset=${pos.offset}): ${details}`;
     super(msg);
   }
@@ -166,14 +170,16 @@ export class PDFParsingError extends Error {
 
 export class NextByteAssertionError extends PDFParsingError {
   constructor(pos: Position, expectedByte: number, actualByte: number) {
-    const msg = `Expected next byte to be ${expectedByte} but it was actually ${actualByte}`;
+    const msg =
+      `Expected next byte to be ${expectedByte} but it was actually ${actualByte}`;
     super(pos, msg);
   }
 }
 
 export class PDFObjectParsingError extends PDFParsingError {
   constructor(pos: Position, byte: number) {
-    const msg = `Failed to parse PDF object starting with the following byte: ${byte}`;
+    const msg =
+      `Failed to parse PDF object starting with the following byte: ${byte}`;
     super(pos, msg);
   }
 }
@@ -194,7 +200,8 @@ export class PDFStreamParsingError extends PDFParsingError {
 
 export class UnbalancedParenthesisError extends PDFParsingError {
   constructor(pos: Position) {
-    const msg = `Failed to parse PDF literal string due to unbalanced parenthesis`;
+    const msg =
+      `Failed to parse PDF literal string due to unbalanced parenthesis`;
     super(pos, msg);
   }
 }

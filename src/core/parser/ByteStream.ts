@@ -1,7 +1,7 @@
-import { NextByteAssertionError } from 'src/core/errors';
-import PDFRawStream from 'src/core/objects/PDFRawStream';
-import { decodePDFRawStream } from 'src/core/streams/decode';
-import CharCodes from 'src/core/syntax/CharCodes';
+import { NextByteAssertionError } from "../errors.ts";
+import PDFRawStream from "../objects/PDFRawStream.ts";
+import { decodePDFRawStream } from "../streams/decode.ts";
+import CharCodes from "../syntax/CharCodes.ts";
 
 // TODO: See how line/col tracking affects performance
 class ByteStream {

@@ -1,9 +1,9 @@
 import {
   PDFAcroTerminal,
   PDFContext,
-  PDFString,
   PDFHexString,
-} from 'src/index';
+  PDFString,
+} from "src/index";
 
 describe(`PDFAcroField`, () => {
   it(`returns undefined for missing (DAs)`, () => {
@@ -22,24 +22,24 @@ describe(`PDFAcroField`, () => {
     const context = PDFContext.create();
 
     const dict = context.obj({
-      DA: PDFString.of('/ZaDb 10 Tf 0 g'),
+      DA: PDFString.of("/ZaDb 10 Tf 0 g"),
     });
     const dictRef = context.register(dict);
     const field = PDFAcroTerminal.fromDict(dict, dictRef);
 
-    expect(field.getDefaultAppearance()).toBe('/ZaDb 10 Tf 0 g');
+    expect(field.getDefaultAppearance()).toBe("/ZaDb 10 Tf 0 g");
   });
 
   it(`returns hexadecimal (non-standard) direct appearance strings (DAs)`, () => {
     const context = PDFContext.create();
 
     const dict = context.obj({
-      DA: PDFHexString.fromText('/ZaDb 10 Tf 0 g'),
+      DA: PDFHexString.fromText("/ZaDb 10 Tf 0 g"),
     });
     const dictRef = context.register(dict);
     const field = PDFAcroTerminal.fromDict(dict, dictRef);
 
-    expect(field.getDefaultAppearance()).toBe('/ZaDb 10 Tf 0 g');
+    expect(field.getDefaultAppearance()).toBe("/ZaDb 10 Tf 0 g");
   });
 
   describe(`setFontSize()`, () => {
@@ -59,7 +59,7 @@ describe(`PDFAcroField`, () => {
       const context = PDFContext.create();
 
       const dict = context.obj({
-        DA: PDFString.of('0 g 2 j'),
+        DA: PDFString.of("0 g 2 j"),
       });
       const dictRef = context.register(dict);
       const field = PDFAcroTerminal.fromDict(dict, dictRef);
@@ -71,14 +71,14 @@ describe(`PDFAcroField`, () => {
       const context = PDFContext.create();
 
       const dict = context.obj({
-        DA: PDFString.of('/ZaDb 10 Tf\n0 g\n/AbCd 87 Tf\n2 j'),
+        DA: PDFString.of("/ZaDb 10 Tf\n0 g\n/AbCd 87 Tf\n2 j"),
       });
       const dictRef = context.register(dict);
       const field = PDFAcroTerminal.fromDict(dict, dictRef);
       field.setFontSize(8);
 
       expect(field.getDefaultAppearance()).toBe(
-        '/ZaDb 10 Tf\n0 g\n /AbCd 8 Tf \n2 j',
+        "/ZaDb 10 Tf\n0 g\n /AbCd 8 Tf \n2 j",
       );
     });
 
@@ -86,13 +86,13 @@ describe(`PDFAcroField`, () => {
       const context = PDFContext.create();
 
       const dict = context.obj({
-        DA: PDFString.of('/ZaDb Tf 0 g'),
+        DA: PDFString.of("/ZaDb Tf 0 g"),
       });
       const dictRef = context.register(dict);
       const field = PDFAcroTerminal.fromDict(dict, dictRef);
       field.setFontSize(21.7);
 
-      expect(field.getDefaultAppearance()).toBe(' /ZaDb 21.7 Tf  0 g');
+      expect(field.getDefaultAppearance()).toBe(" /ZaDb 21.7 Tf  0 g");
     });
   });
 });

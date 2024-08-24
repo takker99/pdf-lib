@@ -1,16 +1,16 @@
-import PDFHeader from 'src/core/document/PDFHeader';
-import PDFTrailer from 'src/core/document/PDFTrailer';
-import PDFInvalidObject from 'src/core/objects/PDFInvalidObject';
-import PDFName from 'src/core/objects/PDFName';
-import PDFNumber from 'src/core/objects/PDFNumber';
-import PDFObject from 'src/core/objects/PDFObject';
-import PDFRef from 'src/core/objects/PDFRef';
-import PDFStream from 'src/core/objects/PDFStream';
-import PDFContext from 'src/core/PDFContext';
-import PDFCrossRefStream from 'src/core/structures/PDFCrossRefStream';
-import PDFObjectStream from 'src/core/structures/PDFObjectStream';
-import PDFWriter from 'src/core/writers/PDFWriter';
-import { last, waitForTick } from 'src/utils';
+import PDFHeader from "../document/PDFHeader.ts";
+import PDFTrailer from "../document/PDFTrailer.ts";
+import PDFInvalidObject from "../objects/PDFInvalidObject.ts";
+import PDFName from "../objects/PDFName.ts";
+import PDFNumber from "../objects/PDFNumber.ts";
+import PDFObject from "../objects/PDFObject.ts";
+import PDFRef from "../objects/PDFRef.ts";
+import PDFStream from "../objects/PDFStream.ts";
+import PDFContext from "../PDFContext.ts";
+import PDFCrossRefStream from "../structures/PDFCrossRefStream.ts";
+import PDFObjectStream from "../structures/PDFObjectStream.ts";
+import PDFWriter from "./PDFWriter.ts";
+import { last, waitForTick } from "../../utils/index.ts";
 
 class PDFStreamWriter extends PDFWriter {
   static forContext = (
@@ -62,8 +62,7 @@ class PDFStreamWriter extends PDFWriter {
       const indirectObject = indirectObjects[idx];
       const [ref, object] = indirectObject;
 
-      const shouldNotCompress =
-        ref === this.context.trailerInfo.Encrypt ||
+      const shouldNotCompress = ref === this.context.trailerInfo.Encrypt ||
         object instanceof PDFStream ||
         object instanceof PDFInvalidObject ||
         ref.generationNumber !== 0;
@@ -106,7 +105,7 @@ class PDFStreamWriter extends PDFWriter {
     }
 
     const xrefStreamRef = PDFRef.of(objectNumber++);
-    xrefStream.dict.set(PDFName.of('Size'), PDFNumber.of(objectNumber));
+    xrefStream.dict.set(PDFName.of("Size"), PDFNumber.of(objectNumber));
     xrefStream.addUncompressedEntry(xrefStreamRef, size);
     const xrefOffset = size;
     size += this.computeIndirectObjectSize([xrefStreamRef, xrefStream]);

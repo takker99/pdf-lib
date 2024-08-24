@@ -6,8 +6,8 @@
  * under the Apache 2.0 open source license.
  */
 
-import DecodeStream from 'src/core/streams/DecodeStream';
-import { StreamType } from 'src/core/streams/Stream';
+import DecodeStream from "./DecodeStream.ts";
+import { StreamType } from "./Stream.ts";
 
 class AsciiHexStream extends DecodeStream {
   private stream: StreamType;

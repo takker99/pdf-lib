@@ -1,12 +1,12 @@
-import { asNumber, asPDFName, asPDFNumber } from 'src/api/objects';
-import { degreesToRadians } from 'src/api/rotations';
+import { asNumber, asPDFName, asPDFNumber } from "./objects.ts";
+import { degreesToRadians } from "./rotations.ts";
 import {
   PDFHexString,
   PDFName,
   PDFNumber,
   PDFOperator,
   PDFOperatorNames as Ops,
-} from 'src/core';
+} from "../core/index.ts";
 
 /* ==================== Clipping Path Operators ==================== */
 
@@ -80,7 +80,7 @@ export const setDashPattern = (
   dashPhase: number | PDFNumber,
 ) =>
   PDFOperator.of(Ops.SetLineDashPattern, [
-    `[${dashArray.map(asPDFNumber).join(' ')}]`,
+    `[${dashArray.map(asPDFNumber).join(" ")}]`,
     asPDFNumber(dashPhase),
   ]);
 

@@ -1,5 +1,5 @@
-import { MethodNotImplementedError } from 'src/core/errors';
-import Stream, { StreamType } from 'src/core/streams/Stream';
+import { MethodNotImplementedError } from "../errors.ts";
+import Stream, { StreamType } from "./Stream.ts";
 
 /*
  * Copyright 2012 Mozilla Foundation
@@ -142,7 +142,7 @@ class DecodeStream implements StreamType {
   }
 
   protected readBlock(): void {
-    throw new MethodNotImplementedError(this.constructor.name, 'readBlock');
+    throw new MethodNotImplementedError(this.constructor.name, "readBlock");
   }
 
   protected ensureBuffer(requested: number) {

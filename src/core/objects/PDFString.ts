@@ -1,15 +1,15 @@
-import PDFObject from 'src/core/objects/PDFObject';
-import CharCodes from 'src/core/syntax/CharCodes';
+import PDFObject from "./PDFObject.ts";
+import CharCodes from "../syntax/CharCodes.ts";
 import {
   copyStringIntoBuffer,
+  hasUtf16BOM,
   padStart,
-  utf16Decode,
+  parseDate,
   pdfDocEncodingDecode,
   toCharCode,
-  parseDate,
-  hasUtf16BOM,
-} from 'src/utils';
-import { InvalidPDFDateStringError } from 'src/core/errors';
+  utf16Decode,
+} from "../../utils/index.ts";
+import { InvalidPDFDateStringError } from "../errors.ts";
 
 class PDFString extends PDFObject {
   // The PDF spec allows newlines and parens to appear directly within a literal
@@ -18,12 +18,12 @@ class PDFString extends PDFObject {
   static of = (value: string) => new PDFString(value);
 
   static fromDate = (date: Date) => {
-    const year = padStart(String(date.getUTCFullYear()), 4, '0');
-    const month = padStart(String(date.getUTCMonth() + 1), 2, '0');
-    const day = padStart(String(date.getUTCDate()), 2, '0');
-    const hours = padStart(String(date.getUTCHours()), 2, '0');
-    const mins = padStart(String(date.getUTCMinutes()), 2, '0');
-    const secs = padStart(String(date.getUTCSeconds()), 2, '0');
+    const year = padStart(String(date.getUTCFullYear()), 4, "0");
+    const month = padStart(String(date.getUTCMonth() + 1), 2, "0");
+    const day = padStart(String(date.getUTCDate()), 2, "0");
+    const hours = padStart(String(date.getUTCHours()), 2, "0");
+    const mins = padStart(String(date.getUTCMinutes()), 2, "0");
+    const secs = padStart(String(date.getUTCSeconds()), 2, "0");
     return new PDFString(`D:${year}${month}${day}${hours}${mins}${secs}Z`);
   };
 
@@ -37,7 +37,7 @@ class PDFString extends PDFObject {
   asBytes(): Uint8Array {
     const bytes: number[] = [];
 
-    let octal = '';
+    let octal = "";
     let escaped = false;
 
     const pushByte = (byte?: number) => {
@@ -65,9 +65,9 @@ class PDFString extends PDFObject {
         else if (byte === CharCodes.Backspace) pushByte(CharCodes.BackSlash);
         else if (byte >= CharCodes.Zero && byte <= CharCodes.Seven) {
           octal += char;
-          if (octal.length === 3 || !(nextChar >= '0' && nextChar <= '7')) {
+          if (octal.length === 3 || !(nextChar >= "0" && nextChar <= "7")) {
             pushByte(parseInt(octal, 8));
-            octal = '';
+            octal = "";
           }
         } else {
           pushByte(byte);

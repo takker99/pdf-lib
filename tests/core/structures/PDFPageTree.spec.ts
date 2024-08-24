@@ -1,18 +1,18 @@
-import fs from 'fs';
-import { TreeNode } from 'src/core/structures/PDFPageTree';
+import fs from "fs";
+import { TreeNode } from "src/core/structures/PDFPageTree";
 import {
   PDFArray,
   PDFContext,
+  PDFDocument,
   PDFName,
   PDFNumber,
   PDFPageLeaf,
   PDFPageTree,
   PDFRef,
-  PDFDocument,
-} from 'src/index';
+} from "src/index";
 
 const withNullEntryPdfBytes = fs.readFileSync(
-  'assets/pdfs/with_null_parent_entry.pdf',
+  "assets/pdfs/with_null_parent_entry.pdf",
 );
 
 const pageUtils = () => {
@@ -48,10 +48,10 @@ describe(`PDFPageTree`, () => {
     const pageTree = PDFPageTree.fromMapWithContext(dict, context);
 
     expect(pageTree).toBeInstanceOf(PDFPageTree);
-    expect(pageTree.get(PDFName.of('Type'))).toBeUndefined();
-    expect(pageTree.get(PDFName.of('Kids'))).toBeUndefined();
-    expect(pageTree.get(PDFName.of('Count'))).toBeUndefined();
-    expect(pageTree.get(PDFName.of('Parent'))).toBeUndefined();
+    expect(pageTree.get(PDFName.of("Type"))).toBeUndefined();
+    expect(pageTree.get(PDFName.of("Kids"))).toBeUndefined();
+    expect(pageTree.get(PDFName.of("Count"))).toBeUndefined();
+    expect(pageTree.get(PDFName.of("Parent"))).toBeUndefined();
   });
 
   it(`is constructed with the correct Type and entries`, () => {
@@ -59,12 +59,12 @@ describe(`PDFPageTree`, () => {
     const pageTree = PDFPageTree.withContext(context);
 
     expect(pageTree).toBeInstanceOf(PDFPageTree);
-    expect(pageTree.get(PDFName.of('Type'))).toBe(PDFName.of('Pages'));
-    expect(pageTree.get(PDFName.of('Kids'))).toBeInstanceOf(PDFArray);
-    expect(pageTree.lookup(PDFName.of('Kids'), PDFArray).size()).toBe(0);
-    expect(pageTree.get(PDFName.of('Count'))).toBeInstanceOf(PDFNumber);
-    expect(pageTree.lookup(PDFName.of('Count'), PDFNumber).asNumber()).toBe(0);
-    expect(pageTree.get(PDFName.of('Parent'))).toBeUndefined();
+    expect(pageTree.get(PDFName.of("Type"))).toBe(PDFName.of("Pages"));
+    expect(pageTree.get(PDFName.of("Kids"))).toBeInstanceOf(PDFArray);
+    expect(pageTree.lookup(PDFName.of("Kids"), PDFArray).size()).toBe(0);
+    expect(pageTree.get(PDFName.of("Count"))).toBeInstanceOf(PDFNumber);
+    expect(pageTree.lookup(PDFName.of("Count"), PDFNumber).asNumber()).toBe(0);
+    expect(pageTree.get(PDFName.of("Parent"))).toBeUndefined();
   });
 
   it(`returns its Parent, Kids, and Count entry values when they are references`, () => {
@@ -80,8 +80,8 @@ describe(`PDFPageTree`, () => {
     const countRef = context.register(count);
 
     const pageTree = PDFPageTree.withContext(context, parentRef);
-    pageTree.set(PDFName.of('Kids'), kidsRef);
-    pageTree.set(PDFName.of('Count'), countRef);
+    pageTree.set(PDFName.of("Kids"), kidsRef);
+    pageTree.set(PDFName.of("Count"), countRef);
 
     expect(pageTree.Parent()).toBe(parent);
     expect(pageTree.Kids()).toBe(kids);
@@ -96,8 +96,8 @@ describe(`PDFPageTree`, () => {
     const count = context.obj(0);
 
     const pageTree = PDFPageTree.withContext(context);
-    pageTree.set(PDFName.of('Kids'), kids);
-    pageTree.set(PDFName.of('Count'), count);
+    pageTree.set(PDFName.of("Kids"), kids);
+    pageTree.set(PDFName.of("Count"), count);
 
     expect(pageTree.Parent()).toBeUndefined();
     expect(pageTree.Kids()).toBe(kids);
@@ -439,10 +439,10 @@ describe(`PDFPageTree`, () => {
       expect(() => buildTree().removeLeafNode(2)).not.toThrow();
 
       expect(() => buildTree().removeLeafNode(3)).toThrow(
-        'Invalid targetIndex specified: targetIndex=3 must be less than Count=3',
+        "Invalid targetIndex specified: targetIndex=3 must be less than Count=3",
       );
       expect(() => buildTree().removeLeafNode(4)).toThrow(
-        'Invalid targetIndex specified: targetIndex=4 must be less than Count=3',
+        "Invalid targetIndex specified: targetIndex=4 must be less than Count=3",
       );
     });
 
@@ -489,10 +489,10 @@ describe(`PDFPageTree`, () => {
       expect(() => buildTree().removeLeafNode(7)).not.toThrow();
 
       expect(() => buildTree().removeLeafNode(8)).toThrow(
-        'Invalid targetIndex specified: targetIndex=8 must be less than Count=8',
+        "Invalid targetIndex specified: targetIndex=8 must be less than Count=8",
       );
       expect(() => buildTree().removeLeafNode(9)).toThrow(
-        'Invalid targetIndex specified: targetIndex=9 must be less than Count=8',
+        "Invalid targetIndex specified: targetIndex=9 must be less than Count=8",
       );
     });
 
@@ -504,10 +504,10 @@ describe(`PDFPageTree`, () => {
       };
 
       expect(() => buildTree().removeLeafNode(0)).toThrow(
-        'Invalid targetIndex specified: targetIndex=0 must be less than Count=0',
+        "Invalid targetIndex specified: targetIndex=0 must be less than Count=0",
       );
       expect(() => buildTree().removeLeafNode(1)).toThrow(
-        'Invalid targetIndex specified: targetIndex=1 must be less than Count=0',
+        "Invalid targetIndex specified: targetIndex=1 must be less than Count=0",
       );
     });
 
@@ -519,7 +519,7 @@ describe(`PDFPageTree`, () => {
       };
 
       const tree = buildTree();
-      tree.set(PDFName.of('Count'), PDFNumber.of(21));
+      tree.set(PDFName.of("Count"), PDFNumber.of(21));
 
       expect(() => tree.removeLeafNode(0)).toThrow(
         `Failed to removeLeafNode at targetIndex=0 due to corrupt page tree: It is likely that one or more 'Count' entries are invalid`,

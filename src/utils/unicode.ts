@@ -1,4 +1,4 @@
-import { toHexString } from 'src/utils/strings';
+import { toHexString } from "./strings.ts";
 
 /**
  * Encodes a string to UTF-8.
@@ -85,14 +85,13 @@ import { toHexString } from 'src/utils/strings';
  *   - [2] http://www.herongyang.com/Unicode/UTF-8-UTF-8-Encoding.html
  *   - [3] http://www.herongyang.com/Unicode/UTF-8-UTF-8-Encoding-Algorithm.html
  *   - [4] https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/length#Description
- *
  */
 export const utf8Encode = (input: string, byteOrderMark = true): Uint8Array => {
   const encoded = [];
 
   if (byteOrderMark) encoded.push(0xef, 0xbb, 0xbf);
 
-  for (let idx = 0, len = input.length; idx < len; ) {
+  for (let idx = 0, len = input.length; idx < len;) {
     const codePoint = input.codePointAt(idx)!;
 
     // One byte encoding
@@ -100,26 +99,20 @@ export const utf8Encode = (input: string, byteOrderMark = true): Uint8Array => {
       const byte1 = codePoint & 0x7f;
       encoded.push(byte1);
       idx += 1;
-    }
-
-    // Two byte encoding
+    } // Two byte encoding
     else if (codePoint < 0x0800) {
       const byte1 = ((codePoint >> 6) & 0x1f) | 0xc0;
       const byte2 = (codePoint & 0x3f) | 0x80;
       encoded.push(byte1, byte2);
       idx += 1;
-    }
-
-    // Three byte encoding
+    } // Three byte encoding
     else if (codePoint < 0x010000) {
       const byte1 = ((codePoint >> 12) & 0x0f) | 0xe0;
       const byte2 = ((codePoint >> 6) & 0x3f) | 0x80;
       const byte3 = (codePoint & 0x3f) | 0x80;
       encoded.push(byte1, byte2, byte3);
       idx += 1;
-    }
-
-    // Four byte encoding (surrogate pair)
+    } // Four byte encoding (surrogate pair)
     else if (codePoint < 0x110000) {
       const byte1 = ((codePoint >> 18) & 0x07) | 0xf0;
       const byte2 = ((codePoint >> 12) & 0x3f) | 0x80;
@@ -127,9 +120,7 @@ export const utf8Encode = (input: string, byteOrderMark = true): Uint8Array => {
       const byte4 = ((codePoint >> 0) & 0x3f) | 0x80;
       encoded.push(byte1, byte2, byte3, byte4);
       idx += 2;
-    }
-
-    // Should never reach this case
+    } // Should never reach this case
     else throw new Error(`Invalid code point: 0x${toHexString(codePoint)}`);
   }
 
@@ -198,7 +189,6 @@ export const utf8Encode = (input: string, byteOrderMark = true): Uint8Array => {
  *         3.9  Unicode Encoding Forms - UTF-8
  *   - [2] http://www.herongyang.com/Unicode/UTF-16-UTF-16-Encoding.html
  *   - [3] https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/length#Description
- *
  */
 export const utf16Encode = (
   input: string,
@@ -208,22 +198,18 @@ export const utf16Encode = (
 
   if (byteOrderMark) encoded.push(0xfeff);
 
-  for (let idx = 0, len = input.length; idx < len; ) {
+  for (let idx = 0, len = input.length; idx < len;) {
     const codePoint = input.codePointAt(idx)!;
 
     // Two byte encoding
     if (codePoint < 0x010000) {
       encoded.push(codePoint);
       idx += 1;
-    }
-
-    // Four byte encoding (surrogate pair)
+    } // Four byte encoding (surrogate pair)
     else if (codePoint < 0x110000) {
       encoded.push(highSurrogate(codePoint), lowSurrogate(codePoint));
       idx += 2;
-    }
-
-    // Should never reach this case
+    } // Should never reach this case
     else throw new Error(`Invalid code point: 0x${toHexString(codePoint)}`);
   }
 
@@ -262,11 +248,11 @@ export const lowSurrogate = (codePoint: number) =>
   ((codePoint - 0x10000) % 0x400) + 0xdc00;
 
 enum ByteOrder {
-  BigEndian = 'BigEndian',
-  LittleEndian = 'LittleEndian',
+  BigEndian = "BigEndian",
+  LittleEndian = "LittleEndian",
 }
 
-const REPLACEMENT = '�'.codePointAt(0)!;
+const REPLACEMENT = "�".codePointAt(0)!;
 
 /**
  * Decodes a Uint8Array of data to a string using UTF-16.
@@ -371,9 +357,11 @@ const decodeValues = (first: number, second: number, byteOrder: ByteOrder) => {
  */
 // prettier-ignore
 const readBOM = (bytes: Uint8Array): ByteOrder => (
-    hasUtf16BigEndianBOM(bytes) ? ByteOrder.BigEndian
-  : hasUtf16LittleEndianBOM(bytes) ? ByteOrder.LittleEndian
-  : ByteOrder.BigEndian
+  hasUtf16BigEndianBOM(bytes)
+    ? ByteOrder.BigEndian
+    : hasUtf16LittleEndianBOM(bytes)
+    ? ByteOrder.LittleEndian
+    : ByteOrder.BigEndian
 );
 
 const hasUtf16BigEndianBOM = (bytes: Uint8Array) =>

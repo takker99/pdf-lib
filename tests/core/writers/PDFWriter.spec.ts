@@ -1,4 +1,4 @@
-import pako from 'pako';
+import pako from "pako";
 import {
   mergeIntoTypedArray,
   PDFContext,
@@ -6,7 +6,7 @@ import {
   PDFRef,
   PDFWriter,
   typedArrayFor,
-} from 'src/index';
+} from "src/index";
 
 const contentStreamText = `
   BT
@@ -103,16 +103,16 @@ describe(`PDFWriter`, () => {
     context.assign(contentStreamRef, contentStream);
 
     const fontDict = context.obj({
-      Type: 'Font',
-      Subtype: 'Type1',
-      Name: 'F1',
-      BaseFont: 'Helvetica',
-      Encoding: 'MacRomanEncoding',
+      Type: "Font",
+      Subtype: "Type1",
+      Name: "F1",
+      BaseFont: "Helvetica",
+      Encoding: "MacRomanEncoding",
     });
     const fontDictRef = context.register(fontDict);
 
     const page = context.obj({
-      Type: 'Page',
+      Type: "Page",
       MediaBox: [0, 0, 612, 792],
       Contents: contentStreamRef,
       Resources: { Font: { F1: fontDictRef } },
@@ -120,15 +120,15 @@ describe(`PDFWriter`, () => {
     const pageRef = context.register(page);
 
     const pages = context.obj({
-      Type: 'Pages',
+      Type: "Pages",
       Kids: [pageRef],
       Count: 1,
     });
     const pagesRef = context.register(pages);
-    page.set(PDFName.of('Parent'), pagesRef);
+    page.set(PDFName.of("Parent"), pagesRef);
 
     const catalog = context.obj({
-      Type: 'Catalog',
+      Type: "Catalog",
       Pages: pagesRef,
     });
     context.trailerInfo.Root = context.register(catalog);

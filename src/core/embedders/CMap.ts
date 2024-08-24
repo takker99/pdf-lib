@@ -1,12 +1,12 @@
-import { Glyph } from 'src/types/fontkit';
+import { Glyph } from "../../types/fontkit.ts";
 
-import { toHexString, toHexStringOfMinLength } from 'src/utils';
+import { toHexString, toHexStringOfMinLength } from "../../utils/index.ts";
 import {
   hasSurrogates,
   highSurrogate,
   isWithinBMP,
   lowSurrogate,
-} from 'src/utils/unicode';
+} from "../../utils/unicode.ts";
 
 /** [fontId, codePoint] */
 type BfChar = [string, string];
@@ -26,7 +26,8 @@ export const createCmap = (glyphs: Glyph[], glyphId: (g?: Glyph) => number) => {
 
 /* =============================== Templates ================================ */
 
-const fillCmapTemplate = (bfChars: BfChar[]) => `\
+const fillCmapTemplate = (bfChars: BfChar[]) =>
+  `\
 /CIDInit /ProcSet findresource begin
 12 dict begin
 begincmap
@@ -41,7 +42,7 @@ begincmap
 <0000><ffff>
 endcodespacerange
 ${bfChars.length} beginbfchar
-${bfChars.map(([glyphId, codePoint]) => `${glyphId} ${codePoint}`).join('\n')}
+${bfChars.map(([glyphId, codePoint]) => `${glyphId} ${codePoint}`).join("\n")}
 endbfchar
 endcmap
 CMapName currentdict /CMap defineresource pop
@@ -51,7 +52,7 @@ end\
 
 /* =============================== Utilities ================================ */
 
-const cmapHexFormat = (...values: string[]) => `<${values.join('')}>`;
+const cmapHexFormat = (...values: string[]) => `<${values.join("")}>`;
 
 const cmapHexString = (value: number) => toHexStringOfMinLength(value, 4);
 

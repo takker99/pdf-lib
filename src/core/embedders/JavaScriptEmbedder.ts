@@ -1,6 +1,6 @@
-import PDFHexString from 'src/core/objects/PDFHexString';
-import PDFContext from 'src/core/PDFContext';
-import PDFRef from 'src/core/objects/PDFRef';
+import PDFHexString from "../objects/PDFHexString.ts";
+import PDFContext from "../PDFContext.ts";
+import PDFRef from "../objects/PDFRef.ts";
 
 class JavaScriptEmbedder {
   static for(script: string, scriptName: string) {
@@ -15,18 +15,18 @@ class JavaScriptEmbedder {
     this.scriptName = scriptName;
   }
 
-  async embedIntoContext(context: PDFContext, ref?: PDFRef): Promise<PDFRef> {
+  embedIntoContext(context: PDFContext, ref?: PDFRef): Promise<PDFRef> {
     const jsActionDict = context.obj({
-      Type: 'Action',
-      S: 'JavaScript',
+      Type: "Action",
+      S: "JavaScript",
       JS: PDFHexString.fromText(this.script),
     });
 
     if (ref) {
       context.assign(ref, jsActionDict);
-      return ref;
+      return Promise.resolve(ref);
     } else {
-      return context.register(jsActionDict);
+      return Promise.resolve(context.register(jsActionDict));
     }
   }
 }

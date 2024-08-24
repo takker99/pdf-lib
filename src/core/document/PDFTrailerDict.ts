@@ -1,5 +1,5 @@
-import PDFDict from 'src/core/objects/PDFDict';
-import CharCodes from 'src/core/syntax/CharCodes';
+import PDFDict from "../objects/PDFDict.ts";
+import CharCodes from "../syntax/CharCodes.ts";
 
 class PDFTrailerDict {
   static of = (dict: PDFDict) => new PDFTrailerDict(dict);

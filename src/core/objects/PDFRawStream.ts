@@ -1,7 +1,7 @@
-import PDFDict from 'src/core/objects/PDFDict';
-import PDFStream from 'src/core/objects/PDFStream';
-import PDFContext from 'src/core/PDFContext';
-import { arrayAsString } from 'src/utils';
+import PDFDict from "./PDFDict.ts";
+import PDFStream from "./PDFStream.ts";
+import PDFContext from "../PDFContext.ts";
+import { arrayAsString } from "../../utils/index.ts";
 
 class PDFRawStream extends PDFStream {
   static of = (dict: PDFDict, contents: Uint8Array) =>

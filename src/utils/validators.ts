@@ -1,6 +1,6 @@
 /* tslint:disable:ban-types */
 
-import { values as objectValues } from 'src/utils/objects';
+import { values as objectValues } from "./objects.ts";
 
 export const backtick = (val: any) => `\`${val}\``;
 export const singleQuote = (val: any) => `'${val}'`;
@@ -10,8 +10,8 @@ type Primitive = string | number | boolean | undefined | null;
 // prettier-ignore
 const formatValue = (value: any) => {
   const type = typeof value;
-  if (type ==='string') return singleQuote(value);
-  else if (type ==='undefined') return backtick(value);
+  if (type === "string") return singleQuote(value);
+  else if (type === "undefined") return backtick(value);
   else return value;
 };
 
@@ -27,10 +27,12 @@ export const createValueErrorMsg = (
     allowedValues[idx] = formatValue(v);
   }
 
-  const joinedValues = allowedValues.join(' or ');
+  const joinedValues = allowedValues.join(" or ");
 
   // prettier-ignore
-  return `${backtick(valueName)} must be one of ${joinedValues}, but was actually ${formatValue(value)}`;
+  return `${
+    backtick(valueName)
+  } must be one of ${joinedValues}, but was actually ${formatValue(value)}`;
 };
 
 export const assertIsOneOf = (
@@ -72,14 +74,14 @@ export const assertIsSubset = (
 };
 
 export const getType = (val: any) => {
-  if (val === null) return 'null';
-  if (val === undefined) return 'undefined';
-  if (typeof val === 'string') return 'string';
-  if (isNaN(val)) return 'NaN';
-  if (typeof val === 'number') return 'number';
-  if (typeof val === 'boolean') return 'boolean';
-  if (typeof val === 'symbol') return 'symbol';
-  if (typeof val === 'bigint') return 'bigint';
+  if (val === null) return "null";
+  if (val === undefined) return "undefined";
+  if (typeof val === "string") return "string";
+  if (isNaN(val)) return "NaN";
+  if (typeof val === "number") return "number";
+  if (typeof val === "boolean") return "boolean";
+  if (typeof val === "symbol") return "symbol";
+  if (typeof val === "bigint") return "bigint";
   if (val.constructor && val.constructor.name) return val.constructor.name;
   if (val.name) return val.name;
   if (val.constructor) return String(val.constructor);
@@ -87,34 +89,34 @@ export const getType = (val: any) => {
 };
 
 export type TypeDescriptor =
-  | 'null'
-  | 'undefined'
-  | 'string'
-  | 'number'
-  | 'boolean'
-  | 'symbol'
-  | 'bigint'
+  | "null"
+  | "undefined"
+  | "string"
+  | "number"
+  | "boolean"
+  | "symbol"
+  | "bigint"
   | DateConstructor
   | ArrayConstructor
   | Uint8ArrayConstructor
   | ArrayBufferConstructor
   | FunctionConstructor
-  | [Function, string];
+  | [CallableFunction, string];
 
 export const isType = (value: any, type: TypeDescriptor) => {
-  if (type === 'null') return value === null;
-  if (type === 'undefined') return value === undefined;
-  if (type === 'string') return typeof value === 'string';
-  if (type === 'number') return typeof value === 'number' && !isNaN(value);
-  if (type === 'boolean') return typeof value === 'boolean';
-  if (type === 'symbol') return typeof value === 'symbol';
-  if (type === 'bigint') return typeof value === 'bigint';
+  if (type === "null") return value === null;
+  if (type === "undefined") return value === undefined;
+  if (type === "string") return typeof value === "string";
+  if (type === "number") return typeof value === "number" && !isNaN(value);
+  if (type === "boolean") return typeof value === "boolean";
+  if (type === "symbol") return typeof value === "symbol";
+  if (type === "bigint") return typeof value === "bigint";
   if (type === Date) return value instanceof Date;
   if (type === Array) return value instanceof Array;
   if (type === Uint8Array) return value instanceof Uint8Array;
   if (type === ArrayBuffer) return value instanceof ArrayBuffer;
   if (type === Function) return value instanceof Function;
-  return value instanceof (type as [Function, string])[0];
+  return value instanceof (type as [CallableFunction, string])[0];
 };
 
 export const createTypeErrorMsg = (
@@ -126,23 +128,27 @@ export const createTypeErrorMsg = (
 
   for (let idx = 0, len = types.length; idx < len; idx++) {
     const type = types[idx];
-    if (type === 'null') allowedTypes[idx] = backtick('null');
-    if (type === 'undefined') allowedTypes[idx] = backtick('undefined');
-    if (type === 'string') allowedTypes[idx] = backtick('string');
-    else if (type === 'number') allowedTypes[idx] = backtick('number');
-    else if (type === 'boolean') allowedTypes[idx] = backtick('boolean');
-    else if (type === 'symbol') allowedTypes[idx] = backtick('symbol');
-    else if (type === 'bigint') allowedTypes[idx] = backtick('bigint');
-    else if (type === Array) allowedTypes[idx] = backtick('Array');
-    else if (type === Uint8Array) allowedTypes[idx] = backtick('Uint8Array');
-    else if (type === ArrayBuffer) allowedTypes[idx] = backtick('ArrayBuffer');
-    else allowedTypes[idx] = backtick((type as [Function, string])[1]);
+    if (type === "null") allowedTypes[idx] = backtick("null");
+    if (type === "undefined") allowedTypes[idx] = backtick("undefined");
+    if (type === "string") allowedTypes[idx] = backtick("string");
+    else if (type === "number") allowedTypes[idx] = backtick("number");
+    else if (type === "boolean") allowedTypes[idx] = backtick("boolean");
+    else if (type === "symbol") allowedTypes[idx] = backtick("symbol");
+    else if (type === "bigint") allowedTypes[idx] = backtick("bigint");
+    else if (type === Array) allowedTypes[idx] = backtick("Array");
+    else if (type === Uint8Array) allowedTypes[idx] = backtick("Uint8Array");
+    else if (type === ArrayBuffer) allowedTypes[idx] = backtick("ArrayBuffer");
+    else allowedTypes[idx] = backtick((type as [CallableFunction, string])[1]);
   }
 
-  const joinedTypes = allowedTypes.join(' or ');
+  const joinedTypes = allowedTypes.join(" or ");
 
   // prettier-ignore
-  return `${backtick(valueName)} must be of type ${joinedTypes}, but was actually of type ${backtick(getType(value))}`;
+  return `${
+    backtick(valueName)
+  } must be of type ${joinedTypes}, but was actually of type ${
+    backtick(getType(value))
+  }`;
 };
 
 export const assertIs = (
@@ -161,7 +167,7 @@ export const assertOrUndefined = (
   valueName: string,
   types: TypeDescriptor[],
 ) => {
-  assertIs(value, valueName, types.concat('undefined'));
+  assertIs(value, valueName, types.concat("undefined"));
 };
 
 export const assertEachIs = (
@@ -180,13 +186,17 @@ export const assertRange = (
   min: number,
   max: number,
 ) => {
-  assertIs(value, valueName, ['number']);
-  assertIs(min, 'min', ['number']);
-  assertIs(max, 'max', ['number']);
+  assertIs(value, valueName, ["number"]);
+  assertIs(min, "min", ["number"]);
+  assertIs(max, "max", ["number"]);
   max = Math.max(min, max);
   if (value < min || value > max) {
     // prettier-ignore
-    throw new Error(`${backtick(valueName)} must be at least ${min} and at most ${max}, but was actually ${value}`);
+    throw new Error(
+      `${
+        backtick(valueName)
+      } must be at least ${min} and at most ${max}, but was actually ${value}`,
+    );
   }
 };
 
@@ -196,8 +206,8 @@ export const assertRangeOrUndefined = (
   min: number,
   max: number,
 ) => {
-  assertIs(value, valueName, ['number', 'undefined']);
-  if (typeof value === 'number') assertRange(value, valueName, min, max);
+  assertIs(value, valueName, ["number", "undefined"]);
+  if (typeof value === "number") assertRange(value, valueName, min, max);
 };
 
 export const assertMultiple = (
@@ -205,10 +215,14 @@ export const assertMultiple = (
   valueName: string,
   multiplier: number,
 ) => {
-  assertIs(value, valueName, ['number']);
+  assertIs(value, valueName, ["number"]);
   if (value % multiplier !== 0) {
     // prettier-ignore
-    throw new Error(`${backtick(valueName)} must be a multiple of ${multiplier}, but was actually ${value}`);
+    throw new Error(
+      `${
+        backtick(valueName)
+      } must be a multiple of ${multiplier}, but was actually ${value}`,
+    );
   }
 };
 
@@ -223,6 +237,10 @@ export const assertInteger = (value: any, valueName: string) => {
 export const assertPositive = (value: number, valueName: string) => {
   if (![1, 0].includes(Math.sign(value))) {
     // prettier-ignore
-    throw new Error(`${backtick(valueName)} must be a positive number or 0, but was actually ${value}`);
+    throw new Error(
+      `${
+        backtick(valueName)
+      } must be a positive number or 0, but was actually ${value}`,
+    );
   }
 };

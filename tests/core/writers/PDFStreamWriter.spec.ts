@@ -1,9 +1,9 @@
-import fs from 'fs';
+import fs from "fs";
 
-import { PDFContext, PDFName, PDFRef, PDFStreamWriter } from 'src/index';
+import { PDFContext, PDFName, PDFRef, PDFStreamWriter } from "src/index";
 
 const expectedPdfBytes = new Uint8Array(
-  fs.readFileSync('./tests/core/writers/data/stream-writer-1.pdf'),
+  fs.readFileSync("./tests/core/writers/data/stream-writer-1.pdf"),
 );
 
 const contentStreamText = `
@@ -23,16 +23,16 @@ describe(`PDFStreamWriter`, () => {
     context.assign(contentStreamRef, contentStream);
 
     const fontDict = context.obj({
-      Type: 'Font',
-      Subtype: 'Type1',
-      Name: 'F1',
-      BaseFont: 'Helvetica',
-      Encoding: 'MacRomanEncoding',
+      Type: "Font",
+      Subtype: "Type1",
+      Name: "F1",
+      BaseFont: "Helvetica",
+      Encoding: "MacRomanEncoding",
     });
     const fontDictRef = context.register(fontDict);
 
     const page = context.obj({
-      Type: 'Page',
+      Type: "Page",
       MediaBox: [0, 0, 612, 792],
       Contents: contentStreamRef,
       Resources: { Font: { F1: fontDictRef } },
@@ -40,15 +40,15 @@ describe(`PDFStreamWriter`, () => {
     const pageRef = context.register(page);
 
     const pages = context.obj({
-      Type: 'Pages',
+      Type: "Pages",
       Kids: [pageRef],
       Count: 1,
     });
     const pagesRef = context.register(pages);
-    page.set(PDFName.of('Parent'), pagesRef);
+    page.set(PDFName.of("Parent"), pagesRef);
 
     const catalog = context.obj({
-      Type: 'Catalog',
+      Type: "Catalog",
       Pages: pagesRef,
     });
     context.trailerInfo.Root = context.register(catalog);

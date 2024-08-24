@@ -1,8 +1,8 @@
-import PDFDocument from 'src/api/PDFDocument';
-import PDFField from 'src/api/form/PDFField';
+import PDFDocument from "../PDFDocument.ts";
+import PDFField from "./PDFField.ts";
 
-import { PDFRef, PDFAcroSignature } from 'src/core';
-import { assertIs } from 'src/utils';
+import { PDFAcroSignature, PDFRef } from "../../core/index.ts";
+import { assertIs } from "../../utils/index.ts";
 
 /**
  * Represents a signature field of a [[PDFForm]].
@@ -40,8 +40,8 @@ export default class PDFSignature extends PDFField {
   ) {
     super(acroSignature, ref, doc);
 
-    assertIs(acroSignature, 'acroSignature', [
-      [PDFAcroSignature, 'PDFAcroSignature'],
+    assertIs(acroSignature, "acroSignature", [
+      [PDFAcroSignature, "PDFAcroSignature"],
     ]);
 
     this.acroField = acroSignature;

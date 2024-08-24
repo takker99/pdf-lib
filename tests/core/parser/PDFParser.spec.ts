@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from "fs";
 
 import {
   CharCodes,
@@ -12,16 +12,16 @@ import {
   PDFString,
   ReparseError,
   typedArrayFor,
-} from 'src/index';
+} from "src/index";
 
 describe(`PDFParser`, () => {
   const origConsoleWarn = console.warn;
 
   beforeAll(() => {
     const ignoredWarnings = [
-      'Trying to parse invalid object:',
-      'Invalid object ref:',
-      'Removing parsed object: 0 0 R',
+      "Trying to parse invalid object:",
+      "Invalid object ref:",
+      "Removing parsed object: 0 0 R",
     ];
     console.warn = jest.fn((...args) => {
       const isIgnored = ignoredWarnings.find((iw) => args[0].includes(iw));
@@ -62,11 +62,11 @@ describe(`PDFParser`, () => {
 
   it(`handles invalid binary comments after header`, async () => {
     const input = mergeIntoTypedArray(
-      '%PDF-1.7\n',
+      "%PDF-1.7\n",
       new Uint8Array([128, 1, 2, 3, 4, 5, 129, 130, 131, CharCodes.Newline]),
-      '1 0 obj\n',
-      ' . (foobar)\n',
-      'endobj',
+      "1 0 obj\n",
+      " . (foobar)\n",
+      "endobj",
     );
     const parser = PDFParser.forBytesWithOptions(typedArrayFor(input));
     const context = await parser.parseDocument();
@@ -75,11 +75,11 @@ describe(`PDFParser`, () => {
 
   it(`handles invalid binary comments with missing newline after header`, async () => {
     const input = mergeIntoTypedArray(
-      '%PDF-1.7\n',
+      "%PDF-1.7\n",
       new Uint8Array([142, 1, 2, 3, 4, 5, 129, 130, 131]),
-      '1 0 obj\n',
-      ' . (foobar)\n',
-      'endobj',
+      "1 0 obj\n",
+      " . (foobar)\n",
+      "endobj",
     );
     const parser = PDFParser.forBytesWithOptions(typedArrayFor(input));
     const context = await parser.parseDocument();
@@ -152,131 +152,131 @@ describe(`PDFParser`, () => {
 
   it(`can parse PDF files with comments and stuff preceding the header`, async () => {
     const pdfBytes = fs.readFileSync(
-      './assets/pdfs/pdf20examples/PDF 2.0 with offset start.pdf',
+      "./assets/pdfs/pdf20examples/PDF 2.0 with offset start.pdf",
     );
 
     const parser = PDFParser.forBytesWithOptions(pdfBytes);
     const context = await parser.parseDocument();
 
     expect(context.header).toBeInstanceOf(PDFHeader);
-    expect(context.header.toString()).toEqual('%PDF-2.0\n%');
+    expect(context.header.toString()).toEqual("%PDF-2.0\n%");
     expect(context.enumerateIndirectObjects().length).toBe(8);
   });
 
   it(`can parse PDF files with comments stuff following the header`, async () => {
     const pdfBytes = fs.readFileSync(
-      './assets/pdfs/stuff_following_header.pdf',
+      "./assets/pdfs/stuff_following_header.pdf",
     );
 
     const parser = PDFParser.forBytesWithOptions(pdfBytes);
     const context = await parser.parseDocument();
 
     expect(context.header).toBeInstanceOf(PDFHeader);
-    expect(context.header.toString()).toEqual('%PDF-1.4\n%');
+    expect(context.header.toString()).toEqual("%PDF-1.4\n%");
     expect(context.enumerateIndirectObjects().length).toBe(12);
   });
 
   it(`can parse PDF files with missing xref table, trailer dict, and trailer`, async () => {
     const pdfBytes = fs.readFileSync(
-      './assets/pdfs/missing_xref_trailer_dict.pdf',
+      "./assets/pdfs/missing_xref_trailer_dict.pdf",
     );
 
     const parser = PDFParser.forBytesWithOptions(pdfBytes);
     const context = await parser.parseDocument();
 
     expect(context.header).toBeInstanceOf(PDFHeader);
-    expect(context.header.toString()).toEqual('%PDF-2.0\n%');
+    expect(context.header.toString()).toEqual("%PDF-2.0\n%");
     expect(context.enumerateIndirectObjects().length).toBe(8);
   });
 
   it(`can parse PDF files without object streams or update sections`, async () => {
-    const pdfBytes = fs.readFileSync('./assets/pdfs/normal.pdf');
+    const pdfBytes = fs.readFileSync("./assets/pdfs/normal.pdf");
 
     const parser = PDFParser.forBytesWithOptions(pdfBytes);
     const context = await parser.parseDocument();
 
     expect(context.header).toBeInstanceOf(PDFHeader);
-    expect(context.header.toString()).toEqual('%PDF-1.3\n%');
+    expect(context.header.toString()).toEqual("%PDF-1.3\n%");
     expect(context.enumerateIndirectObjects().length).toBe(108);
   });
 
   it(`can parse PDF files with update sections`, async () => {
-    const pdfBytes = fs.readFileSync('./assets/pdfs/with_update_sections.pdf');
+    const pdfBytes = fs.readFileSync("./assets/pdfs/with_update_sections.pdf");
 
     const parser = PDFParser.forBytesWithOptions(pdfBytes);
     const context = await parser.parseDocument();
 
     expect(context.header).toBeInstanceOf(PDFHeader);
-    expect(context.header.toString()).toEqual('%PDF-1.7\n%');
+    expect(context.header.toString()).toEqual("%PDF-1.7\n%");
     expect(context.enumerateIndirectObjects().length).toBe(131);
   });
 
   it(`can parse PDF files with comments`, async () => {
-    const pdfBytes = fs.readFileSync('./assets/pdfs/with_comments.pdf');
+    const pdfBytes = fs.readFileSync("./assets/pdfs/with_comments.pdf");
 
     const parser = PDFParser.forBytesWithOptions(pdfBytes);
     const context = await parser.parseDocument();
 
     expect(context.header).toBeInstanceOf(PDFHeader);
-    expect(context.header.toString()).toEqual('%PDF-1.7\n%');
+    expect(context.header.toString()).toEqual("%PDF-1.7\n%");
     expect(context.enumerateIndirectObjects().length).toBe(143);
   });
 
   it(`prevents double parsing`, async () => {
-    const pdfBytes = fs.readFileSync('./assets/pdfs/normal.pdf');
+    const pdfBytes = fs.readFileSync("./assets/pdfs/normal.pdf");
 
     const parser = PDFParser.forBytesWithOptions(pdfBytes);
 
     await expect(parser.parseDocument()).resolves.not.toThrow();
     await expect(parser.parseDocument()).rejects.toThrow(
-      new ReparseError('PDFParser', 'parseDocument'),
+      new ReparseError("PDFParser", "parseDocument"),
     );
   });
 
   it(`can parse PDF files with binary jibberish between indirect objects`, async () => {
-    const pdfBytes = fs.readFileSync('./assets/pdfs/giraffe.pdf');
+    const pdfBytes = fs.readFileSync("./assets/pdfs/giraffe.pdf");
 
     const parser = PDFParser.forBytesWithOptions(pdfBytes);
     const context = await parser.parseDocument();
 
     expect(context.header).toBeInstanceOf(PDFHeader);
-    expect(context.header.toString()).toEqual('%PDF-1.6\n%');
+    expect(context.header.toString()).toEqual("%PDF-1.6\n%");
     expect(context.enumerateIndirectObjects().length).toBe(17);
   });
 
   it(`can fix incorrect values for /Root`, async () => {
-    const pdfBytes = fs.readFileSync('./assets/pdfs/invalid_root_ref.pdf');
+    const pdfBytes = fs.readFileSync("./assets/pdfs/invalid_root_ref.pdf");
 
     const parser = PDFParser.forBytesWithOptions(pdfBytes);
     const context = await parser.parseDocument();
 
     expect(context.header).toBeInstanceOf(PDFHeader);
-    expect(context.header.toString()).toEqual('%PDF-1.5\n%');
+    expect(context.header.toString()).toEqual("%PDF-1.5\n%");
     expect(context.trailerInfo.Root).toBe(PDFRef.of(2, 0));
     expect(context.enumerateIndirectObjects().length).toBe(28);
   });
 
   it(`can parse files containing indirect objects missing their 'endobj' keyword`, async () => {
     const pdfBytes = fs.readFileSync(
-      './assets/pdfs/missing_endobj_keyword.pdf',
+      "./assets/pdfs/missing_endobj_keyword.pdf",
     );
 
     const parser = PDFParser.forBytesWithOptions(pdfBytes);
     const context = await parser.parseDocument();
 
     expect(context.header).toBeInstanceOf(PDFHeader);
-    expect(context.header.toString()).toEqual('%PDF-1.3\n%');
+    expect(context.header.toString()).toEqual("%PDF-1.3\n%");
     expect(context.enumerateIndirectObjects().length).toBe(7);
   });
 
   it(`can parse files with containing large arrays with most 'null' values`, async () => {
-    const pdfBytes = fs.readFileSync('./assets/pdfs/bixby_guide.pdf');
+    const pdfBytes = fs.readFileSync("./assets/pdfs/bixby_guide.pdf");
 
     const parser = PDFParser.forBytesWithOptions(pdfBytes);
     const context = await parser.parseDocument();
 
     expect(context.header).toBeInstanceOf(PDFHeader);
-    expect(context.header.toString()).toEqual('%PDF-1.4\n%');
+    expect(context.header.toString()).toEqual("%PDF-1.4\n%");
 
     const objects = context.enumerateIndirectObjects();
     expect(objects.length).toBe(26079);
@@ -287,14 +287,14 @@ describe(`PDFParser`, () => {
 
   it(`can parse files with invalid stream EOLs: "stream \r\n`, async () => {
     const pdfBytes = fs.readFileSync(
-      './assets/pdfs/with_invalid_stream_EOL.pdf',
+      "./assets/pdfs/with_invalid_stream_EOL.pdf",
     );
 
     const parser = PDFParser.forBytesWithOptions(pdfBytes);
     const context = await parser.parseDocument();
 
     expect(context.header).toBeInstanceOf(PDFHeader);
-    expect(context.header.toString()).toEqual('%PDF-1.3\n%');
+    expect(context.header.toString()).toEqual("%PDF-1.3\n%");
 
     const objects = context.enumerateIndirectObjects();
     expect(objects.length).toBe(11);

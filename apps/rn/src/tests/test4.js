@@ -1,18 +1,18 @@
 import {
+  degrees,
   PDFDocument,
   PDFPage,
   radians,
-  StandardFonts,
   rgb,
-  degrees,
-} from 'pdf-lib';
+  StandardFonts,
+} from "pdf-lib";
 
-import { fetchAsset, writePdf } from './assets';
+import { fetchAsset, writePdf } from "./assets.js";
 
 export default async () => {
   const [inputPdf, minionsLaughingBytes] = await Promise.all([
-    fetchAsset('pdfs/normal.pdf'),
-    fetchAsset('images/minions_laughing.jpg'),
+    fetchAsset("pdfs/normal.pdf"),
+    fetchAsset("images/minions_laughing.jpg"),
   ]);
 
   const pdfDoc = await PDFDocument.load(inputPdf);
@@ -34,11 +34,11 @@ export default async () => {
     middlePage.setFont(font);
 
     // prettier-ignore
-    const text = (
-        fontName === StandardFonts.Symbol ? `${idx + 1}. Τηεσε αρε τηε 14 Στανδαρδ Φοντσ.`
-      : fontName === StandardFonts.ZapfDingbats ? `✑✔✎ ✴❈❅▲❅ ❁❒❅ ▼❈❅ ✑✔ ✳▼❁■❄❁❒❄ ✦❏■▼▲✎`
-      : `${idx + 1}. These are the 14 Standard Fonts.`
-    );
+    const text = fontName === StandardFonts.Symbol
+      ? `${idx + 1}. Τηεσε αρε τηε 14 Στανδαρδ Φοντσ.`
+      : fontName === StandardFonts.ZapfDingbats
+      ? `✑✔✎ ✴❈❅▲❅ ❁❒❅ ▼❈❅ ✑✔ ✳▼❁■❄❁❒❄ ✦❏■▼▲✎`
+      : `${idx + 1}. These are the 14 Standard Fonts.`;
 
     middlePage.drawText(text, {
       rotate: radians(-Math.PI / 6),

@@ -1,32 +1,32 @@
-import fs from 'fs';
-import { PDFDocument, AnnotationFlags } from 'src/index';
+import fs from "fs";
+import { AnnotationFlags, PDFDocument } from "src/index";
 
-const fancyFieldsPdfBytes = fs.readFileSync('assets/pdfs/fancy_fields.pdf');
+const fancyFieldsPdfBytes = fs.readFileSync("assets/pdfs/fancy_fields.pdf");
 
 describe(`PDFDropdown`, () => {
   it(`can read its options`, async () => {
     const pdfDoc = await PDFDocument.load(fancyFieldsPdfBytes);
     const form = pdfDoc.getForm();
-    const gundams = form.getDropdown('Choose A Gundam 🤖');
+    const gundams = form.getDropdown("Choose A Gundam 🤖");
     expect(gundams.getOptions()).toEqual([
-      'Exia',
-      'Kyrios',
-      'Virtue',
-      'Dynames',
+      "Exia",
+      "Kyrios",
+      "Virtue",
+      "Dynames",
     ]);
   });
 
   it(`can read its selected value`, async () => {
     const pdfDoc = await PDFDocument.load(fancyFieldsPdfBytes);
     const form = pdfDoc.getForm();
-    const gundams = form.getDropdown('Choose A Gundam 🤖');
-    expect(gundams.getSelected()).toEqual(['Dynames']);
+    const gundams = form.getDropdown("Choose A Gundam 🤖");
+    expect(gundams.getSelected()).toEqual(["Dynames"]);
   });
 
   it(`can clear its value`, async () => {
     const pdfDoc = await PDFDocument.load(fancyFieldsPdfBytes);
     const form = pdfDoc.getForm();
-    const gundams = form.getDropdown('Choose A Gundam 🤖');
+    const gundams = form.getDropdown("Choose A Gundam 🤖");
     gundams.clear();
     expect(gundams.getSelected()).toEqual([]);
   });
@@ -34,45 +34,45 @@ describe(`PDFDropdown`, () => {
   it(`can select a single value`, async () => {
     const pdfDoc = await PDFDocument.load(fancyFieldsPdfBytes);
     const form = pdfDoc.getForm();
-    const gundams = form.getDropdown('Choose A Gundam 🤖');
-    gundams.select('Kyrios');
-    expect(gundams.getSelected()).toEqual(['Kyrios']);
+    const gundams = form.getDropdown("Choose A Gundam 🤖");
+    gundams.select("Kyrios");
+    expect(gundams.getSelected()).toEqual(["Kyrios"]);
   });
 
   it(`can select multiple values`, async () => {
     const pdfDoc = await PDFDocument.load(fancyFieldsPdfBytes);
     const form = pdfDoc.getForm();
-    const gundams = form.getDropdown('Choose A Gundam 🤖');
-    gundams.select(['Exia', 'Virtue']);
-    expect(gundams.getSelected()).toEqual(['Exia', 'Virtue']);
+    const gundams = form.getDropdown("Choose A Gundam 🤖");
+    gundams.select(["Exia", "Virtue"]);
+    expect(gundams.getSelected()).toEqual(["Exia", "Virtue"]);
   });
 
   it(`can select a value not in the options list`, async () => {
     const pdfDoc = await PDFDocument.load(fancyFieldsPdfBytes);
     const form = pdfDoc.getForm();
-    const gundams = form.getDropdown('Choose A Gundam 🤖');
+    const gundams = form.getDropdown("Choose A Gundam 🤖");
 
     expect(gundams.isEditable()).toBe(false);
-    expect(gundams.getOptions()).not.toContain('One Punch Man');
+    expect(gundams.getOptions()).not.toContain("One Punch Man");
 
-    gundams.select('One Punch Man');
+    gundams.select("One Punch Man");
 
     expect(gundams.isEditable()).toBe(true);
-    expect(gundams.getSelected()).toEqual(['One Punch Man']);
+    expect(gundams.getSelected()).toEqual(["One Punch Man"]);
   });
 
   it(`can merge options when selecting`, async () => {
     const pdfDoc = await PDFDocument.load(fancyFieldsPdfBytes);
     const form = pdfDoc.getForm();
-    const gundams = form.getDropdown('Choose A Gundam 🤖');
-    gundams.select(['Exia'], true);
-    expect(gundams.getSelected()).toEqual(['Dynames', 'Exia']);
+    const gundams = form.getDropdown("Choose A Gundam 🤖");
+    gundams.select(["Exia"], true);
+    expect(gundams.getSelected()).toEqual(["Dynames", "Exia"]);
   });
 
   it(`can read its flag states`, async () => {
     const pdfDoc = await PDFDocument.load(fancyFieldsPdfBytes);
     const form = pdfDoc.getForm();
-    const gundams = form.getDropdown('Choose A Gundam 🤖');
+    const gundams = form.getDropdown("Choose A Gundam 🤖");
 
     expect(gundams.isExported()).toBe(true);
     expect(gundams.isReadOnly()).toBe(false);
@@ -90,7 +90,7 @@ describe(`PDFDropdown`, () => {
 
     const form = pdfDoc.getForm();
 
-    const dropdown = form.createDropdown('a.new.dropdown');
+    const dropdown = form.createDropdown("a.new.dropdown");
 
     const widgets = () => dropdown.acroField.getWidgets();
     expect(widgets().length).toBe(0);
@@ -106,7 +106,7 @@ describe(`PDFDropdown`, () => {
 
     const form = pdfDoc.getForm();
 
-    const dropdown = form.createDropdown('a.new.dropdown');
+    const dropdown = form.createDropdown("a.new.dropdown");
 
     const widgets = () => dropdown.acroField.getWidgets();
     expect(widgets().length).toBe(0);

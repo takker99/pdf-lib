@@ -1,14 +1,14 @@
 import {
   Encodings,
+  EncodingType,
   Font,
   FontNames,
-  EncodingType,
-} from '@pdf-lib/standard-fonts';
+} from "@pdf-lib/standard-fonts";
 
-import PDFHexString from 'src/core/objects/PDFHexString';
-import PDFRef from 'src/core/objects/PDFRef';
-import PDFContext from 'src/core/PDFContext';
-import { toCodePoint, toHexString } from 'src/utils';
+import PDFHexString from "../objects/PDFHexString.ts";
+import PDFRef from "../objects/PDFRef.ts";
+import PDFContext from "../PDFContext.ts";
+import { toCodePoint, toHexString } from "../../utils/index.ts";
 
 export interface Glyph {
   code: number;
@@ -31,11 +31,11 @@ class StandardFontEmbedder {
 
   private constructor(fontName: FontNames, customName?: string) {
     // prettier-ignore
-    this.encoding = (
-        fontName === FontNames.ZapfDingbats ? Encodings.ZapfDingbats
-      : fontName === FontNames.Symbol       ? Encodings.Symbol
-      : Encodings.WinAnsi
-    );
+    this.encoding = fontName === FontNames.ZapfDingbats
+      ? Encodings.ZapfDingbats
+      : fontName === FontNames.Symbol
+      ? Encodings.Symbol
+      : Encodings.WinAnsi;
     this.font = Font.load(fontName);
     this.fontName = this.font.FontName;
     this.customName = customName;
@@ -52,7 +52,7 @@ class StandardFontEmbedder {
     for (let idx = 0, len = glyphs.length; idx < len; idx++) {
       hexCodes[idx] = toHexString(glyphs[idx].code);
     }
-    return PDFHexString.of(hexCodes.join(''));
+    return PDFHexString.of(hexCodes.join(""));
   }
 
   widthOfTextAtSize(text: string, size: number): number {
@@ -95,12 +95,13 @@ class StandardFontEmbedder {
 
   embedIntoContext(context: PDFContext, ref?: PDFRef): PDFRef {
     const fontDict = context.obj({
-      Type: 'Font',
-      Subtype: 'Type1',
+      Type: "Font",
+      Subtype: "Type1",
       BaseFont: this.customName || this.fontName,
 
-      Encoding:
-        this.encoding === Encodings.WinAnsi ? 'WinAnsiEncoding' : undefined,
+      Encoding: this.encoding === Encodings.WinAnsi
+        ? "WinAnsiEncoding"
+        : undefined,
     });
 
     if (ref) {

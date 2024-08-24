@@ -6,8 +6,8 @@
  * under the Apache 2.0 open source license.
  */
 
-import DecodeStream from 'src/core/streams/DecodeStream';
-import { StreamType } from 'src/core/streams/Stream';
+import DecodeStream from "./DecodeStream.ts";
+import { StreamType } from "./Stream.ts";
 
 class LZWStream extends DecodeStream {
   private stream: StreamType;
@@ -105,6 +105,7 @@ class LZWStream extends DecodeStream {
         continue;
       } else {
         this.eof = true;
+        // @ts-ignore why is the lzwState being deleted?
         delete this.lzwState;
         break;
       }
@@ -114,13 +115,12 @@ class LZWStream extends DecodeStream {
         dictionaryLengths[nextCode] = dictionaryLengths[prevCode as number] + 1;
         dictionaryValues[nextCode] = currentSequence[0];
         nextCode++;
-        codeLength =
-          (nextCode + earlyChange) & (nextCode + earlyChange - 1)
-            ? codeLength
-            : Math.min(
-                Math.log(nextCode + earlyChange) / 0.6931471805599453 + 1,
-                12,
-              ) | 0;
+        codeLength = (nextCode + earlyChange) & (nextCode + earlyChange - 1)
+          ? codeLength
+          : Math.min(
+            Math.log(nextCode + earlyChange) / 0.6931471805599453 + 1,
+            12,
+          ) | 0;
       }
       prevCode = code;
 

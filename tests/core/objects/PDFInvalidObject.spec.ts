@@ -1,4 +1,4 @@
-import { PDFInvalidObject } from 'src/core';
+import { PDFInvalidObject } from "src/core";
 
 describe(`PDFInvalidObject`, () => {
   const data = new Uint8Array([12, 39, 92, 38, 38, 28, 49]);
@@ -15,7 +15,7 @@ describe(`PDFInvalidObject`, () => {
   });
 
   it(`can be converted to a string`, () => {
-    expect(String(PDFInvalidObject.of(data))).toBe('PDFInvalidObject(7 bytes)');
+    expect(String(PDFInvalidObject.of(data))).toBe("PDFInvalidObject(7 bytes)");
   });
 
   it(`can provide its size in bytes`, () => {
