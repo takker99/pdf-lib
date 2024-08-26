@@ -13,14 +13,13 @@ import { CharCodes } from "../syntax/CharCodes.ts";
 import { PDFArrayIsNotRectangleError } from "../errors.ts";
 import { PDFRawStream } from "./PDFRawStream.ts";
 
-export class PDFArray extends PDFObject {
+export class PDFArray implements PDFObject {
   static withContext = (context: PDFContext) => new PDFArray(context);
 
   private readonly array: PDFObject[];
   private readonly context: PDFContext;
 
   private constructor(context: PDFContext) {
-    super();
     this.array = [];
     this.context = context;
   }

@@ -8,11 +8,12 @@ export class PDFContentStream extends PDFFlateStream {
   static of = (dict: PDFDict, operators: PDFOperator[], encode = true) =>
     new PDFContentStream(dict, operators, encode);
 
-  private readonly operators: PDFOperator[];
-
-  private constructor(dict: PDFDict, operators: PDFOperator[], encode = true) {
+  constructor(
+    dict: PDFDict,
+    private readonly operators: PDFOperator[],
+    encode = true,
+  ) {
     super(dict, encode);
-    this.operators = operators;
   }
 
   push(...operators: PDFOperator[]): void {

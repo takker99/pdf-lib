@@ -20,61 +20,60 @@ const isRegularChar = (charCode: number) =>
 const ENFORCER = {};
 const pool = new Map<string, PDFName>();
 
-export class PDFName extends PDFObject {
-  static of = (name: string): PDFName => {
-    const decodedValue = decodeName(name);
+const of = (name: string): PDFName => {
+  const decodedValue = decodeName(name);
 
-    let instance = pool.get(decodedValue);
-    if (!instance) {
-      instance = new PDFName(ENFORCER, decodedValue);
-      pool.set(decodedValue, instance);
-    }
+  let instance = pool.get(decodedValue);
+  if (!instance) {
+    instance = new PDFName(ENFORCER, decodedValue);
+    pool.set(decodedValue, instance);
+  }
 
-    return instance;
-  };
+  return instance;
+};
 
+export class PDFName implements PDFObject {
   /* tslint:disable member-ordering */
-  static readonly Length = PDFName.of("Length");
-  static readonly FlateDecode = PDFName.of("FlateDecode");
-  static readonly Resources = PDFName.of("Resources");
-  static readonly Font = PDFName.of("Font");
-  static readonly XObject = PDFName.of("XObject");
-  static readonly ExtGState = PDFName.of("ExtGState");
-  static readonly Contents = PDFName.of("Contents");
-  static readonly Type = PDFName.of("Type");
-  static readonly Parent = PDFName.of("Parent");
-  static readonly MediaBox = PDFName.of("MediaBox");
-  static readonly Page = PDFName.of("Page");
-  static readonly Annots = PDFName.of("Annots");
-  static readonly TrimBox = PDFName.of("TrimBox");
-  static readonly ArtBox = PDFName.of("ArtBox");
-  static readonly BleedBox = PDFName.of("BleedBox");
-  static readonly CropBox = PDFName.of("CropBox");
-  static readonly Rotate = PDFName.of("Rotate");
-  static readonly Title = PDFName.of("Title");
-  static readonly Author = PDFName.of("Author");
-  static readonly Subject = PDFName.of("Subject");
-  static readonly Creator = PDFName.of("Creator");
-  static readonly Keywords = PDFName.of("Keywords");
-  static readonly Producer = PDFName.of("Producer");
-  static readonly CreationDate = PDFName.of("CreationDate");
-  static readonly ModDate = PDFName.of("ModDate");
+  static readonly Length = of("Length");
+  static readonly FlateDecode = of("FlateDecode");
+  static readonly Resources = of("Resources");
+  static readonly Font = of("Font");
+  static readonly XObject = of("XObject");
+  static readonly ExtGState = of("ExtGState");
+  static readonly Contents = of("Contents");
+  static readonly Type = of("Type");
+  static readonly Parent = of("Parent");
+  static readonly MediaBox = of("MediaBox");
+  static readonly Page = of("Page");
+  static readonly Annots = of("Annots");
+  static readonly TrimBox = of("TrimBox");
+  static readonly ArtBox = of("ArtBox");
+  static readonly BleedBox = of("BleedBox");
+  static readonly CropBox = of("CropBox");
+  static readonly Rotate = of("Rotate");
+  static readonly Title = of("Title");
+  static readonly Author = of("Author");
+  static readonly Subject = of("Subject");
+  static readonly Creator = of("Creator");
+  static readonly Keywords = of("Keywords");
+  static readonly Producer = of("Producer");
+  static readonly CreationDate = of("CreationDate");
+  static readonly ModDate = of("ModDate");
   /* tslint:enable member-ordering */
 
   private readonly encodedName: string;
 
-  private constructor(enforcer: any, name: string) {
+  static of = (name: string): PDFName => of(name);
+
+  constructor(enforcer: unknown, name: string) {
     if (enforcer !== ENFORCER) throw new PrivateConstructorError("PDFName");
-    super();
 
-    let encodedName = "/";
-    for (let idx = 0, len = name.length; idx < len; idx++) {
-      const character = name[idx];
-      const code = toCharCode(character);
-      encodedName += isRegularChar(code) ? character : `#${toHexString(code)}`;
-    }
-
-    this.encodedName = encodedName;
+    this.encodedName = `/${
+      name.split("").map((character) => {
+        const code = toCharCode(character);
+        return isRegularChar(code) ? character : `#${toHexString(code)}`;
+      }).join("")
+    }`;
   }
 
   asBytes(): Uint8Array {

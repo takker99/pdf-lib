@@ -6,13 +6,8 @@ import { PDFObject } from "./PDFObject.ts";
 import { PDFContext } from "../PDFContext.ts";
 import { CharCodes } from "../syntax/CharCodes.ts";
 
-export class PDFStream extends PDFObject {
-  readonly dict: PDFDict;
-
-  constructor(dict: PDFDict) {
-    super();
-    this.dict = dict;
-  }
+export class PDFStream implements PDFObject {
+  constructor(public readonly dict: PDFDict) {}
 
   clone(_context?: PDFContext): PDFStream {
     throw new MethodNotImplementedError(this.constructor.name, "clone");

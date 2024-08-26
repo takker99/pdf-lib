@@ -5,7 +5,7 @@ import { copyStringIntoBuffer } from "../../utils/mod.ts";
 const ENFORCER = {};
 const pool = new Map<string, PDFRef>();
 
-export class PDFRef extends PDFObject {
+export class PDFRef implements PDFObject {
   static of = (objectNumber: number, generationNumber = 0) => {
     const tag = `${objectNumber} ${generationNumber} R`;
 
@@ -28,7 +28,6 @@ export class PDFRef extends PDFObject {
     generationNumber: number,
   ) {
     if (enforcer !== ENFORCER) throw new PrivateConstructorError("PDFRef");
-    super();
     this.objectNumber = objectNumber;
     this.generationNumber = generationNumber;
     this.tag = `${objectNumber} ${generationNumber} R`;

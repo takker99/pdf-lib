@@ -13,21 +13,16 @@ import { CharCodes } from "../syntax/CharCodes.ts";
 
 export type DictMap = Map<PDFName, PDFObject>;
 
-export class PDFDict extends PDFObject {
+export class PDFDict implements PDFObject {
   static withContext = (context: PDFContext) => new PDFDict(new Map(), context);
 
   static fromMapWithContext = (map: DictMap, context: PDFContext) =>
     new PDFDict(map, context);
 
-  readonly context: PDFContext;
-
-  private readonly dict: DictMap;
-
-  protected constructor(map: DictMap, context: PDFContext) {
-    super();
-    this.dict = map;
-    this.context = context;
-  }
+  protected constructor(
+    private readonly dict: DictMap,
+    public readonly context: PDFContext,
+  ) {}
 
   keys(): PDFName[] {
     return Array.from(this.dict.keys());
@@ -52,13 +47,12 @@ export class PDFDict extends PDFObject {
     preservePDFNull = false,
   ): PDFObject | undefined {
     const value = this.dict.get(key);
-    if (value === PDFNull && !preservePDFNull) return undefined;
-    return value;
+    return `${value}` === "null" && !preservePDFNull ? undefined : value;
   }
 
   has(key: PDFName): boolean {
     const value = this.dict.get(key);
-    return value !== undefined && value !== PDFNull;
+    return value !== undefined && `${value}` !== "null";
   }
 
   lookupMaybe(key: PDFName, type: typeof PDFArray): PDFArray | undefined;

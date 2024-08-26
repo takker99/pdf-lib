@@ -4,14 +4,8 @@ import { PDFContext } from "../PDFContext.ts";
 import { arrayAsString } from "../../utils/mod.ts";
 
 export class PDFRawStream extends PDFStream {
-  static of = (dict: PDFDict, contents: Uint8Array) =>
-    new PDFRawStream(dict, contents);
-
-  readonly contents: Uint8Array;
-
-  private constructor(dict: PDFDict, contents: Uint8Array) {
+  constructor(dict: PDFDict, public readonly contents: Uint8Array) {
     super(dict);
-    this.contents = contents;
   }
 
   asUint8Array(): Uint8Array {
@@ -19,7 +13,7 @@ export class PDFRawStream extends PDFStream {
   }
 
   clone(context?: PDFContext): PDFRawStream {
-    return PDFRawStream.of(this.dict.clone(context), this.contents.slice());
+    return new PDFRawStream(this.dict.clone(context), this.contents.slice());
   }
 
   getContentsString(): string {

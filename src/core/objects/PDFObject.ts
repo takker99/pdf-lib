@@ -1,20 +1,19 @@
-import { MethodNotImplementedError } from "../errors.ts";
 import { PDFContext } from "../PDFContext.ts";
 
-export class PDFObject {
-  clone(_context?: PDFContext): PDFObject {
-    throw new MethodNotImplementedError(this.constructor.name, "clone");
-  }
+/**
+ * Represents a PDF object.
+ */
+export interface PDFObject {
+  /** clone the object.
+   *
+   * @param context
+   */
+  clone(context?: PDFContext): PDFObject;
 
-  toString(): string {
-    throw new MethodNotImplementedError(this.constructor.name, "toString");
-  }
+  /** Get the string representation of the object's contents.  */
+  toString(): string;
 
-  sizeInBytes(): number {
-    throw new MethodNotImplementedError(this.constructor.name, "sizeInBytes");
-  }
+  sizeInBytes(): number;
 
-  copyBytesInto(_buffer: Uint8Array, _offset: number): number {
-    throw new MethodNotImplementedError(this.constructor.name, "copyBytesInto");
-  }
+  copyBytesInto(buffer: Uint8Array, offset: number): number;
 }

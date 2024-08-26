@@ -4,7 +4,7 @@ import { CharCodes } from "../syntax/CharCodes.ts";
 
 const ENFORCER = {};
 
-export class PDFBool extends PDFObject {
+export class PDFBool implements PDFObject {
   static readonly True = new PDFBool(ENFORCER, true);
   static readonly False = new PDFBool(ENFORCER, false);
 
@@ -12,7 +12,6 @@ export class PDFBool extends PDFObject {
 
   private constructor(enforcer: any, value: boolean) {
     if (enforcer !== ENFORCER) throw new PrivateConstructorError("PDFBool");
-    super();
     this.value = value;
   }
 

@@ -11,7 +11,7 @@ import {
 } from "../../utils/mod.ts";
 import { InvalidPDFDateStringError } from "../errors.ts";
 
-export class PDFHexString extends PDFObject {
+export class PDFHexString implements PDFObject {
   static of = (value: string) => new PDFHexString(value);
 
   static fromText = (value: string) => {
@@ -28,7 +28,6 @@ export class PDFHexString extends PDFObject {
   private readonly value: string;
 
   constructor(value: string) {
-    super();
     this.value = value;
   }
 

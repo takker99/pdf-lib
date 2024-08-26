@@ -32,15 +32,13 @@ export class PDFPageLeaf extends PDFDict {
   ) => new PDFPageLeaf(map, context, autoNormalizeCTM);
 
   private normalized = false;
-  private readonly autoNormalizeCTM: boolean;
 
   private constructor(
     map: DictMap,
     context: PDFContext,
-    autoNormalizeCTM = true,
+    private readonly autoNormalizeCTM = true,
   ) {
     super(map, context);
-    this.autoNormalizeCTM = autoNormalizeCTM;
   }
 
   clone(context?: PDFContext): PDFPageLeaf {

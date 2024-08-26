@@ -18,7 +18,7 @@ import { PDFOperator } from "./operators/PDFOperator.ts";
 import { PDFOperatorNames as Ops } from "./operators/PDFOperatorNames.ts";
 import { PDFContentStream } from "./structures/PDFContentStream.ts";
 import { typedArrayFor } from "../utils/mod.ts";
-import { SimpleRNG } from "../utils/rng.ts";
+import { makeSimpleRNG } from "../utils/rng.ts";
 
 type LookupKey = PDFRef | PDFObject | undefined;
 
@@ -45,31 +45,20 @@ const byAscendingObjectNumber = (
 ) => a.objectNumber - b.objectNumber;
 
 export class PDFContext {
-  static create = () => new PDFContext();
-
-  largestObjectNumber: number;
-  header: PDFHeader;
+  largestObjectNumber = 0;
+  header = new PDFHeader(1, 7);
   trailerInfo: {
     Root?: PDFObject;
     Encrypt?: PDFObject;
     Info?: PDFObject;
     ID?: PDFObject;
-  };
-  rng: SimpleRNG;
+  } = {};
+  rng = makeSimpleRNG(1);
 
-  private readonly indirectObjects: Map<PDFRef, PDFObject>;
+  private readonly indirectObjects: Map<PDFRef, PDFObject> = new Map();
 
   private pushGraphicsStateContentStreamRef?: PDFRef;
   private popGraphicsStateContentStreamRef?: PDFRef;
-
-  private constructor() {
-    this.largestObjectNumber = 0;
-    this.header = PDFHeader.forVersion(1, 7);
-    this.trailerInfo = {};
-
-    this.indirectObjects = new Map();
-    this.rng = SimpleRNG.withSeed(1);
-  }
 
   assign(ref: PDFRef, object: PDFObject): void {
     this.indirectObjects.set(ref, object);
@@ -167,12 +156,8 @@ export class PDFContext {
   }
 
   getObjectRef(pdfObject: PDFObject): PDFRef | undefined {
-    const entries = Array.from(this.indirectObjects.entries());
-    for (let idx = 0, len = entries.length; idx < len; idx++) {
-      const [ref, object] = entries[idx];
-      if (object === pdfObject) {
-        return ref;
-      }
+    for (const [ref, object] of this.indirectObjects) {
+      if (object === pdfObject) return ref;
     }
 
     return undefined;
@@ -224,7 +209,7 @@ export class PDFContext {
     contents: string | Uint8Array,
     dict: LiteralObject = {},
   ): PDFRawStream {
-    return PDFRawStream.of(this.obj(dict), typedArrayFor(contents));
+    return new PDFRawStream(this.obj(dict), typedArrayFor(contents));
   }
 
   flateStream(
@@ -257,9 +242,9 @@ export class PDFContext {
     });
   }
 
-  /*
-   * Reference to PDFContentStream that contains a single PDFOperator: `q`.
-   * Used by [[PDFPageLeaf]] instances to ensure that when content streams are
+  /**
+   * Reference to {@linkcode PDFContentStream} that contains a single {@linkcode PDFOperator}: `q`.
+   * Used by {@linkcode PDFPageLeaf} instances to ensure that when content streams are
    * added to a modified PDF, they start in the default, unchanged graphics
    * state.
    */
@@ -268,15 +253,15 @@ export class PDFContext {
       return this.pushGraphicsStateContentStreamRef;
     }
     const dict = this.obj({});
-    const op = PDFOperator.of(Ops.PushGraphicsState);
-    const stream = PDFContentStream.of(dict, [op]);
+    const op = new PDFOperator(Ops.PushGraphicsState);
+    const stream = new PDFContentStream(dict, [op]);
     this.pushGraphicsStateContentStreamRef = this.register(stream);
     return this.pushGraphicsStateContentStreamRef;
   }
 
-  /*
-   * Reference to PDFContentStream that contains a single PDFOperator: `Q`.
-   * Used by [[PDFPageLeaf]] instances to ensure that when content streams are
+  /**
+   * Reference to {@linkcode PDFContentStream} that contains a single {@linkcode PDFOperator}: `Q`.
+   * Used by {@linkcode PDFPageLeaf} instances to ensure that when content streams are
    * added to a modified PDF, they start in the default, unchanged graphics
    * state.
    */
@@ -285,13 +270,13 @@ export class PDFContext {
       return this.popGraphicsStateContentStreamRef;
     }
     const dict = this.obj({});
-    const op = PDFOperator.of(Ops.PopGraphicsState);
-    const stream = PDFContentStream.of(dict, [op]);
+    const op = new PDFOperator(Ops.PopGraphicsState);
+    const stream = new PDFContentStream(dict, [op]);
     this.popGraphicsStateContentStreamRef = this.register(stream);
     return this.popGraphicsStateContentStreamRef;
   }
 
   addRandomSuffix(prefix: string, suffixLength = 4): string {
-    return `${prefix}-${Math.floor(this.rng.nextInt() * 10 ** suffixLength)}`;
+    return `${prefix}-${Math.floor(this.rng() * 10 ** suffixLength)}`;
   }
 }

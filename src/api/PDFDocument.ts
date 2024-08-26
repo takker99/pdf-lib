@@ -18,6 +18,7 @@ import {
   JpegEmbedder,
   PageBoundingBox,
   PageEmbeddingMismatchedContextError,
+  parseDocument,
   PDFCatalog,
   PDFContext,
   PDFDict,
@@ -27,7 +28,6 @@ import {
   PDFPageEmbedder,
   PDFPageLeaf,
   PDFPageTree,
-  PDFParser,
   PDFStreamWriter,
   PDFString,
   PDFWriter,
@@ -138,18 +138,13 @@ export class PDFDocument {
       capNumbers = false,
     } = options;
 
-    assertIs(pdf, "pdf", ["string", Uint8Array, ArrayBuffer]);
-    assertIs(ignoreEncryption, "ignoreEncryption", ["boolean"]);
-    assertIs(parseSpeed, "parseSpeed", ["number"]);
-    assertIs(throwOnInvalidObject, "throwOnInvalidObject", ["boolean"]);
-
     const bytes = toUint8Array(pdf);
-    const context = await PDFParser.forBytesWithOptions(
+    const context = await parseDocument(
       bytes,
       parseSpeed,
       throwOnInvalidObject,
       capNumbers,
-    ).parseDocument();
+    );
     return new PDFDocument(context, ignoreEncryption, updateMetadata);
   }
 
@@ -160,7 +155,7 @@ export class PDFDocument {
   static create(options: CreateOptions = {}) {
     const { updateMetadata = true } = options;
 
-    const context = PDFContext.create();
+    const context = new PDFContext();
     const pageTree = PDFPageTree.withContext(context);
     const pageTreeRef = context.register(pageTree);
     const catalog = PDFCatalog.withContextAndPages(context, pageTreeRef);
@@ -168,9 +163,6 @@ export class PDFDocument {
 
     return Promise.resolve(new PDFDocument(context, false, updateMetadata));
   }
-
-  /** The low-level context of this document. */
-  readonly context: PDFContext;
 
   /** The catalog of this document. */
   readonly catalog: PDFCatalog;
@@ -193,14 +185,11 @@ export class PDFDocument {
   private readonly javaScripts: PDFJavaScript[];
 
   private constructor(
-    context: PDFContext,
+    /** The low-level context of this document. */
+    public readonly context: PDFContext,
     ignoreEncryption: boolean,
     updateMetadata: boolean,
   ) {
-    assertIs(context, "context", [[PDFContext, "PDFContext"]]);
-    assertIs(ignoreEncryption, "ignoreEncryption", ["boolean"]);
-
-    this.context = context;
     this.catalog = context.lookup(context.trailerInfo.Root) as PDFCatalog;
     this.isEncrypted = !!context.lookup(context.trailerInfo.Encrypt);
 

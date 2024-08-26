@@ -1,12 +1,11 @@
 import { PDFObject } from "./PDFObject.ts";
 
-export class PDFInvalidObject extends PDFObject {
+export class PDFInvalidObject implements PDFObject {
   static of = (data: Uint8Array) => new PDFInvalidObject(data);
 
   private readonly data: Uint8Array;
 
   private constructor(data: Uint8Array) {
-    super();
     this.data = data;
   }
 

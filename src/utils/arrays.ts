@@ -69,9 +69,10 @@ export const arrayAsString = (array: Uint8Array | number[]): string => {
   return str;
 };
 
-export const byAscendingId = <T extends { id: any }>(a: T, b: T) => a.id - b.id;
+export const byAscendingId = <T extends { id: number }>(a: T, b: T) =>
+  a.id - b.id;
 
-export const sortedUniq = <T>(array: T[], indexer: (elem: T) => any): T[] => {
+export const sortedUniq = <T, U>(array: T[], indexer: (elem: T) => U): T[] => {
   const uniq: T[] = [];
 
   for (let idx = 0, len = array.length; idx < len; idx++) {
@@ -126,7 +127,7 @@ export const pluckIndices = <T>(arr: T[], indices: number[]) => {
 };
 
 export const canBeConvertedToUint8Array = (
-  input: any,
+  input: unknown,
 ): input is string | ArrayBuffer | Uint8Array =>
   input instanceof Uint8Array ||
   input instanceof ArrayBuffer ||
@@ -135,13 +136,9 @@ export const canBeConvertedToUint8Array = (
 export const toUint8Array = (input: string | ArrayBuffer | Uint8Array) => {
   if (typeof input === "string") {
     return decodeFromBase64DataUri(input);
-  } else if (input instanceof ArrayBuffer) {
-    return new Uint8Array(input);
-  } else if (input instanceof Uint8Array) {
-    return input;
-  } else {
-    throw new TypeError(
-      "`input` must be one of `string | ArrayBuffer | Uint8Array`",
-    );
   }
+  if (input instanceof ArrayBuffer) {
+    return new Uint8Array(input);
+  }
+  return input;
 };

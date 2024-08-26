@@ -3,7 +3,6 @@ import { CharCodes } from "../syntax/CharCodes.ts";
 import {
   copyStringIntoBuffer,
   hasUtf16BOM,
-  padStart,
   parseDate,
   pdfDocEncodingDecode,
   toCharCode,
@@ -11,28 +10,24 @@ import {
 } from "../../utils/mod.ts";
 import { InvalidPDFDateStringError } from "../errors.ts";
 
-export class PDFString extends PDFObject {
-  // The PDF spec allows newlines and parens to appear directly within a literal
-  // string. These character _may_ be escaped. But they do not _have_ to be. So
-  // for simplicity, we will not bother escaping them.
+export class PDFString implements PDFObject {
   static of = (value: string) => new PDFString(value);
 
   static fromDate = (date: Date) => {
-    const year = padStart(String(date.getUTCFullYear()), 4, "0");
-    const month = padStart(String(date.getUTCMonth() + 1), 2, "0");
-    const day = padStart(String(date.getUTCDate()), 2, "0");
-    const hours = padStart(String(date.getUTCHours()), 2, "0");
-    const mins = padStart(String(date.getUTCMinutes()), 2, "0");
-    const secs = padStart(String(date.getUTCSeconds()), 2, "0");
+    const year = `${date.getUTCFullYear()}`.padStart(4, "0");
+    const month = `${date.getUTCMonth() + 1}`.padStart(2, "0");
+    const day = `${date.getUTCDate()}`.padStart(2, "0");
+    const hours = `${date.getUTCHours()}`.padStart(2, "0");
+    const mins = `${date.getUTCMinutes()}`.padStart(2, "0");
+    const secs = `${date.getUTCSeconds()}`.padStart(2, "0");
     return new PDFString(`D:${year}${month}${day}${hours}${mins}${secs}Z`);
   };
 
-  private readonly value: string;
-
-  private constructor(value: string) {
-    super();
-    this.value = value;
-  }
+  /** The PDF spec allows newlines and parens to appear directly within a literal
+   * string. These character _may_ be escaped. But they do not _have_ to be. So
+   * for simplicity, we will not bother escaping them.
+   */
+  constructor(private readonly value: string) {}
 
   asBytes(): Uint8Array {
     const bytes: number[] = [];

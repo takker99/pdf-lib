@@ -3,6 +3,4 @@
  * Macro Task Queue occurs.
  */
 export const waitForTick = (): Promise<void> =>
-  new Promise((resolve) => {
-    setTimeout(() => resolve(), 0);
-  });
+  new Promise((resolve) => setTimeout(resolve, 0));

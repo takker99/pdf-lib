@@ -16,10 +16,7 @@ export interface Entry {
 }
 
 export class PDFXRefStreamParser {
-  static forStream = (rawStream: PDFRawStream) =>
-    new PDFXRefStreamParser(rawStream);
-
-  private alreadyParsed: boolean;
+  private alreadyParsed = false;
 
   private readonly dict: PDFDict;
   private readonly context: PDFContext;
@@ -31,8 +28,6 @@ export class PDFXRefStreamParser {
   private readonly byteWidths: [number, number, number];
 
   constructor(rawStream: PDFRawStream) {
-    this.alreadyParsed = false;
-
     this.dict = rawStream.dict;
     this.bytes = ByteStream.fromPDFRawStream(rawStream);
     this.context = this.dict.context;

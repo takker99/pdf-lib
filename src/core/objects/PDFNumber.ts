@@ -2,16 +2,13 @@ import { copyStringIntoBuffer, numberToString } from "../../utils/mod.ts";
 
 import { PDFObject } from "./PDFObject.ts";
 
-export class PDFNumber extends PDFObject {
+export class PDFNumber implements PDFObject {
   static of = (value: number) => new PDFNumber(value);
 
-  private readonly numberValue: number;
   private readonly stringValue: string;
 
-  private constructor(value: number) {
-    super();
-    this.numberValue = value;
-    this.stringValue = numberToString(value);
+  constructor(private readonly numberValue: number) {
+    this.stringValue = numberToString(numberValue);
   }
 
   asNumber(): number {

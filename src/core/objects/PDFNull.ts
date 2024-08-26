@@ -1,7 +1,7 @@
 import { PDFObject } from "./PDFObject.ts";
 import { CharCodes } from "../syntax/CharCodes.ts";
 
-export class PDFNull extends PDFObject {
+export class PDFNull implements PDFObject {
   asNull(): null {
     return null;
   }

@@ -5,20 +5,15 @@ import { CharCodes } from "../syntax/CharCodes.ts";
 
 // TODO: See how line/col tracking affects performance
 export class ByteStream {
-  static of = (bytes: Uint8Array) => new ByteStream(bytes);
-
   static fromPDFRawStream = (rawStream: PDFRawStream) =>
-    ByteStream.of(decodePDFRawStream(rawStream).decode());
+    new ByteStream(decodePDFRawStream(rawStream).decode());
 
-  private readonly bytes: Uint8Array;
   private readonly length: number;
-
   private idx = 0;
   private line = 0;
   private column = 0;
 
-  constructor(bytes: Uint8Array) {
-    this.bytes = bytes;
+  constructor(private readonly bytes: Uint8Array) {
     this.length = this.bytes.length;
   }
 

@@ -5,17 +5,8 @@
  *
  * Credit: https://stackoverflow.com/a/19303725/10254049
  */
-export class SimpleRNG {
-  static withSeed = (seed: number) => new SimpleRNG(seed);
 
-  private seed: number;
-
-  private constructor(seed: number) {
-    this.seed = seed;
-  }
-
-  nextInt(): number {
-    const x = Math.sin(this.seed++) * 10000;
-    return x - Math.floor(x);
-  }
-}
+export const makeSimpleRNG = (seed: number): () => number => () => {
+  const x = Math.sin(seed++) * 10000;
+  return x - Math.floor(x);
+};
